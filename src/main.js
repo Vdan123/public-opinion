@@ -8,6 +8,12 @@ import _ from 'lodash';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 
+// Tailwind
+import '@/assets/css/main.css';
+
+// Styles: SCSS
+import './assets/scss/main.scss';
+
 Vue.use(ViewUI, {
   transfer: true,
   capture: false
