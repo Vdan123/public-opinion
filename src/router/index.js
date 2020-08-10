@@ -1,20 +1,48 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Router from 'vue-router';
 
 import Layouts from '@/layouts';
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-const routes = [
+const constantRoutes = [
   {
     path: '/',
-    name: 'Layouts',
-    component: Layouts
+    component: Layouts,
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '总览', icon: 'dashboard' }
+    }]
+  },
+  {
+    path: '/current',
+    component: Layouts,
+    meta: { title: '舆情监测', icon: 'order' },
+    children: [
+      {
+        path: 'index',
+        name: 'Current',
+        component: () => import('@/views/currentInfo/index')
+      }
+    ]
   }
 ];
 
-const router = new VueRouter({
-  routes
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
 });
+
+const router = createRouter();
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
+}
 
 export default router;
