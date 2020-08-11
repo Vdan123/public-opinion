@@ -20,11 +20,11 @@ const constantRoutes = [
   {
     path: '/current',
     component: Layouts,
-    meta: { title: '舆情监测', icon: 'order' },
     children: [
       {
         path: 'index',
         name: 'Current',
+        meta: { title: '舆情监测', icon: 'order' },
         component: () => import('@/views/currentInfo/index')
       }
     ]
