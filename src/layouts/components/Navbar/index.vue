@@ -2,18 +2,17 @@
   <div>
     <header class="flex header-container">
       <div class="layout-logo" />
-      <Menu mode="horizontal" class="top-bar">
+      <ul class="top-bar">
         <template v-for="route in routes">
           <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
-            <MenuItem
-              :name="resolvePath(route.path, onlyOneChild.path)"
-              :to="resolvePath(route.path, onlyOneChild.path)"
-            >
-              {{ onlyOneChild.meta.title }}
-            </MenuItem>
+            <li class="top-bar-li" :key="resolvePath(route.path, onlyOneChild.path)">
+              <router-link :to="resolvePath(route.path, onlyOneChild.path)">
+                {{ onlyOneChild.meta.title }}
+              </router-link>
+            </li>
           </template>
         </template>
-      </Menu>
+      </ul>
     </header>
   </div>
 </template>
@@ -23,37 +22,37 @@ import path from 'path';
 export default {
   data() {
     this.onlyOneChild = null;
-    return {}
+    return {};
   },
   computed: {
     routes() {
-      return this.$router.options.routes
+      return this.$router.options.routes;
     }
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
-          return false
+          return false;
         } else {
           // Temp set(will be used if only has one showing child)
-          this.onlyOneChild = item
-          return true
+          this.onlyOneChild = item;
+          return true;
         }
-      })
+      });
 
       // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
-        return true
+        return true;
       }
 
       // Show parent if there are no child router to display
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-        return true
+        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true };
+        return true;
       }
 
-      return false
+      return false;
     },
     resolvePath(basePath, routePath) {
       return path.resolve(basePath, routePath);
@@ -87,27 +86,23 @@ export default {
     width: calc(100% - 661px);
     overflow: hidden;
     float: left;
-    .ivu-menu-item {
+    list-style: none;
+    .top-bar-li {
       min-width: max-content;
       padding: 0 20px;
       font-size: 15px;
       font-weight: 400;
       color: #1f2d3d;
       line-height: 54px;
+      text-align: center;
+      cursor: pointer;
       user-select: none;
-      &:hover {
-        background-color: #f5f8fc !important;
-        color: #04bd88 !important;
-      }
-      &:after {
-        display: none !important;
-      }
+      position: relative;
     }
-    .ivu-menu-item-active {
-      color: #04bd88;
-    }
-    .ivu-menu-horizontal.ivu-menu-light:after {
-      display: none !important;
+    .top-bar-link {
+      color: #1f2d3d;
+      display: inline-block;
+      user-select: none;
     }
   }
 }

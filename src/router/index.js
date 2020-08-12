@@ -14,7 +14,7 @@ const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '总览', icon: 'dashboard' }
+      meta: { title: '总览' }
     }]
   },
   {
@@ -24,8 +24,44 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Current',
-        meta: { title: '舆情监测', icon: 'order' },
+        meta: { title: '舆情监测' },
         component: () => import('@/views/currentInfo/index')
+      }
+    ]
+  },
+  {
+    path: '/searching',
+    component: Layouts,
+    children: [
+      {
+        path: 'index',
+        name: 'Searching',
+        meta: { title: '全文检索'},
+        component: () => import('@/views/searching/index')
+      }
+    ]
+  },
+  {
+    path: '/bulletin',
+    component: Layouts,
+    children: [
+      {
+        path: 'index',
+        name: 'Bulletin',
+        meta: { title: '舆情简报'},
+        component: () => import('@/views/bulletin/index')
+      }
+    ]
+  },
+  {
+    path: '/setting',
+    component: Layouts,
+    children: [
+      {
+        path: 'index',
+        name: 'Setting',
+        meta: { title: '系统设置'},
+        component: () => import('@/views/setting/index')
       }
     ]
   }
