@@ -2,23 +2,62 @@
   <div>
     <header class="flex header-container">
       <div class="layout-logo" />
-      <ul class="top-bar">
-        <li v-for="(nav, index) in navList" :key="index" class="top-bar-li">
-          <a href="javascript:void(0)" class="top-bar-link">
-            {{ nav }}
-          </a>
-        </li>
-      </ul>
+      <Menu mode="horizontal" class="top-bar">
+        <template v-for="route in routes">
+          <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
+            <MenuItem
+              :name="resolvePath(route.path, onlyOneChild.path)"
+              :to="resolvePath(route.path, onlyOneChild.path)"
+            >
+              {{ onlyOneChild.meta.title }}
+            </MenuItem>
+          </template>
+        </template>
+      </Menu>
     </header>
   </div>
 </template>
 
 <script>
+import path from 'path';
 export default {
   data() {
-    return {
-      navList: ['总览', '舆情监测', '全文检索', '舆情简报', '用户管理', '用户管理', '系统管理']
-    };
+    this.onlyOneChild = null;
+    return {}
+  },
+  computed: {
+    routes() {
+      return this.$router.options.routes
+    }
+  },
+  methods: {
+    hasOneShowingChild(children = [], parent) {
+      const showingChildren = children.filter(item => {
+        if (item.hidden) {
+          return false
+        } else {
+          // Temp set(will be used if only has one showing child)
+          this.onlyOneChild = item
+          return true
+        }
+      })
+
+      // When there is only one child router, the child router is displayed by default
+      if (showingChildren.length === 1) {
+        return true
+      }
+
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        return true
+      }
+
+      return false
+    },
+    resolvePath(basePath, routePath) {
+      return path.resolve(basePath, routePath);
+    }
   }
 };
 </script>
@@ -37,7 +76,8 @@ export default {
   padding-right: 12px;
   padding-left: 12px;
   .top-bar {
-    list-style: none;
+    height: 54px;
+    line-height: 54px;
     padding: 0;
     margin: 0;
     display: flex;
@@ -47,22 +87,27 @@ export default {
     width: calc(100% - 661px);
     overflow: hidden;
     float: left;
-    .top-bar-li {
+    .ivu-menu-item {
       min-width: max-content;
       padding: 0 20px;
       font-size: 15px;
       font-weight: 400;
       color: #1f2d3d;
       line-height: 54px;
-      text-align: center;
-      cursor: pointer;
       user-select: none;
-      position: relative;
+      &:hover {
+        background-color: #f5f8fc !important;
+        color: #04bd88 !important;
+      }
+      &:after {
+        display: none !important;
+      }
     }
-    .top-bar-link {
-      color: #1f2d3d;
-      display: inline-block;
-      user-select: none;
+    .ivu-menu-item-active {
+      color: #04bd88;
+    }
+    .ivu-menu-horizontal.ivu-menu-light:after {
+      display: none !important;
     }
   }
 }
