@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 export function getGroup(data) {
   return request({
     url: '/api/Keyword/getGroup',
     method: 'post',
     data
-  })
+  });
 }
 
 export function addGroup(data) {
@@ -13,7 +13,7 @@ export function addGroup(data) {
     url: '/api/Keyword/addGroup',
     method: 'post',
     data
-  })
+  });
 }
 
 export function getKeywords(data) {
@@ -21,5 +21,5 @@ export function getKeywords(data) {
     url: '/api/Keyword/getKeywords',
     method: 'post',
     data
-  })
+  });
 }

@@ -1,18 +1,53 @@
 <template>
   <div>
-    <header class="flex header-container">
-      <div class="layout-logo" />
-      <ul class="top-bar">
-        <template v-for="route in routes">
-          <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
-            <li class="top-bar-li" :key="resolvePath(route.path, onlyOneChild.path)">
-              <router-link :to="resolvePath(route.path, onlyOneChild.path)">
-                {{ onlyOneChild.meta.title }}
-              </router-link>
-            </li>
+    <header class="navbar-header">
+      <div class="header-container">
+        <div class="layout-logo" />
+        <ul class="top-bar">
+          <template v-for="route in routes">
+            <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
+              <li
+                v-if="onlyOneChild.meta"
+                :key="resolvePath(route.path, onlyOneChild.path)"
+                class="top-bar-li"
+              >
+                <router-link :to="resolvePath(route.path, onlyOneChild.path)">
+                  {{ onlyOneChild.meta.title }}
+                </router-link>
+              </li>
+            </template>
           </template>
-        </template>
-      </ul>
+        </ul>
+        <div class="top-menu-container">
+          <Dropdown trigger="click">
+            <a href="javascript:void(0)">
+              <span>{{ userInfo.username }}</span>
+              <Icon type="ios-arrow-down" />
+            </a>
+            <DropdownMenu slot="list">
+              <DropdownItem>个人中心</DropdownItem>
+              <DropdownItem>修改密码</DropdownItem>
+              <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+        <div class="top-icon-group">
+          <a href="javascript:void(0)">
+            <span class="iconfont icon-icon-test2" />
+          </a>
+          <a href="javascript:void(0)">
+            <span class="iconfont icon-icon-test11" />
+          </a>
+          <Dropdown trigger="click">
+            <a href="javascript:void(0)">
+              <span class="iconfont icon-icon-test6" />
+            </a>
+            <DropdownMenu slot="list">
+              通知助手
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+      </div>
     </header>
   </div>
 </template>
@@ -22,14 +57,22 @@ import path from 'path';
 export default {
   data() {
     this.onlyOneChild = null;
-    return {};
+    return {
+    };
   },
   computed: {
     routes() {
       return this.$router.options.routes;
+    },
+    userInfo() {
+      return this.$store.getters.userInfo;
     }
   },
   methods: {
+    async logout() {
+      await this.$store.dispatch('user/logout');
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
@@ -56,12 +99,19 @@ export default {
     },
     resolvePath(basePath, routePath) {
       return path.resolve(basePath, routePath);
+    },
+    handleLogout() {
+      this.logout();
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.navbar-header {
+  position: relative;
+  z-index: 100;
+}
 .header-container {
   position: absolute;
   top: 0;
@@ -74,6 +124,11 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(175,186,200,.17);
   padding-right: 12px;
   padding-left: 12px;
+  & > div {
+    height: 54px;
+    display: flex;
+    align-items: center;
+  }
   .top-bar {
     height: 54px;
     line-height: 54px;
@@ -99,11 +154,29 @@ export default {
       user-select: none;
       position: relative;
     }
-    .top-bar-link {
-      color: #1f2d3d;
-      display: inline-block;
-      user-select: none;
-    }
+  }
+  .top-menu-container, .top-icon-group {
+    float: right;
+  }
+  .top-icon-group .iconfont {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    font-size: 16px;
+    color: #778ca2;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 20px;
+    height: 32px;
+    width: 32px;
+    justify-content: center;
+  }
+  .top-icon-group:after {
+    content: "";
+    border-right: 1px solid #e0e6ed;
+    height: 19px;
+    margin-left: 8px;
+    margin-right: 14px;
   }
 }
 .layout-logo{

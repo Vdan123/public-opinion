@@ -39,5 +39,11 @@ export default {
     background: #f7f9fa;
     min-height: 280px;
   }
+  .router-view {
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+  }
 }
 </style>

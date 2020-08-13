@@ -7,6 +7,11 @@ Vue.use(Router);
 
 const constantRoutes = [
   {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layouts,
     redirect: '/dashboard',
@@ -36,7 +41,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Searching',
-        meta: { title: '全文检索'},
+        meta: { title: '全文检索' },
         component: () => import('@/views/searching/index')
       }
     ]
@@ -48,7 +53,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Bulletin',
-        meta: { title: '舆情简报'},
+        meta: { title: '舆情简报' },
         component: () => import('@/views/bulletin/index')
       }
     ]
@@ -60,7 +65,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Setting',
-        meta: { title: '系统设置'},
+        meta: { title: '系统设置' },
         component: () => import('@/views/setting/index')
       }
     ]
