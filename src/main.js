@@ -14,6 +14,9 @@ import '@/assets/css/main.css';
 // Styles: SCSS
 import './assets/scss/main.scss';
 
+// fontIcon
+import './assets/icon/iconfont.css';
+
 Vue.use(ViewUI, {
   transfer: true,
   capture: false
