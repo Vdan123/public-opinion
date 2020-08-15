@@ -1,17 +1,22 @@
 <template>
   <div>
-    <Menu mode="horizontal" @on-select="handleMenu">
-      <MenuItem
-        v-for="item in menu"
-        :key="item.key"
-        :name="item.key"
+    <div class="flex items-center project-top-bar">
+      <span style="padding-left: 6px">石家庄</span>
+      <Menu
+        class="ml-auto"
+        mode="horizontal"
+        @on-select="handleMenu"
       >
-        {{ item.label }}
-      </MenuItem>
-    </Menu>
-    <Content>
-      <component :is="menuContent" />
-    </Content>
+        <MenuItem
+          v-for="item in menu"
+          :key="item.key"
+          :name="item.key"
+        >
+          {{ item.label }}
+        </MenuItem>
+      </Menu>
+    </div>
+    <component :is="menuContent" />
   </div>
 </template>
 
@@ -48,5 +53,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.project-top-bar {
+  margin-top: 20px;
+  background: #fff;
+  height: 44px;
+  line-height: 44px;
+  z-index: 9;
+  .ivu-menu {
+    height: 44px;
+    line-height: 44px;
+  }
+}
 </style>

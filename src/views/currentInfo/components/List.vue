@@ -1,24 +1,34 @@
 <template>
   <div>
-    <Card>
-      <div
-        v-for="(item, index) in SearchButtons"
-        :key="index"
-      >
-        <span>
-          {{ item.key }}
-        </span>
-        <Button
-          v-for="button in item.value"
-          :key="button.label"
-          size="small"
-          type="text"
+    <div class="widget-container">
+      <Card dis-hover>
+        <div
+          v-for="(item, index) in SearchButtons"
+          :key="index"
         >
-          {{ button.label }}
-        </Button>
-      </div>
-    </Card>
-    <Table :columns="tableColumns" :data="[]" />
+          <span>
+            {{ item.key }}
+          </span>
+          <Button
+            v-for="button in item.value"
+            :key="button.label"
+            size="small"
+            type="text"
+          >
+            {{ button.label }}
+          </Button>
+        </div>
+      </Card>
+    </div>
+    <div>
+      <Card>
+        <Table
+          border
+          :columns="tableColumns"
+          :data="[]"
+        />
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -87,5 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.widget-container {
+  padding: 10px 0;
+}
 </style>

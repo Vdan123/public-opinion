@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1410351",
+      "name": "folder",
+      "font_class": "folder",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
       "icon_id": "716015",
       "name": "退出",
       "font_class": "tuichu",
@@ -36,7 +43,7 @@
     {
       "icon_id": "8776843",
       "name": "edit",
-      "font_class": "icon-edit",
+      "font_class": "icon-test3",
       "unicode": "e63d",
       "unicode_decimal": 58941
     },

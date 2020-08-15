@@ -1,21 +1,29 @@
 <template>
   <div>
     <div class="page-label">
-      <span>尊敬的用户，您本次登录时间为xxx，24小时内共为您监测信息27705条</span>
+      <span style="padding-left: 6px">尊敬的用户，您本次登录时间为xxx，24小时内共为您监测信息27705条</span>
       <span class="iconfont icon-icon-test5" />
     </div>
     <div class="flex">
-      <Card class="flex-1">
-        <UserInfo />
-      </Card>
-      <Card class="flex-1">
-        <p slot="title">方案</p>
-        这里是设置的方案，并显示相应方案获取到的值
-      </Card>
-      <Card class="flex-auto">
-        <p slot="title">预警详情</p>
-        这里是个动态的列表
-      </Card>
+      <div class="widget-container flex-1">
+        <Card>
+          <p slot="title">账号详情</p>
+          <UserInfo />
+        </Card>
+      </div>
+      <div class="widget-container flex-1">
+        <Card>
+          <p slot="title">方案</p>
+          这里是设置的方案，并显示相应方案获取到的值
+        </Card>
+      </div>
+
+      <div class="widget-container flex-1">
+        <Card>
+          <p slot="title">预警详情</p>
+          这里是个动态的列表
+        </Card>
+      </div>
     </div>
     <div class="flex">
       <Card class="flex-1">
@@ -75,6 +83,13 @@ export default {
 
 <style lang="scss" scoped>
 .page-label {
-  padding: 20px 0;
+  margin: 10px;
+  height: 32px;
+  line-height: 32px;
+  background: #e5f9f4;
+  color: #04cb94;
+}
+.widget-container {
+  padding: 10px;
 }
 </style>
