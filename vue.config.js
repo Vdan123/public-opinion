@@ -12,7 +12,7 @@ const name = '舆情系统'; // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 1024; // dev port
+const port = process.env.port || process.env.npm_config_port || 4000; // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -23,22 +23,23 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    proxy: {
-      '/api': {
-        target: 'http://122.51.200.105:81',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/'
-        },
-        secure: false
-      }
-    },
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://122.51.200.105:81',
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': '/'
+    //     },
+    //     secure: false
+    //   }
+    // },
+    proxy: 'http://122.51.200.105:81',
     port: port,
     open: true,
     overlay: {

@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function login(data) {
   return request({
-    url: '/api/Login/login',
+    url: '/Login/login',
     method: 'post',
     data
   });
@@ -10,14 +10,14 @@ export function login(data) {
 
 export function logout() {
   return request({
-    url: '/api/Login/logout',
+    url: '/Login/logout',
     method: 'post'
   });
 }
 
 export function getUserDetails(data) {
   return request({
-    url: '/api/User/getUserDetails',
+    url: '/User/getUserDetails',
     method: 'post',
     data
   });
