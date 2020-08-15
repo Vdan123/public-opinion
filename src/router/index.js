@@ -19,7 +19,7 @@ const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '总览' }
+      meta: { title: '总览', requiresAuth: true }
     }]
   },
   {
@@ -27,10 +27,19 @@ const constantRoutes = [
     component: Layouts,
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Current',
-        meta: { title: '舆情监测' },
-        component: () => import('@/views/currentInfo/index')
+        meta: { title: '舆情监测', requiresAuth: true },
+        noShowingChildren: true,
+        component: () => import('@/views/currentInfo/index'),
+        children: [
+          {
+            name: 'Project',
+            path: ':id(\\d+)',
+            meta: { requiresAuth: true },
+            component: () => import('@/views/currentInfo/components/Project')
+          }
+        ]
       }
     ]
   },
@@ -41,7 +50,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Searching',
-        meta: { title: '全文检索' },
+        meta: { title: '全文检索', requiresAuth: true },
         component: () => import('@/views/searching/index')
       }
     ]
@@ -53,7 +62,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Bulletin',
-        meta: { title: '舆情简报' },
+        meta: { title: '舆情简报', requiresAuth: true },
         component: () => import('@/views/bulletin/index')
       }
     ]
@@ -65,7 +74,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Setting',
-        meta: { title: '系统设置' },
+        meta: { title: '用户管理', requiresAuth: true },
         component: () => import('@/views/setting/index')
       }
     ]
@@ -73,7 +82,6 @@ const constantRoutes = [
 ];
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 });

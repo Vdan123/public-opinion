@@ -26,15 +26,12 @@
             </a>
             <DropdownMenu slot="list">
               <DropdownItem>个人中心</DropdownItem>
-              <DropdownItem>修改密码</DropdownItem>
+              <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
               <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
         <div class="top-icon-group">
-          <a href="javascript:void(0)">
-            <span class="iconfont icon-icon-test2" />
-          </a>
           <a href="javascript:void(0)">
             <span class="iconfont icon-icon-test11" />
           </a>
@@ -49,15 +46,21 @@
         </div>
       </div>
     </header>
+    <password-modal v-model="passwordStatus" />
   </div>
 </template>
 
 <script>
 import path from 'path';
+import PasswordModal from '@/layouts/components/Navbar/Password';
 export default {
+  components: {
+    PasswordModal
+  },
   data() {
     this.onlyOneChild = null;
     return {
+      passwordStatus: false
     };
   },
   computed: {
@@ -102,6 +105,9 @@ export default {
     },
     handleLogout() {
       this.logout();
+    },
+    handlePassword() {
+      this.passwordStatus = true;
     }
   }
 };

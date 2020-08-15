@@ -17,6 +17,9 @@ import './assets/scss/main.scss';
 // fontIcon
 import './assets/icon/iconfont.css';
 
+// Permission Control
+import './permission';
+
 Vue.use(ViewUI, {
   transfer: true,
   capture: false
