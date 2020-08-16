@@ -2,47 +2,108 @@
   <div>
     <div class="flex items-center search-box">
       <span>监测方案</span>
+      <!-- <Input /> -->
       <div class="ml-auto">
         <Button class="mr-2" size="small">
           <span class="iconfont icon-icon-test2" />
         </Button>
         <Dropdown trigger="click">
           <Button size="small">
-            <span class="iconfont icon-icon-edit" />
+            <span class="iconfont icon-icon-test3" />
           </Button>
           <DropdownMenu slot="list">
-            <DropdownItem>创建方案组</DropdownItem>
+            <DropdownItem
+              @click.native="handleAddGroup"
+            >
+              创建方案组
+            </DropdownItem>
             <DropdownItem>创建监测方案</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
     </div>
     <Menu>
-      <Submenu name="1">
-        <template slot="title">
-          <Icon type="ios-navigate" />
-          舆情监测组（父组件）
-        </template>
-        <MenuItem
-          name="1-1"
-          :to="{name: 'Project', params: { id: 123 }}"
-        >
-          石家庄
-        </MenuItem>
-        <MenuItem
-          name="1-2"
-          :to="{name: 'Project', params: { id: 456 }}"
-        >
-          保定
-        </MenuItem>
-      </Submenu>
+      <sidebar-item />
     </Menu>
+    <Modal
+      v-model="addGroupModal"
+      title="新建分组"
+    >
+      <div slot="footer">
+        <Button
+          type="primary"
+          @click="handleSubmit"
+        >
+          确认
+        </Button>
+      </div>
+      <Form
+        ref="form"
+        :model="formItem"
+        :rules="validForm"
+        :footer-hide="true"
+      >
+        <FormItem prop="content">
+          <Input
+            v-model="formItem.content"
+            placeholder="请输入分组名称"
+          />
+        </FormItem>
+      </Form>
+    </Modal>
   </div>
 </template>
 
 <script>
+import { getGroup, addGroup } from '../api';
+import SidebarItem from '@/views/currentInfo/components/SidebarItem';
 export default {
-  name: 'CurrentSidebar'
+  name: 'CurrentSidebar',
+  components: {
+    SidebarItem
+  },
+  data() {
+    return {
+      addGroupModal: false,
+      formItem: {
+        content: ''
+      },
+      validForm: {
+        content: [{ required: true, message: '请填写分组名称', trigger: 'blur' }]
+      }
+    };
+  },
+  methods: {
+    async addGroup(params) {
+      await addGroup(params).then(res => {
+        if (res.state === 1) {
+          this.$Message.success(res.message);
+          this.addGroupModal = false;
+          this.$nextTick(() => {
+            this.getGroup();
+          });
+        }
+      });
+    },
+    async getGroup() {
+      await getGroup().then(res => {
+        const { data } = res;
+        this.tableData = data;
+      });
+    },
+    handleAddGroup() {
+      this.addGroupModal = true;
+    },
+    handleSubmit() {
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          this.addGroup({
+            groupName: this.formItem.content
+          });
+        }
+      });
+    }
+  }
 };
 </script>
 

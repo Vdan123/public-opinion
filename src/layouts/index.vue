@@ -1,8 +1,8 @@
 <template>
-  <div class="layout-main">
+  <div class="layout-main relative bg-white">
     <navbar />
     <div class="content-wrapper">
-      <div class="router-view">
+      <div class="w-full mx-auto p-4">
         <div class="router-content">
           <transition name="fade" mode="out-in">
             <router-view />
@@ -26,8 +26,8 @@ export default {
 
 <style lang="scss" scoped>
 .layout-main{
-  height: 100%;
   min-height: 100%;
+  height: calc(100vh - 1px);
   .content-wrapper {
     position: absolute;
     top: 55px;

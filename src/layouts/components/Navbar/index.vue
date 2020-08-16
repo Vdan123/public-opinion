@@ -1,53 +1,49 @@
 <template>
-  <div>
-    <header class="navbar-header">
-      <div class="header-container">
-        <div class="layout-logo" />
-        <ul class="top-bar">
-          <template v-for="route in routes">
-            <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
-              <li
-                v-if="onlyOneChild.meta"
-                :key="resolvePath(route.path, onlyOneChild.path)"
-                class="top-bar-li"
-              >
-                <router-link :to="resolvePath(route.path, onlyOneChild.path)">
-                  {{ onlyOneChild.meta.title }}
-                </router-link>
-              </li>
-            </template>
-          </template>
-        </ul>
-        <div class="top-menu-container">
-          <Dropdown trigger="click">
-            <a href="javascript:void(0)">
-              <span>{{ userInfo.username }}</span>
-              <Icon type="ios-arrow-down" />
-            </a>
-            <DropdownMenu slot="list">
-              <DropdownItem>个人中心</DropdownItem>
-              <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
-              <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        <div class="top-icon-group">
-          <a href="javascript:void(0)">
-            <span class="iconfont icon-icon-test11" />
-          </a>
-          <Dropdown trigger="click">
-            <a href="javascript:void(0)">
-              <span class="iconfont icon-icon-test6" />
-            </a>
-            <DropdownMenu slot="list">
-              通知助手
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-      </div>
-    </header>
+  <header class="yuqing-header flex-none px-2 md:px-6 lg:px-8 xl:px-10">
+    <div class="layout-logo" />
+    <nav>
+      <template v-for="route in routes">
+        <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
+          <div
+            v-if="onlyOneChild.meta"
+            :key="resolvePath(route.path, onlyOneChild.path)"
+            class="nav-item"
+          >
+            <router-link :to="resolvePath(route.path, onlyOneChild.path)">
+              {{ onlyOneChild.meta.title }}
+            </router-link>
+          </div>
+        </template>
+      </template>
+    </nav>
+    <div class="nav-dropdown">
+      <a href="javascript:void(0)" class="nav-icons">
+        <span class="iconfont icon-icon-test11" />
+      </a>
+      <Dropdown trigger="click">
+        <a href="javascript:void(0)" class="nav-icons">
+          <span class="iconfont icon-icon-test6" />
+        </a>
+        <DropdownMenu slot="list">
+          通知助手
+        </DropdownMenu>
+      </Dropdown>
+      <div class="nav-line" />
+      <Dropdown trigger="click">
+        <a href="javascript:void(0)">
+          <span>{{ userInfo.username }}</span>
+          <Icon type="ios-arrow-down" />
+        </a>
+        <DropdownMenu slot="list">
+          <DropdownItem>个人中心</DropdownItem>
+          <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
+          <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </div>
+
     <password-modal v-model="passwordStatus" />
-  </div>
+  </header>
 </template>
 
 <script>
@@ -114,79 +110,58 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.navbar-header {
-  position: relative;
-  z-index: 100;
-}
-.header-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  align-items: center;
-  min-width: 1316px;
-  width: 100%;
+.yuqing-header {
+  background-color: #fff;
   height: 54px;
-  background: #fff;
+  line-height: 54px;
+  min-width: 1316px;
   box-shadow: 0 2px 4px 0 rgba(175,186,200,.17);
-  padding-right: 12px;
-  padding-left: 12px;
-  & > div {
-    height: 54px;
-    display: flex;
-    align-items: center;
-  }
-  .top-bar {
-    height: 54px;
-    line-height: 54px;
-    padding: 0;
-    margin: 0;
+  & > nav {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-items: center;
-    width: calc(100% - 661px);
+    padding: 0;
+    margin: 0;
     overflow: hidden;
     float: left;
-    list-style: none;
-    .top-bar-li {
+    .nav-item {
+      position: relative;
+      height: 100%;
+      text-align: center;
       min-width: max-content;
       padding: 0 20px;
       font-size: 15px;
       font-weight: 400;
       color: #1f2d3d;
-      line-height: 54px;
-      text-align: center;
       cursor: pointer;
       user-select: none;
-      position: relative;
     }
   }
-  .top-menu-container, .top-icon-group {
-    float: right;
-  }
-  .top-icon-group .iconfont {
+
+  .nav-dropdown {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    margin-right: 8px;
+  }
+  .nav-icons {
+    padding: 0 8px;
     font-size: 16px;
     color: #778ca2;
     cursor: pointer;
-    background: #fff;
     border-radius: 20px;
-    height: 32px;
-    width: 32px;
-    justify-content: center;
   }
-  .top-icon-group:after {
+  .nav-line:after {
     content: "";
     border-right: 1px solid #e0e6ed;
     height: 19px;
     margin-left: 8px;
     margin-right: 14px;
   }
+
 }
+
 .layout-logo{
-  display: flex;
   float: left;
   height: 54px;
   width: 100px;
