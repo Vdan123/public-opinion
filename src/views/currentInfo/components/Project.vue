@@ -54,7 +54,6 @@ export default {
 
 <style lang="scss" scoped>
 .project-top-bar {
-  margin-top: 20px;
   background: #fff;
   height: 44px;
   line-height: 44px;
