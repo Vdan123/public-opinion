@@ -53,8 +53,8 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <warning-list /> -->
-          <no-message></no-message>
+          <warning-list />
+          <!-- <no-message></no-message> -->
         </Card>
       </div>
 
@@ -78,8 +78,8 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <sensitive :chart-data="lineChartData" /> -->
-          <no-message></no-message>
+          <sensitive :chart-data="lineChartData" />
+          <!-- <no-message></no-message> -->
         </Card>
       </div>
       <div class="grid-div col-span-4">
