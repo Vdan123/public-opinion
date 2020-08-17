@@ -1,6 +1,4 @@
-import defaultSettings from '@/settings';
-
-const title = defaultSettings.title || '舆情系统';
+const title = '舆情系统';
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {
