@@ -18,7 +18,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '190px'
     },
     autoResize: {
       type: Boolean,
@@ -59,10 +59,11 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons');
       this.setOptions(this.chartData);
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ expectedData, actualData, fuck } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          type: 'category',
+          data: ['14:00', '17:00', '20:00', '23:00', '02:00', '05:00', '08:00', '11:00', '14:00'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -88,14 +89,14 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['敏感', '中性', '非敏感']
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: '敏感', itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: '#fc7c00',
               lineStyle: {
-                color: '#FF005A',
+                color: '#fc7c00',
                 width: 2
               }
             }
@@ -107,22 +108,36 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'actual',
+          name: '中性',
           smooth: true,
           type: 'line',
           itemStyle: {
             normal: {
-              color: '#3888fa',
+              color: '#f6da76',
               lineStyle: {
-                color: '#3888fa',
+                color: '#f6da76',
                 width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
               }
             }
           },
           data: actualData,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        },
+        {
+          name: '非敏感',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#70c4f5',
+              lineStyle: {
+                color: '#70c4f5',
+                width: 2
+              }
+            }
+          },
+          data: fuck,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

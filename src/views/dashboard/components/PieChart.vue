@@ -18,7 +18,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '210px'
     }
   },
   data() {
@@ -48,23 +48,30 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
-          left: 'center',
-          bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          orient: 'vertical',
+          right: '10',
+          data: ['敏感', '非敏感']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '敏感信息占比',
             type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: '敏感' },
+              { value: 240, name: '非敏感' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

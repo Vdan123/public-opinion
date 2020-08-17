@@ -1,11 +1,39 @@
 <template>
   <div>
-    <p slot="title">账号信息</p>
-    <p>上次登录时间 {{ userInfo.last_login_time }}</p>
-    <p>账号状态 {{ userInfo.state | statusFilter }}</p>
-    <p>登录次数 {{ userInfo.login_count }} 次</p>
-    <p>关键字数量 {{ userInfo.capacity }} 个</p>
-    <p>方案使用详情 已用 x 个</p>
+    <p class="mb-sm">
+      <span>上次登录时间：</span>
+      <span>
+        {{ userInfo.last_login_time }}
+      </span>
+    </p>
+    <p class="mb-sm">
+      <span>账号状态：</span>
+      <span>
+        {{ userInfo.state | statusFilter }}
+      </span>
+    </p>
+    <p class="mb-sm">
+      <span>登录次数：</span>
+      <span>
+        {{ userInfo.login_count }} 次
+      </span>
+    </p>
+    <p class="mb-sm">
+      <span>
+        关键字数量：
+      </span>
+      <span>
+        {{ userInfo.capacity }} 个
+      </span>
+    </p>
+    <p>
+      <span>
+        方案使用详情：
+      </span>
+      <span>
+        已用 x 个，共 x 个
+      </span>
+    </p>
   </div>
 </template>
 

@@ -20,6 +20,7 @@
       <a href="javascript:void(0)" class="nav-icons">
         <span class="iconfont icon-icon-test11" />
       </a>
+
       <Dropdown trigger="click">
         <a href="javascript:void(0)" class="nav-icons">
           <span class="iconfont icon-icon-test6" />
@@ -28,7 +29,13 @@
           通知助手
         </DropdownMenu>
       </Dropdown>
+
       <div class="nav-line" />
+
+      <span style="margin-right: 10px">
+        石家庄市藁城区委
+      </span>
+      
       <Dropdown trigger="click">
         <a href="javascript:void(0)">
           <span>{{ userInfo.username }}</span>

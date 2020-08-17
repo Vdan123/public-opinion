@@ -18,8 +18,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-project-list {
-  height: 330px;
-  overflow: auto;
-}
+
 </style>
