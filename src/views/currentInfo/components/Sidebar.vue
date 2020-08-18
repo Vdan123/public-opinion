@@ -2,7 +2,6 @@
   <div>
     <div class="flex items-center search-box">
       <span>监测方案</span>
-      <!-- <Input /> -->
       <div class="ml-auto">
         <Button class="mr-2" size="small">
           <span class="iconfont icon-icon-test2" />
@@ -23,8 +22,9 @@
       </div>
     </div>
     <Menu>
-      <sidebar-item />
+      <sidebar-item :source-data="tableData" />
     </Menu>
+    <Button @click="handleCreate">创建监测方案</Button>
     <Modal
       v-model="addGroupModal"
       title="新建分组"
@@ -70,8 +70,12 @@ export default {
       },
       validForm: {
         content: [{ required: true, message: '请填写分组名称', trigger: 'blur' }]
-      }
+      },
+      tableData: []
     };
+  },
+  mounted() {
+    this.getGroup();
   },
   methods: {
     async addGroup(params) {
@@ -102,6 +106,9 @@ export default {
           });
         }
       });
+    },
+    handleCreate() {
+      this.$router.push({ name: 'newEdition' });
     }
   }
 };

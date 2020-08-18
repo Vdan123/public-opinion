@@ -77,9 +77,9 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query
+        const query = route.query;
         if (query) {
-          this.otherQuery = this.getOtherQuery(query)
+          this.otherQuery = this.getOtherQuery(query);
         }
       },
       immediate: true
@@ -92,7 +92,7 @@ export default {
           this.loading = true;
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: '/', query: this.otherQuery })
+              this.$router.push({ path: '/', query: this.otherQuery });
               this.loading = false;
             })
             .catch(() => {
@@ -107,10 +107,10 @@ export default {
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
         if (cur !== 'redirect') {
-          acc[cur] = query[cur]
+          acc[cur] = query[cur];
         }
-        return acc
-      }, {})
+        return acc;
+      }, {});
     }
   }
 };

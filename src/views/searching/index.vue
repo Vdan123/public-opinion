@@ -5,7 +5,7 @@
         全文搜索
       </span>
     </div>
-    <div class="search-bg"></div>
+    <div class="search-bg" />
     <div class="search-wrapper">
       <Input search enter-button="搜索" size="large" />
     </div>

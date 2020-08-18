@@ -23,3 +23,12 @@ export function getKeywords(data) {
     data
   });
 }
+
+// 实时舆情列表
+export function getArticleList(data) {
+  return request({
+    url: '/Article/getArticleList',
+    method: 'post',
+    data
+  });
+}

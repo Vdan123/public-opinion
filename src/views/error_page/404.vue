@@ -23,10 +23,10 @@ export default {
   name: 'Page404',
   computed: {
     message() {
-      return '您要找的网页丢失了'
+      return '您要找的网页丢失了';
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

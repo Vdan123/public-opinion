@@ -22,10 +22,19 @@
 <script>
 export default {
   name: 'SidebarItem',
+  props: {
+    sourceData: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       hasChildren: false
     };
+  },
+  methods: {
+
   }
 };
 </script>

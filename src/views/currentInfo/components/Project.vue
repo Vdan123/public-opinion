@@ -5,6 +5,7 @@
       <Menu
         class="ml-auto"
         mode="horizontal"
+        active-name="TableList"
         @on-select="handleMenu"
       >
         <MenuItem
@@ -16,37 +17,73 @@
         </MenuItem>
       </Menu>
     </div>
-    <component :is="menuContent" />
+    <div style="padding: 10px 0">
+      <component :is="menuContent" :edit-state="editStatus" />
+    </div>
   </div>
 </template>
 
 <script>
-import List from '@/views/currentInfo/components/List';
-import Analysis from '@/views/currentInfo/components/Analysis';
-import ForeWarning from '@/views/currentInfo/components/ForeWarning';
+import { getArticleList } from '../api';
 
 const menu = [
-  { label: '信息列表', key: 'List' },
+  { label: '信息列表', key: 'TableList' },
   { label: '图表分析', key: 'Analysis' },
   { label: '预警设置', key: 'ForeWarning' },
   { label: '修改方案', key: 'Edit' }
 ];
 
 export default {
+  name: 'Project',
+  provide() {
+    return {
+      project: this
+    };
+  },
   components: {
-    List,
-    Analysis,
-    ForeWarning
+    TableList: () => import('@/views/currentInfo/components/List'),
+    Analysis: () => import('@/views/currentInfo/components/Analysis'),
+    ForeWarning: () => import('@/views/currentInfo/components/ForeWarning'),
+    Edit: () => import('@/views/new_edition/index')
   },
   data() {
     return {
       menu,
-      menuContent: 'List'
+      menuContent: 'TableList',
+      editStatus: false,
+      tableData: []
     };
   },
+  mounted() {
+    this.handleArticle();
+  },
   methods: {
+    async getArticleList(params) {
+      await getArticleList(params).then(res => {
+        if (res.state === 1) {
+          this.tableData = res.data;
+        }
+      });
+    },
+    handleArticle() {
+      const params = {
+        keywords: '保定',
+        testingTime: 1,
+        infoType: 0,
+        searchType: 0,
+        isRead: 0,
+        infoSort: 1,
+        source: 1,
+        page: 1,
+        limit: 50
+      };
+      this.getArticleList(params);
+    },
     handleMenu(name) {
       this.menuContent = name;
+      if (name === 'Edit') {
+        this.editStatus = true;
+      }
     }
   }
 };
