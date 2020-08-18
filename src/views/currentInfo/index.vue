@@ -14,6 +14,9 @@ export default {
   name: 'CurrentInfo',
   components: {
     CurrentSidebar
+  },
+  mounted() {
+    this.$store.dispatch('group/getAllGroups');
   }
 };
 </script>

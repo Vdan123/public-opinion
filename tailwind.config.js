@@ -17,6 +17,8 @@ module.exports = {
 
       black: '#000',
       white: '#fff',
+      shallow: '#f5f8fc',
+      custom: '04cb94',
 
       gray: {
         100: '#f7fafc',
@@ -663,7 +665,7 @@ module.exports = {
     alignSelf: ['responsive'],
     appearance: ['responsive'],
     backgroundAttachment: ['responsive'],
-    backgroundColor: ['responsive', 'hover', 'focus'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
     backgroundOpacity: ['responsive', 'hover', 'focus'],
     backgroundPosition: ['responsive'],
     backgroundRepeat: ['responsive'],

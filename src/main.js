@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
+import '../src/assets/my-theme/index.less';
 
 // Tailwind
 import '@/assets/css/main.css';

@@ -4,15 +4,18 @@
     <nav>
       <template v-for="route in routes">
         <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
-          <div
-            v-if="onlyOneChild.meta"
-            :key="resolvePath(route.path, onlyOneChild.path)"
-            class="nav-item"
+          <router-link
+            :to="resolvePath(route.path, onlyOneChild.path)"
+            active-class="textColor"
           >
-            <router-link :to="resolvePath(route.path, onlyOneChild.path)">
+            <div
+              v-if="onlyOneChild.meta"
+              :key="resolvePath(route.path, onlyOneChild.path)"
+              class="nav-item hover:bg-shallow text-white focus:outline-none focus:shadow-outline active"
+            >
               {{ onlyOneChild.meta.title }}
-            </router-link>
-          </div>
+            </div>
+          </router-link>
         </template>
       </template>
     </nav>
@@ -35,7 +38,7 @@
       <span style="margin-right: 10px">
         石家庄市藁城区委
       </span>
-      
+
       <Dropdown trigger="click">
         <a href="javascript:void(0)">
           <span>{{ userInfo.username }}</span>
@@ -56,6 +59,7 @@
 <script>
 import path from 'path';
 import PasswordModal from '@/layouts/components/Navbar/Password';
+import { log } from 'util';
 export default {
   components: {
     PasswordModal
@@ -166,6 +170,11 @@ export default {
     margin-right: 14px;
   }
 
+}
+.textColor {
+  .active {
+    color: #04cb94 !important;
+  }
 }
 
 .layout-logo{

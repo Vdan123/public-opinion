@@ -13,7 +13,7 @@ const constantRoutes = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error-page/404'),
+    component: () => import('@/views/error_page/404'),
     hidden: true
   },
   {
@@ -45,6 +45,19 @@ const constantRoutes = [
             component: () => import('@/views/currentInfo/components/Project')
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/newEdition',
+    meta: { requiresAuth: true },
+    component: Layouts,
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'newEdition',
+        component: () => import('@/views/new_edition/index')
       }
     ]
   },

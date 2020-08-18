@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="page-label">
-      <span style="padding-left: 6px">尊敬的用户，您本次登录时间为xxx，24小时内共为您监测信息27705条</span>
+      <span style="padding-left: 6px">
+        尊敬的用户，您本次登录时间为 <span style="color: #F57676"> {{ loginData.time }} </span>，
+        本次已登陆 <span style="color: #F57676">{{ loginData.duration }}</span> 小时，
+        24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
+      </span>
       <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
     </div>
     <div class="grid grid-cols-4 gap-4">
@@ -25,8 +29,12 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <pie-chart /> -->
-          <no-message></no-message>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <pie-chart :source-data="sourceData" />
+          </template>
         </Card>
       </div>
       <div class="grid-div">
@@ -41,8 +49,12 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <pie-chart /> -->
-          <no-message></no-message>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <pie-chart />
+          </template>
         </Card>
       </div>
       <div class="grid-div row-span-2">
@@ -53,12 +65,16 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <warning-list /> -->
-          <no-message></no-message>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <warning-list />
+          </template>
         </Card>
       </div>
 
-      <div class="grid-div">
+      <div class="grid-div row-span-2">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             方案
@@ -66,8 +82,13 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <project-list /> -->
-          <no-message></no-message>
+          <!-- 方案未完成 -->
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <project-list />
+          </template>
         </Card>
       </div>
       <div class="grid-div col-span-2">
@@ -78,11 +99,11 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <sensitive :chart-data="lineChartData" /> -->
-          <no-message></no-message>
+          <sensitive :chart-data="lineChartData" />
+          <!-- <no-message></no-message> -->
         </Card>
       </div>
-      <div class="grid-div col-span-4">
+      <div class="grid-div col-span-2">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             实时数据
@@ -94,7 +115,24 @@
             <project-list />
           </template>
           <template v-else>
-            <no-message></no-message>
+            <no-message />
+          </template>
+        </Card>
+      </div>
+
+      <div class="grid-div">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            敏感信息
+            <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <template v-if="false">
+            <project-list />
+          </template>
+          <template v-else>
+            <no-message />
           </template>
         </Card>
       </div>
@@ -112,10 +150,12 @@
 <script>
 import UserInfo from '@/views/dashboard/components/UserInfo';
 import Sensitive from '@/views/dashboard/components/Sensitive';
-import PieChart from '@/views/dashboard/components/PieChart';
+import PieChart from '@/components/PieChart.vue';
 import ProjectList from '@/views/dashboard/components/ProjectList';
 import WarningList from '@/views/dashboard/components/WarningList';
 import NoMessage from '@/components/NoMessage';
+import { getLoginInfo } from './api';
+import { getPieData } from '@/api/getChartData';
 
 const lineChartData = {
   newVisitis: {
@@ -153,10 +193,44 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis,
-      projectSelected: false
+      projectSelected: false,
+      showNoMessage: false,
+      loginData: {},
+      sourceData: undefined
     };
   },
+  mounted() {
+    this.getLoginInfo();
+    this.getPieData();
+  },
   methods: {
+    async getLoginInfo() {
+      getLoginInfo().then(res => {
+        if (res.state === 1) {
+          const {
+            loginTime: time,
+            LoginDuration: duration,
+            articleTotal: total } = res.data;
+
+          this.loginData = {
+            time,
+            duration,
+            total
+          };
+        }
+      });
+    },
+    async getPieData() {
+      await getPieData({}).then(res => {
+        if (!_.isEmpty(res.data)) {
+          this.$nextTick(() => {
+            this.sourceData = res.data;
+          });
+        } else {
+          this.showNoMessage = true;
+        }
+      });
+    },
     handleSetting() {
       this.projectSelected = true;
     }
@@ -169,7 +243,7 @@ export default {
   margin-bottom: 10px;
   height: 32px;
   line-height: 32px;
-  background: #e5f9f4;
+  background: #dcf8f8;
   color: #04cb94;
 }
 .widget-container {

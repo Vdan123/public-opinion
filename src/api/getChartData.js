@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getLoginInfo(data) {
+export function getPieData(data) {
   return request({
-    url: '/User/getLoginInfo',
+    url: '/Api/getPieData',
     method: 'post',
     data
   });

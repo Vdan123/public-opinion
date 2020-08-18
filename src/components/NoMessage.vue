@@ -2,7 +2,7 @@
   <div>
     <div class="no-message-wrapper">
       <p class="no-message-icon">
-        <span class="iconfont icon-wj-cznr"></span>
+        <span class="iconfont icon-wj-cznr" />
       </p>
       <p class="no-message-desc">暂无信息</p>
     </div>
@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'NoMessage'
-}
+};
 </script>
 
 <style lang="scss" scoped>
