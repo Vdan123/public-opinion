@@ -88,7 +88,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      otherQuery: {}
+      otherQuery: {},
+      redirect: undefined
     };
   },
   watch: {

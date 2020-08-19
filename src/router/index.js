@@ -40,9 +40,10 @@ const constantRoutes = [
         children: [
           {
             name: 'Project',
-            path: ':id(\\d+)',
+            path: 'search',
             meta: { requiresAuth: true },
-            component: () => import('@/views/currentInfo/components/Project')
+            component: () => import('@/views/currentInfo/components/Project'),
+            props: (route) => ({ query: route.query.q })
           }
         ]
       }

@@ -22,16 +22,16 @@
       </div>
     </div>
     <Menu>
-      <sidebar-item 
-      v-for="(item, index) in tableData"
-      :key="index"
-      :source-data="item"
+      <sidebar-item
+        v-for="(item, index) in tableData"
+        :key="index"
+        :source-data="item"
       />
     </Menu>
 
     <div class="fixed bottom-0 p-4">
-      <Button 
-        style="width: 210px;"  
+      <Button
+        style="width: 210px;"
         @click="handleCreate"
       >
         创建监测方案
@@ -104,7 +104,6 @@ export default {
     },
     async getGroupPlan() {
       await getGroupPlan({}).then(res => {
-        console.log(res, 'sss');
         const { data } = res;
         this.tableData = data;
       });

@@ -106,13 +106,13 @@ export default {
       }
     };
   },
-  mounted() {
-    this.$store.dispatch('group/getAllGroups');
-  },
   computed: {
     getGroups() {
       return this.$store.state.group.list;
     }
+  },
+  mounted() {
+    this.$store.dispatch('group/getAllGroups');
   },
   methods: {
     async addKeywords(params) {
@@ -154,7 +154,7 @@ export default {
       });
     },
     handleBack() {
-      this.$router.push({name: 'Current' })
+      this.$router.push({ name: 'Current' });
     }
   }
 };

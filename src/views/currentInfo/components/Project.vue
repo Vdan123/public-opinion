@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="flex items-center project-top-bar">
-      <span style="padding-left: 6px">石家庄</span>
+      <div>
+        <div class="with-vertical-line relative ">
+          <span style="padding-left: 15px; font-weight: 600; font-size: 16px">{{ title }}</span>
+        </div>
+      </div>
+
       <Menu
         class="ml-auto"
         mode="horizontal"
@@ -51,11 +56,24 @@ export default {
       menu,
       menuContent: 'TableList',
       editStatus: false,
-      tableData: []
+      tableData: [],
+      title: ''
     };
   },
+  watch: {
+    $route: {
+      handler(route) {
+        const { keywords, title } = route.query;
+        this.title = title;
+        if (!_.isUndefined(keywords)) {
+          this.handleArticle(keywords);
+        }
+      },
+      deep: true
+    }
+  },
   mounted() {
-    this.handleArticle();
+    // this.handleArticle();
   },
   methods: {
     async getArticleList(params) {
@@ -65,9 +83,9 @@ export default {
         }
       });
     },
-    handleArticle() {
+    handleArticle(keywords) {
       const params = {
-        keywords: '保定',
+        keywords,
         testingTime: 1,
         infoType: 0,
         searchType: 0,
@@ -99,5 +117,15 @@ export default {
     height: 44px;
     line-height: 44px;
   }
+}
+.with-vertical-line > span:before {
+  position: absolute;
+  content: '';
+  top: 5px;
+  left: 0;
+  background-color: #04cb94;
+  width: 3px;
+  height: 80%;
+  border-radius: 5px;
 }
 </style>

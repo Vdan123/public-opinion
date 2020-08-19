@@ -1,18 +1,18 @@
 <template>
   <div>
     <template v-if="hasChildren(sourceData.keywords, sourceData)">
-      <MenuItem 
-        :name="getMenuName(sourceData)"
-        :to="resolvePath(sourceData)"
+      <MenuItem
+        :name="onlyOneChild.name"
+        :to="resolvePath(onlyOneChild)"
       >
-        {{ item.plan_name }}
+        {{ onlyOneChild.title }}
       </MenuItem>
     </template>
 
-    <Submenu v-else>
+    <Submenu v-else :name="sourceData.id">
       <template slot="title">
         <span class="iconfont icon-folder" />
-        <span>{{ sourceData.group_name }}</span>
+        {{ sourceData.group_name }}
       </template>
       <sidebar-item
         v-for="(item, index) in sourceData.keywords"
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import path from 'path';
 export default {
   name: 'SidebarItem',
   props: {
@@ -37,20 +38,37 @@ export default {
     }
   },
   data() {
+    this.onlyOneChild = {};
     return {
 
     };
   },
   methods: {
     hasChildren(children = [], parent) {
-      if (children.length === 0 ) {
-        console.log(children, 'ooo');
+      const { group_name, plan_name, id, group_id, main_keyword } = parent;
+      if (children.length === 0) {
+        if (!_.isUndefined(group_id)) {
+          this.onlyOneChild = {
+            name: `${group_id}-${id}`,
+            title: plan_name,
+            path: id,
+            main_keyword
+          };
+        } else {
+          this.onlyOneChild = {
+            name: id,
+            title: group_name
+          };
+        }
         return true;
       }
       return false;
     },
-    getMenuName() {
-      
+    resolvePath(routePath) {
+      if (!_.isUndefined(routePath.path)) {
+        const { main_keyword, plan_name, title } = routePath;
+        return { path: '/current/search', query: { id: routePath.path, keywords: main_keyword, title }};
+      }
     }
   }
 };

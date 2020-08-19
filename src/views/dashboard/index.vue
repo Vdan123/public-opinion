@@ -35,7 +35,7 @@
             <no-message />
           </template>
           <template v-else>
-            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
+            <Spin v-if="attributesSpinShow" size="large" fix />
             <pie-chart :pie-data="expectedAttributes" />
           </template>
         </Card>
@@ -56,7 +56,7 @@
             <no-message />
           </template>
           <template v-else>
-            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
+            <Spin v-if="attributesSpinShow" size="large" fix />
             <pie-chart :pie-data="sourceWeb" />
           </template>
         </Card>
@@ -107,7 +107,7 @@
             <no-message />
           </template>
           <template v-else>
-            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
+            <Spin v-if="attributesSpinShow" size="large" fix />
             <sensitive :chart-data="lineChartData" />
           </template>
         </Card>
@@ -211,11 +211,11 @@ export default {
     },
     async getPieData() {
       await getPieData({}).then(res => {
-        this.attributesSpinShow = true
+        this.attributesSpinShow = true;
         if (!_.isEmpty(res.data)) {
           this.$nextTick(() => {
             this.getSourceData(res.data);
-            this.attributesSpinShow= false
+            this.attributesSpinShow = false;
           });
         } else {
           this.showNoMessage = true;
