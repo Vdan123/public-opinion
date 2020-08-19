@@ -26,7 +26,7 @@ export default {
     },
     chartData: {
       type: Object,
-      required: true
+      default: () => {}
     }
   },
   data() {
@@ -59,11 +59,11 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons');
       this.setOptions(this.chartData);
     },
-    setOptions({ expectedData, actualData, fuck } = {}) {
+    setOptions({ neutral, notSensitive, sensitive, hour } = {}) {
       this.chart.setOption({
         xAxis: {
           type: 'category',
-          data: ['14:00', '17:00', '20:00', '23:00', '02:00', '05:00', '08:00', '11:00', '14:00'],
+          data: hour,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -103,7 +103,7 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: sensitive,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
@@ -120,7 +120,7 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: neutral,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         },
@@ -137,7 +137,7 @@ export default {
               }
             }
           },
-          data: fuck,
+          data: notSensitive,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="page-label">
+    <div class="page-label flex">
       <span style="padding-left: 6px">
         尊敬的用户，您本次登录时间为 <span style="color: #F57676"> {{ loginData.time }} </span>，
         本次已登陆 <span style="color: #F57676">{{ loginData.duration }}</span> 小时，
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
       </span>
-      <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
+      <div class="ml-auto mr-5 setting-icon">
+        <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
+      </div>
     </div>
     <div class="grid grid-cols-4 gap-4">
       <div class="grid-div">
@@ -33,7 +35,8 @@
             <no-message />
           </template>
           <template v-else>
-            <pie-chart :source-data="sourceData" />
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <pie-chart :pie-data="expectedAttributes" />
           </template>
         </Card>
       </div>
@@ -53,7 +56,8 @@
             <no-message />
           </template>
           <template v-else>
-            <pie-chart />
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <pie-chart :pie-data="sourceWeb" />
           </template>
         </Card>
       </div>
@@ -99,8 +103,13 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <sensitive :chart-data="lineChartData" />
-          <!-- <no-message></no-message> -->
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <sensitive :chart-data="lineChartData" />
+          </template>
         </Card>
       </div>
       <div class="grid-div col-span-2">
@@ -149,36 +158,14 @@
 
 <script>
 import UserInfo from '@/views/dashboard/components/UserInfo';
-import Sensitive from '@/views/dashboard/components/Sensitive';
+import Sensitive from '@/components/Sensitive';
 import PieChart from '@/components/PieChart.vue';
 import ProjectList from '@/views/dashboard/components/ProjectList';
 import WarningList from '@/views/dashboard/components/WarningList';
 import NoMessage from '@/components/NoMessage';
 import { getLoginInfo } from './api';
 import { getPieData } from '@/api/getChartData';
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  }
-};
+import { changeKeyNames } from '@/utils/changeKeyName';
 
 export default {
   name: 'Dashboard',
@@ -192,11 +179,13 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis,
       projectSelected: false,
       showNoMessage: false,
+      attributesSpinShow: true,
       loginData: {},
-      sourceData: undefined
+      expectedAttributes: undefined,
+      sourceWeb: undefined,
+      lineChartData: undefined
     };
   },
   mounted() {
@@ -222,9 +211,11 @@ export default {
     },
     async getPieData() {
       await getPieData({}).then(res => {
+        this.attributesSpinShow = true;
         if (!_.isEmpty(res.data)) {
           this.$nextTick(() => {
-            this.sourceData = res.data;
+            this.getSourceData(res.data);
+            this.attributesSpinShow = false;
           });
         } else {
           this.showNoMessage = true;
@@ -233,6 +224,45 @@ export default {
     },
     handleSetting() {
       this.projectSelected = true;
+    },
+    getSourceData({ attributes, sources, attributeCharts } = {}) {
+      this.getAttributes(attributes);
+      this.getSources(sources);
+      this.getAttributeCharts(attributeCharts);
+    },
+    getAttributes(attributes) {
+      const attr = { 1: '非敏感', 2: '中性', 3: '敏感' };
+      this.expectedAttributes = {
+        title: '敏感信息占比',
+        label: attributes.reduce((result, value) => {
+          result[attr[value['name']]] = value['value'];
+          return result;
+        }, {}),
+        expectData: attributes.map(el => {
+          return Object.assign({}, el, { name: attr[el.name] });
+        })
+      };
+    },
+    getSources(source) {
+      const web = { 1: '新浪微博' };
+      this.sourceWeb = {
+        title: '信息来源占比',
+        label: source.reduce((result, value) => {
+          result[web[value['name']]] = value['value'];
+          return result;
+        }, {}),
+        expectData: source.map(el => {
+          return Object.assign({}, el, { name: web[el.name] });
+        })
+      };
+    },
+    getAttributeCharts({ neutral, notSensitive, sensitive, hour }) {
+      this.lineChartData = {
+        neutral,
+        notSensitive,
+        sensitive,
+        hour
+      };
     }
   }
 };
@@ -255,5 +285,12 @@ export default {
   .ivu-card {
     height: 100%;
   }
+}
+.setting-icon {
+  background-color: #3fc3e3;
+  color: #fff;
+  padding: 2px;
+  border-radius: 2px;
+  transition: all .2s;
 }
 </style>

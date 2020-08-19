@@ -29,11 +29,48 @@
     </div>
     <div>
       <Card>
+        <div class="flex">
+          <Checkbox>全选</Checkbox>
+          <a href="javascript:void(0)">默认收藏夹</a>
+          <a href="javascript:void(0)">标记已读</a>
+          <a href="javascript:void(0)">删除</a>
+          <Page :total="100" />
+          <Input v-model="value13" style="width: 504px" placeholder="在结果中搜索，支持单个词组" />
+          <Select slot="prepend" v-model="select3" style="width: 80px">
+            <Option value="day">按全文</Option>
+            <Option value="month">按标题</Option>
+            <Option value="month">按作者</Option>
+          </Select>
+          <Button slot="append" icon="ios-search" />
+          </Input>
+        </div>
+
         <Table
           border
           :columns="tableColumns"
           :data="sourceData"
-        />
+        >
+          <template slot="title" slot-scope="{ row, index }">
+            <div class="news-content">
+              <div class="news-content-title">
+                {{ row.title }}
+              </div>
+              <Button size="small">敏感</Button>
+              <Button size="small">纠错</Button>
+              <div class="item-title">
+                {{ row.content }}
+              </div>
+              <div class="news-item-tools font-size-0">
+                <a href="javascript:void(0)">涉及词</a>
+                政府
+                <a href="javascript:void(0)">默认收藏夹</a>
+                <a href="javascript:void(0)">查看原文</a>
+                <a href="javascript:void(0)">标记已读</a>
+                <a href="javascript:void(0)">删除</a>
+              </div>
+            </div>
+          </template>
+        </Table>
       </Card>
     </div>
   </div>
@@ -100,10 +137,15 @@ const SearchButtons = [
 ];
 
 const tableColumns = [
-  { title: '标题', key: '' },
-  { title: '相似文章', key: '' },
-  { title: '来源', key: 'source_name' },
-  { title: '时间', key: 'ins_time' }
+  {
+    type: 'selection',
+    width: 60,
+    align: 'center'
+  },
+  { title: '标题', slot: 'title' },
+  { title: '相似文章', key: '', maxWidth: 100 },
+  { title: '来源', key: 'sourceName', maxWidth: 100 },
+  { title: '时间', key: 'ins_time', maxWidth: 120 }
 ];
 
 export default {
@@ -142,5 +184,27 @@ export default {
     -o-transition: all .2s linear;
     transition: all .2s linear;
   }
+}
+.news-content {
+  padding: 10px;
+  width: calc(100% - 34px);
+  vertical-align: middle;
+
+}
+.news-content-title {
+  color: #1A1A1A;
+  font-size: 16px;
+  max-width: calc(100% - 200px);
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.item-title {
+  margin: 10px 0 0;
+  line-height: 24px;
+  font-size: 14px;
+  color: #666;
 }
 </style>

@@ -17,6 +17,8 @@
           v-model="loginForm.username"
           placeholder="用户名"
         />
+        <Icon slot="prefix" type="md-contact" />
+        </Input>
       </FormItem>
 
       <FormItem prop="password">
@@ -27,6 +29,8 @@
           placeholder="密码"
           @keyup.enter.native="handleLogin"
         />
+        <Icon slot="prefix" type="md-lock" />
+        </Input>
       </FormItem>
 
       <FormItem prop="verificationCode">
@@ -35,6 +39,12 @@
           placeholder="验证码"
         />
       </FormItem>
+      <div class="flex items-center mb-5">
+        <Checkbox>
+          一周内免密登录
+        </Checkbox>
+        <a href="javascript:void(0)" class="ml-auto">忘记密码</a>
+      </div>
 
       <Button
         :loading="loading"
@@ -44,6 +54,13 @@
       >
         登录
       </Button>
+      <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
+      <span>
+        Chrome浏览器下载地址：
+        <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
+          https://www.google.cn/intl/zh-CN/chrome/
+        </a>
+      </span>
     </Form>
   </div>
 </template>
@@ -71,7 +88,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      otherQuery: {}
+      otherQuery: {},
+      redirect: undefined
     };
   },
   watch: {

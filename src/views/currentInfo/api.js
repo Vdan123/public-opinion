@@ -32,3 +32,12 @@ export function getArticleList(data) {
     data
   });
 }
+
+// 获取分组和方案
+export function getGroupPlan(data) {
+  return request({
+    url: '/Keyword/getGroupPlan',
+    method: 'post',
+    data
+  });
+}

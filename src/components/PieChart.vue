@@ -6,16 +6,6 @@
 import echarts from 'echarts';
 require('echarts/theme/macarons'); // echarts theme
 
-const attributes = [
-  { label: '非敏感', key: 0 },
-  { label: '中性', key: 1 },
-  { label: '敏感', key: 2 }
-];
-
-const source = [
-  { label: '新浪微博', key: 0 }
-];
-
 export default {
   props: {
     className: {
@@ -30,7 +20,7 @@ export default {
       type: String,
       default: '210px'
     },
-    sourceData: {
+    pieData: {
       type: Object,
       default: () => {}
     }
@@ -41,8 +31,11 @@ export default {
     };
   },
   watch: {
-    sourceData(data) {
-      this.judgeAttribute(data);
+    pieData: {
+      handler(val) {
+        this.setOptions(val);
+      },
+      deep: true
     }
   },
   mounted() {
@@ -60,7 +53,9 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons');
-
+      this.setOptions(this.pieData);
+    },
+    setOptions({ label, expectData, title } = { }) {
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
@@ -68,12 +63,14 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          right: '10',
-          data: ['敏感', '非敏感']
+          right: '5',
+          formatter: function(name) {
+            return name + label[name] + '条';
+          }
         },
         series: [
           {
-            name: '敏感信息占比',
+            name: title,
             type: 'pie',
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
@@ -84,22 +81,18 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '30',
-                fontWeight: 'bold'
+                fontSize: '16',
+                fontWeight: 'bold',
+                align: 'center',
+                formatter: '{b}: {d}%'
               }
             },
-            data: [
-              { value: 0, name: '敏感' },
-              { value: 11706, name: '非敏感' }
-            ],
+            data: expectData,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }
         ]
       });
-    },
-    judgeAttribute(item) {
-      const { attributes, sources } = item;
     }
   }
 };
