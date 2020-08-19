@@ -33,7 +33,7 @@
             <no-message />
           </template>
           <template v-else>
-            <pie-chart :source-data="sourceData" />
+            <pie-chart :pie-data="expectedAttributes" />
           </template>
         </Card>
       </div>
@@ -53,7 +53,7 @@
             <no-message />
           </template>
           <template v-else>
-            <pie-chart />
+            <pie-chart :pie-data="sourceWeb" />
           </template>
         </Card>
       </div>
@@ -99,8 +99,12 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <sensitive :chart-data="lineChartData" />
-          <!-- <no-message></no-message> -->
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <sensitive :chart-data="lineChartData" />
+          </template>
         </Card>
       </div>
       <div class="grid-div col-span-2">
@@ -149,36 +153,14 @@
 
 <script>
 import UserInfo from '@/views/dashboard/components/UserInfo';
-import Sensitive from '@/views/dashboard/components/Sensitive';
+import Sensitive from '@/components/Sensitive';
 import PieChart from '@/components/PieChart.vue';
 import ProjectList from '@/views/dashboard/components/ProjectList';
 import WarningList from '@/views/dashboard/components/WarningList';
 import NoMessage from '@/components/NoMessage';
 import { getLoginInfo } from './api';
 import { getPieData } from '@/api/getChartData';
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130],
-    fuck: [100, 200, 300, 400, 200, 11, 2323]
-  }
-};
+import { changeKeyNames } from '@/utils/changeKeyName';
 
 export default {
   name: 'Dashboard',
@@ -192,11 +174,12 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis,
       projectSelected: false,
       showNoMessage: false,
       loginData: {},
-      sourceData: undefined
+      expectedAttributes: undefined,
+      sourceWeb: undefined,
+      lineChartData: undefined
     };
   },
   mounted() {
@@ -224,7 +207,7 @@ export default {
       await getPieData({}).then(res => {
         if (!_.isEmpty(res.data)) {
           this.$nextTick(() => {
-            this.sourceData = res.data;
+            this.getSourceData(res.data);
           });
         } else {
           this.showNoMessage = true;
@@ -233,6 +216,45 @@ export default {
     },
     handleSetting() {
       this.projectSelected = true;
+    },
+    getSourceData({ attributes, sources, attributeCharts } = {}) {
+      this.getAttributes(attributes);
+      this.getSources(sources);
+      this.getAttributeCharts(attributeCharts);
+    },
+    getAttributes(attributes) {
+      const attr = { 1: '非敏感', 2: '中性', 3: '敏感' };
+      this.expectedAttributes = {
+        title: '敏感信息占比',
+        label: attributes.reduce((result, value) => {
+          result[attr[value['name']]] = value['value'];
+          return result;
+        }, {}),
+        expectData: attributes.map(el => {
+          return Object.assign({}, el, { name: attr[el.name] });
+        })
+      };
+    },
+    getSources(source) {
+      const web = { 1: '新浪微博' };
+      this.sourceWeb = {
+        title: '信息来源占比',
+        label: source.reduce((result, value) => {
+          result[web[value['name']]] = value['value'];
+          return result;
+        }, {}),
+        expectData: source.map(el => {
+          return Object.assign({}, el, { name: web[el.name] });
+        })
+      };
+    },
+    getAttributeCharts({ neutral, notSensitive, sensitive, hour }) {
+      this.lineChartData = {
+        neutral,
+        notSensitive,
+        sensitive,
+        hour
+      };
     }
   }
 };
