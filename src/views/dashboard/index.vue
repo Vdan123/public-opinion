@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="page-label">
+    <div class="page-label flex">
       <span style="padding-left: 6px">
         尊敬的用户，您本次登录时间为 <span style="color: #F57676"> {{ loginData.time }} </span>，
         本次已登陆 <span style="color: #F57676">{{ loginData.duration }}</span> 小时，
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
       </span>
-      <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
+      <div class="ml-auto mr-5 setting-icon">
+        <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
+      </div>
     </div>
     <div class="grid grid-cols-4 gap-4">
       <div class="grid-div">
@@ -33,6 +35,7 @@
             <no-message />
           </template>
           <template v-else>
+            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
             <pie-chart :pie-data="expectedAttributes" />
           </template>
         </Card>
@@ -53,6 +56,7 @@
             <no-message />
           </template>
           <template v-else>
+            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
             <pie-chart :pie-data="sourceWeb" />
           </template>
         </Card>
@@ -103,6 +107,7 @@
             <no-message />
           </template>
           <template v-else>
+            <Spin size="large" fix v-if="attributesSpinShow"></Spin>
             <sensitive :chart-data="lineChartData" />
           </template>
         </Card>
@@ -176,6 +181,7 @@ export default {
     return {
       projectSelected: false,
       showNoMessage: false,
+      attributesSpinShow: true,
       loginData: {},
       expectedAttributes: undefined,
       sourceWeb: undefined,
@@ -205,9 +211,11 @@ export default {
     },
     async getPieData() {
       await getPieData({}).then(res => {
+        this.attributesSpinShow = true
         if (!_.isEmpty(res.data)) {
           this.$nextTick(() => {
             this.getSourceData(res.data);
+            this.attributesSpinShow= false
           });
         } else {
           this.showNoMessage = true;
@@ -277,5 +285,12 @@ export default {
   .ivu-card {
     height: 100%;
   }
+}
+.setting-icon {
+  background-color: #3fc3e3;
+  color: #fff;
+  padding: 2px;
+  border-radius: 2px;
+  transition: all .2s;
 }
 </style>

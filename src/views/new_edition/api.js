@@ -15,3 +15,11 @@ export function editKeywords(data) {
     data
   });
 }
+
+export function getKeywords(data) {
+  return request({
+    url: '/Keyword/getKeywords',
+    method: 'post',
+    data
+  });
+}

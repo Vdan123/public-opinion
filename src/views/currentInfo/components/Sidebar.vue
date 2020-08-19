@@ -22,9 +22,22 @@
       </div>
     </div>
     <Menu>
-      <sidebar-item :source-data="tableData" />
+      <sidebar-item 
+      v-for="(item, index) in tableData"
+      :key="index"
+      :source-data="item"
+      />
     </Menu>
-    <Button @click="handleCreate">创建监测方案</Button>
+
+    <div class="fixed bottom-0 p-4">
+      <Button 
+        style="width: 210px;"  
+        @click="handleCreate"
+      >
+        创建监测方案
+      </Button>
+    </div>
+
     <Modal
       v-model="addGroupModal"
       title="新建分组"
@@ -55,7 +68,7 @@
 </template>
 
 <script>
-import { getGroup, addGroup } from '../api';
+import { addGroup, getGroupPlan } from '../api';
 import SidebarItem from '@/views/currentInfo/components/SidebarItem';
 export default {
   name: 'CurrentSidebar',
@@ -75,7 +88,7 @@ export default {
     };
   },
   mounted() {
-    this.getGroup();
+    this.getGroupPlan();
   },
   methods: {
     async addGroup(params) {
@@ -89,8 +102,9 @@ export default {
         }
       });
     },
-    async getGroup() {
-      await getGroup().then(res => {
+    async getGroupPlan() {
+      await getGroupPlan({}).then(res => {
+        console.log(res, 'sss');
         const { data } = res;
         this.tableData = data;
       });

@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar-container {
-  width: 210px;
+  width: 240px;
   background-color: #fff;
   height: 100%;
   position: fixed;
@@ -36,7 +36,7 @@ export default {
 }
 .main-container {
   min-height: 100%;
-  margin-left: 210px;
+  margin-left: 240px;
   position: relative;
   }
 </style>

@@ -5,7 +5,7 @@
         <div slot="title" class="flex items-center">
           <span>创建监测方案</span>
           <template>
-            <Button class="ml-auto">返回</Button>
+            <Button class="ml-auto" @click="handleBack">返回</Button>
           </template>
         </div>
       </template>
@@ -56,7 +56,7 @@
         <FormItem>
           <div class="flex justify-center">
             <Button type="primary" class="mr-5" @click="handleSubmit">保存</Button>
-            <Button>取消，并返回列表</Button>
+            <Button @click="handleBack">取消，并返回列表</Button>
           </div>
         </FormItem>
       </Form>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { addKeywords, editKeywords } from './api';
+import { addKeywords, editKeywords, getKeywords } from './api';
 
 const keyWords = [
   { label: '主关键字：', key: 'mainKeyword' },
@@ -106,6 +106,9 @@ export default {
       }
     };
   },
+  mounted() {
+    this.$store.dispatch('group/getAllGroups');
+  },
   computed: {
     getGroups() {
       return this.$store.state.group.list;
@@ -116,15 +119,13 @@ export default {
       await addKeywords(params).then(res => {
         if (res.state === 1) {
           this.$Message.success(res.message);
-          // 这里是返回值
-          this.$router.push({ name: 'Project', params: { id: 123 }});
+          this.$router.push({ name: 'Project', params: { id: res.data }});
         }
       });
     },
     async editKeywords(params) {
       await editKeywords(params).then(res => {
         if (res.state === 1) {
-          // 这里是返回值
           this.$Message.success(res.message);
           this.$router.replace({ name: 'Project', params: { id: 123 }});
         }
@@ -151,6 +152,9 @@ export default {
           }
         }
       });
+    },
+    handleBack() {
+      this.$router.push({name: 'Current' })
     }
   }
 };
