@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Message } from 'view-design';
+import { Message, Modal } from 'view-design';
+import store from '@/store';
+import router from '@/router';
 import qs from 'qs';
 
 // create an axios instance
@@ -29,6 +31,17 @@ service.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.state !== 1 && res.state !== '1') {
+      if (res.state === 3) {
+        return Modal.info({
+          title: '重新登录',
+          content: '为了保护您的信息安全，您需要重新登录才可以继续浏览',
+          width: 450,
+          onOk() {
+            store.dispatch('user/logout');
+            router.replace('/login');
+          }
+        });
+      }
       Message.error({
         content: res.message || 'Error',
         duration: 5

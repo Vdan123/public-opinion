@@ -7,7 +7,12 @@
     </div>
     <div class="search-bg" />
     <div class="search-wrapper">
-      <Input search enter-button="搜索" size="large" />
+      <Input
+        search
+        enter-button="搜索"
+        size="large"
+        @on-search="handleSearch"
+      />
     </div>
   </div>
 </template>
@@ -18,6 +23,11 @@ export default {
     return {
       visible: false
     };
+  },
+  methods: {
+    handleSearch() {
+      this.$Message.warning('暂无数据，请联系管理员');
+    }
   }
 };
 </script>

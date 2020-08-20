@@ -66,8 +66,8 @@ export default {
     },
     resolvePath(routePath) {
       if (!_.isUndefined(routePath.path)) {
-        const { main_keyword, plan_name, title } = routePath;
-        return { path: '/current/search', query: { id: routePath.path, keywords: main_keyword, title }};
+        const { title } = routePath;
+        return { path: '/current/search', query: { id: routePath.path, title }};
       }
     }
   }

@@ -4,7 +4,9 @@
       <p class="no-message-icon">
         <span class="iconfont icon-wj-cznr" />
       </p>
-      <p class="no-message-desc">暂无信息</p>
+      <p class="no-message-desc">
+        暂无信息
+      </p>
     </div>
   </div>
 </template>
@@ -22,10 +24,12 @@ export default {
   position: relative;
   top: calc(50% - 21px);
   .no-message-icon {
-    font-size: 45px !important;
     color: #afc1db;
     width: 100%;
     text-align: center;
+    .iconfont {
+      font-size: 45px !important;
+    }
   }
   .no-message-desc {
     text-align: center;

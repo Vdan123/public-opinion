@@ -16,12 +16,12 @@
             >
               创建方案组
             </DropdownItem>
-            <DropdownItem>创建监测方案</DropdownItem>
+            <DropdownItem @click.native="handleCreate">创建监测方案</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
     </div>
-    <Menu>
+    <Menu class="overflow-y-auto" style="height: calc(100% - 150px)">
       <sidebar-item
         v-for="(item, index) in tableData"
         :key="index"
@@ -29,7 +29,7 @@
       />
     </Menu>
 
-    <div class="fixed bottom-0 p-4">
+    <div class="fixed bottom-0 p-4 z-50">
       <Button
         style="width: 210px;"
         @click="handleCreate"
@@ -106,6 +106,17 @@ export default {
       await getGroupPlan({}).then(res => {
         const { data } = res;
         this.tableData = data;
+
+        // 默认进入第一个方案
+        if (!_.isEmpty(data)) {
+          const first = _.filter(data, el => !_.isEmpty(el.keywords));
+          const { id, plan_name: title } = _.head(first[0]['keywords']);
+
+          // // 在当前页面刷新时
+          // if (this.$route.path !== path) {
+          //   this.$router.push({path: '/current/search', query: { id, title }})
+          // }
+        }
       });
     },
     handleAddGroup() {

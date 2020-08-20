@@ -22,7 +22,7 @@
             </Button>
           </ListItem>
           <ListItem>
-            <Button type="primary">查询</Button>
+            <Button type="primary" @click="handleSearch">查询</Button>
           </ListItem>
         </List>
       </Card>
@@ -49,17 +49,14 @@
           border
           :columns="tableColumns"
           :data="sourceData"
+          :loading="tableLoading"
         >
           <template slot="title" slot-scope="{ row, index }">
             <div class="news-content">
-              <div class="news-content-title">
-                {{ row.title }}
-              </div>
+              <div class="news-content-title" v-html="row.title" />
               <Button size="small">敏感</Button>
               <Button size="small">纠错</Button>
-              <div class="item-title">
-                {{ row.content }}
-              </div>
+              <div class="item-title" v-html="row.content" />
               <div class="news-item-tools font-size-0">
                 <a href="javascript:void(0)">涉及词</a>
                 政府
@@ -161,12 +158,17 @@ export default {
   computed: {
     sourceData() {
       return this.project.tableData.data;
+    },
+    tableLoading() {
+      return this.project.tableLoading;
     }
   },
   methods: {
     collectionKeys({ key }, { text }) {
-      console.log(text, 'oo');
-      console.log(key, 'key');
+
+    },
+    handleSearch() {
+      this.$Message.warning('暂无权限操作，请联系管理员');
     }
   }
 };

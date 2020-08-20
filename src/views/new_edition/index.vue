@@ -24,7 +24,7 @@
         :label-width="100"
       >
         <FormItem label="方案名称: " prop="planName">
-          <Input v-model="formItem.planName" style="width: 380px" />
+          <Input v-model="formItem.planName" style="width: 380px" maxlength="20" show-word-limit />
           <span style="color: #999; margin-left: 10px">方案的字数请尽量控制在20个字以内</span>
         </FormItem>
 
@@ -48,9 +48,11 @@
             v-model="formItem.words[item.key]"
             :autosize="{ minRows: 2, maxRows: 6 }"
             placeholder="关键词之间请用空格隔开"
+            maxlength="500"
+            show-word-limit
             type="textarea"
           />
-          <a href="javascript:void(0)" class="float-right">舆情词库</a>
+          <a href="javascript:void(0)" class="float-right" style="color: #04cb94" @click="handleLibrary">舆情词库</a>
         </FormItem>
 
         <FormItem>
@@ -61,6 +63,9 @@
         </FormItem>
       </Form>
     </Card>
+    <Modal v-model="library" title="舆情词库">
+      <span>舆情词库内容正在对接中...</span>
+    </Modal>
   </div>
 </template>
 
@@ -103,7 +108,8 @@ export default {
       ruleValid: {
         planName: [{ required: true, message: '请填写方案名称', trigger: 'blur' }],
         groupId: [{ validator: validatePass, message: '请选择群组', trigger: 'change' }]
-      }
+      },
+      library: false
     };
   },
   computed: {
@@ -155,6 +161,9 @@ export default {
     },
     handleBack() {
       this.$router.push({ name: 'Current' });
+    },
+    handleLibrary() {
+      this.library = true;
     }
   }
 };
