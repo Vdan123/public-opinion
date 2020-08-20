@@ -34,9 +34,10 @@
       </FormItem>
 
       <FormItem prop="verificationCode">
+          <!-- v-model="loginForm.verificationCode" -->
         <Input
-          v-model="loginForm.verificationCode"
           placeholder="验证码"
+          disabled
         />
       </FormItem>
       <div class="flex items-center mb-5">
@@ -54,13 +55,15 @@
       >
         登录
       </Button>
-      <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
+      <div class="flex justify-center">
+        <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
       <span>
         Chrome浏览器下载地址：
         <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
           https://www.google.cn/intl/zh-CN/chrome/
         </a>
       </span>
+      </div>
     </Form>
   </div>
 </template>
@@ -97,6 +100,7 @@ export default {
       handler: function(route) {
         const query = route.query;
         if (query) {
+          this.redirect = query.redirect;
           this.otherQuery = this.getOtherQuery(query);
         }
       },
@@ -110,7 +114,7 @@ export default {
           this.loading = true;
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: '/', query: this.otherQuery });
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               this.loading = false;
             })
             .catch(() => {

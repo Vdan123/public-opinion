@@ -5,7 +5,8 @@ const userInfo = 'userInfo';
 
 const getDefaultState = () => {
   return {
-    userInfo: checkStorage(userInfo)
+    userInfo: checkStorage(userInfo),
+    loginState: checkStorage('loginState')
   };
 };
 
@@ -25,6 +26,7 @@ const actions = {
       login({ username: username.trim(), password: password, verificationCode }).then(response => {
         if (response.state === 1) {
           dispatch('getUserDetails');
+          saveToStorage('loginState', response.state);
         }
         resolve();
       }).catch(error => {
@@ -38,6 +40,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then(() => {
         removeStorage(userInfo);
+        removeStorage('loginState')
         resolve();
       }).catch(error => {
         reject(error);
