@@ -40,7 +40,8 @@ service.interceptors.response.use(
             store.dispatch('user/logout');
             router.replace('/login');
           }
-      })}
+        });
+      }
       Message.error({
         content: res.message || 'Error',
         duration: 5

@@ -87,7 +87,7 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="showNoMessage">
+          <template v-if="showNoMessageProject">
             <no-message />
           </template>
           <template v-else>
@@ -194,6 +194,7 @@ export default {
     return {
       projectSelected: false,
       showNoMessage: false,
+      showNoMessageProject: false,
       attributesSpinShow: false,
       projectSpinShow: false,
       currentSpinShow: false,
@@ -242,8 +243,8 @@ export default {
       return new Promise((resolve, reject) => {
         getPieData({}).then(res => {
           if (!_.isEmpty(res.data)) {
+            this.getSourceData(res.data);
             this.$nextTick(() => {
-              this.getSourceData(res.data);
               this.attributesSpinShow = false;
             });
           } else {
@@ -251,6 +252,8 @@ export default {
           }
           resolve();
         }).catch(e => {
+          this.attributesSpinShow = false;
+          this.showNoMessage = true;
           reject(error);
         });
       });
@@ -260,13 +263,21 @@ export default {
       this.projectSpinShow = true;
       return new Promise((resolve, reject) => {
         getPlanTotal({}).then(res => {
+          this.$nextTick(() => {
+            this.projectSpinShow = false;
+          });
+          if (_.isEmpty(res.data)) {
+            this.showNoMessageProject = true;
+            return;
+          }
           this.projectCount = res.data;
           this.totalCount = _.reduce(res.data, (result, value) => {
             return result = result + value['total'];
           }, 0);
-          this.projectSpinShow = false;
+
           resolve();
         }).catch(error => {
+          this.projectSpinShow = false;
           reject(error);
         });
       });
@@ -279,7 +290,10 @@ export default {
           this.sensitiveMessage = res.data;
           this.sensitiveSpinShow = false;
           resolve();
-        }).catch(error => reject(error));
+        }).catch(error => {
+          this.sensitiveSpinShow = false;
+          reject(error);
+        });
       });
     },
 
@@ -291,7 +305,10 @@ export default {
           this.currentMessage = res.data;
           this.currentSpinShow = false;
           resolve();
-        }).catch(error => reject(error));
+        }).catch(error => {
+          this.currentSpinShow = false;
+          reject(error);
+        });
       });
     },
 

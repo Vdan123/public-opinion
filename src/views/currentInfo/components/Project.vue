@@ -57,35 +57,42 @@ export default {
       menuContent: 'TableList',
       editStatus: false,
       tableData: [],
+      tableLoading: false,
       title: ''
     };
   },
   watch: {
     $route: {
       handler(route) {
-        const { keywords, title } = route.query;
+        const { id, title } = route.query;
         this.title = title;
-        if (!_.isUndefined(keywords)) {
-          this.handleArticle(keywords);
+        if (!_.isUndefined(title)) {
+          this.handleArticle(id);
         }
       },
       deep: true
     }
   },
   mounted() {
-    // this.handleArticle();
+    const { id, title } = this.$route.query;
+    this.title = title;
+    this.handleArticle(id);
   },
   methods: {
     async getArticleList(params) {
+      this.tableLoading = true
       await getArticleList(params).then(res => {
         if (res.state === 1) {
           this.tableData = res.data;
         }
+        this.$nextTick(() => {
+            this.tableLoading = false
+          })
       });
     },
-    handleArticle(keywords) {
+    handleArticle(keywordId) {
       const params = {
-        keywords,
+        keywordId,
         testingTime: 1,
         infoType: 0,
         searchType: 0,

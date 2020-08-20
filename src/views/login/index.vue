@@ -34,7 +34,7 @@
       </FormItem>
 
       <FormItem prop="verificationCode">
-          <!-- v-model="loginForm.verificationCode" -->
+        <!-- v-model="loginForm.verificationCode" -->
         <Input
           placeholder="验证码"
           disabled
@@ -57,12 +57,12 @@
       </Button>
       <div class="flex justify-center">
         <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
-      <span>
-        Chrome浏览器下载地址：
-        <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
-          https://www.google.cn/intl/zh-CN/chrome/
-        </a>
-      </span>
+        <span>
+          Chrome浏览器下载地址：
+          <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
+            https://www.google.cn/intl/zh-CN/chrome/
+          </a>
+        </span>
       </div>
     </Form>
   </div>

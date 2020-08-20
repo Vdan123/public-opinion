@@ -16,7 +16,7 @@
             >
               创建方案组
             </DropdownItem>
-            <DropdownItem>创建监测方案</DropdownItem>
+            <DropdownItem @click.native="handleCreate">创建监测方案</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -106,6 +106,17 @@ export default {
       await getGroupPlan({}).then(res => {
         const { data } = res;
         this.tableData = data;
+
+        // 默认进入第一个方案
+        if (!_.isEmpty(data)) {
+          const first = _.filter(data, el => !_.isEmpty(el.keywords));
+          const { id, plan_name: title } = _.head(first[0]['keywords']);
+
+          // // 在当前页面刷新时
+          // if (this.$route.path !== path) {
+          //   this.$router.push({path: '/current/search', query: { id, title }})
+          // }
+        }
       });
     },
     handleAddGroup() {

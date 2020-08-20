@@ -40,7 +40,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then(() => {
         removeStorage(userInfo);
-        removeStorage('loginState')
+        removeStorage('loginState');
         resolve();
       }).catch(error => {
         reject(error);

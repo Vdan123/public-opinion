@@ -2,11 +2,11 @@
   <div>
     <div class="mb-5">
       <Breadcrumb>
-      <BreadcrumbItem to="/">舆情监测</BreadcrumbItem>
-      <BreadcrumbItem to="/components/breadcrumb">石家庄</BreadcrumbItem>
-    </Breadcrumb>
+        <BreadcrumbItem to="/">舆情监测</BreadcrumbItem>
+        <BreadcrumbItem to="/components/breadcrumb">石家庄</BreadcrumbItem>
+      </Breadcrumb>
     </div>
-    
+
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-div row-span-3">
         <Card>
