@@ -21,7 +21,7 @@
         </Dropdown>
       </div>
     </div>
-    <Menu>
+    <Menu class="overflow-y-auto" style="height: calc(100% - 150px)">
       <sidebar-item
         v-for="(item, index) in tableData"
         :key="index"
@@ -29,7 +29,7 @@
       />
     </Menu>
 
-    <div class="fixed bottom-0 p-4">
+    <div class="fixed bottom-0 p-4 z-50">
       <Button
         style="width: 210px;"
         @click="handleCreate"

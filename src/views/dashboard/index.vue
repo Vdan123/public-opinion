@@ -69,12 +69,13 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="showNoMessage">
+          <!-- <template v-if="showNoMessage">
             <no-message />
           </template>
           <template v-else>
             <warning-list />
-          </template>
+          </template> -->
+          <no-message />
         </Card>
       </div>
 
@@ -86,12 +87,16 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- 方案未完成 -->
           <template v-if="showNoMessage">
             <no-message />
           </template>
           <template v-else>
-            <project-list />
+            <Spin v-if="projectSpinShow" size="large" fix />
+            <project-list
+              v-for="(item, index) in projectCount"
+              :project-count="item"
+              :total-count="totalCount"
+            />
           </template>
         </Card>
       </div>
@@ -120,11 +125,14 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="false">
-            <project-list />
+          <template v-if="realTimeState">
+            <no-message />
           </template>
           <template v-else>
-            <no-message />
+            <Spin v-if="currentSpinShow" size="large" fix />
+            <real-time
+              :current-message="currentMessage"
+            />
           </template>
         </Card>
       </div>
@@ -137,12 +145,8 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="false">
-            <project-list />
-          </template>
-          <template v-else>
-            <no-message />
-          </template>
+          <Spin v-if="sensitiveSpinShow" size="large" fix />
+          <min-gan :sensitive-message="sensitiveMessage" />
         </Card>
       </div>
     </div>
@@ -159,11 +163,18 @@
 <script>
 import UserInfo from '@/views/dashboard/components/UserInfo';
 import Sensitive from '@/components/Sensitive';
-import PieChart from '@/components/PieChart.vue';
-import ProjectList from '@/views/dashboard/components/ProjectList';
-import WarningList from '@/views/dashboard/components/WarningList';
 import NoMessage from '@/components/NoMessage';
-import { getLoginInfo } from './api';
+import PieChart from '@/components/PieChart.vue';
+
+import ProjectList from './components/ProjectList';
+import WarningList from './components/WarningList';
+import RealTime from './components/RealTime';
+import MinGan from './components/MinGan';
+
+import { getLoginInfo,
+  getPlanTotal,
+  getZXMinGanInfoList,
+  getRealTimeDataList } from './api';
 import { getPieData } from '@/api/getChartData';
 import { changeKeyNames } from '@/utils/changeKeyName';
 
@@ -175,22 +186,38 @@ export default {
     PieChart,
     ProjectList,
     WarningList,
+    RealTime,
+    MinGan,
     NoMessage
   },
   data() {
     return {
       projectSelected: false,
       showNoMessage: false,
-      attributesSpinShow: true,
+      attributesSpinShow: false,
+      projectSpinShow: false,
+      currentSpinShow: false,
+      sensitiveSpinShow: false,
+      realTimeState: false,
       loginData: {},
       expectedAttributes: undefined,
       sourceWeb: undefined,
-      lineChartData: undefined
+      lineChartData: undefined,
+      projectCount: undefined,
+      totalCount: undefined,
+      currentMessage: undefined,
+      sensitiveMessage: undefined
     };
   },
   mounted() {
     this.getLoginInfo();
-    this.getPieData();
+
+    Promise.race([
+      this.getPieData(),
+      this.getPlanTotal(),
+      this.getZXMinGanInfoList(),
+      this.getRealTimeDataList()
+    ]);
   },
   methods: {
     async getLoginInfo() {
@@ -209,19 +236,65 @@ export default {
         }
       });
     },
-    async getPieData() {
-      await getPieData({}).then(res => {
-        this.attributesSpinShow = true;
-        if (!_.isEmpty(res.data)) {
-          this.$nextTick(() => {
-            this.getSourceData(res.data);
-            this.attributesSpinShow = false;
-          });
-        } else {
-          this.showNoMessage = true;
-        }
+
+    getPieData() {
+      this.attributesSpinShow = true;
+      return new Promise((resolve, reject) => {
+        getPieData({}).then(res => {
+          if (!_.isEmpty(res.data)) {
+            this.$nextTick(() => {
+              this.getSourceData(res.data);
+              this.attributesSpinShow = false;
+            });
+          } else {
+            this.showNoMessage = true;
+          }
+          resolve();
+        }).catch(e => {
+          reject(error);
+        });
       });
     },
+
+    getPlanTotal() {
+      this.projectSpinShow = true;
+      return new Promise((resolve, reject) => {
+        getPlanTotal({}).then(res => {
+          this.projectCount = res.data;
+          this.totalCount = _.reduce(res.data, (result, value) => {
+            return result = result + value['total'];
+          }, 0);
+          this.projectSpinShow = false;
+          resolve();
+        }).catch(error => {
+          reject(error);
+        });
+      });
+    },
+
+    getZXMinGanInfoList() {
+      this.sensitiveSpinShow = true;
+      return new Promise((resolve, reject) => {
+        getZXMinGanInfoList({}).then(res => {
+          this.sensitiveMessage = res.data;
+          this.sensitiveSpinShow = false;
+          resolve();
+        }).catch(error => reject(error));
+      });
+    },
+
+    getRealTimeDataList() {
+      this.currentSpinShow = true;
+      return new Promise((resolve, reject) => {
+        getRealTimeDataList({}).then(res => {
+          this.realTimeState = res.data.length === 0;
+          this.currentMessage = res.data;
+          this.currentSpinShow = false;
+          resolve();
+        }).catch(error => reject(error));
+      });
+    },
+
     handleSetting() {
       this.projectSelected = true;
     },
