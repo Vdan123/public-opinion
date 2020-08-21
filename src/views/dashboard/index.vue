@@ -79,25 +79,23 @@
         </Card>
       </div>
 
-      <div class="grid-div row-span-2">
+      <div class="grid-div">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
-            方案
-            <Poptip trigger="hover" content="已选方案中，24小时内信息量。" placement="right-end">
+            实时统计
+            <!-- <Poptip trigger="hover" content="已选方案中，24小时内信息量。" placement="right-end">
               <span class="iconfont icon-icon-test11" />
-            </Poptip>
+            </Poptip> -->
           </p>
           <template v-if="showNoMessageProject">
             <no-message />
           </template>
-          <template v-else>
-            <Spin v-if="projectSpinShow" size="large" fix />
-            <project-list
-              v-for="(item, index) in projectCount"
-              :project-count="item"
-              :total-count="totalCount"
-            />
-          </template>
+          <!-- 今日 | 累计新增用户
+2020-08-21~2020-08-21 | 今日
+
+今日
+163人环比 8.92% 同比 79.54% -->
+          <countTo :start-val="startVal" :end-val="endVal" :duration="3000" />
         </Card>
       </div>
       <div class="grid-div col-span-2">
@@ -114,6 +112,28 @@
           <template v-else>
             <Spin v-if="attributesSpinShow" size="large" fix />
             <sensitive :chart-data="lineChartData" />
+          </template>
+        </Card>
+      </div>
+      <div class="grid-div">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            方案
+            <Poptip trigger="hover" content="已选方案中，24小时内信息量。" placement="right-end">
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <template v-if="showNoMessageProject">
+            <no-message />
+          </template>
+          <template v-else>
+            <Spin v-if="projectSpinShow" size="large" fix />
+            <project-list
+              v-for="(item, index) in projectCount"
+              :key="index"
+              :project-count="item"
+              :total-count="totalCount"
+            />
           </template>
         </Card>
       </div>
@@ -167,16 +187,17 @@ import NoMessage from '@/components/NoMessage';
 import PieChart from '@/components/PieChart.vue';
 
 import ProjectList from './components/ProjectList';
-import WarningList from './components/WarningList';
+// import WarningList from './components/WarningList';
 import RealTime from './components/RealTime';
 import MinGan from './components/MinGan';
+
+import countTo from 'vue-count-to';
 
 import { getLoginInfo,
   getPlanTotal,
   getZXMinGanInfoList,
   getRealTimeDataList } from './api';
 import { getPieData } from '@/api/getChartData';
-import { changeKeyNames } from '@/utils/changeKeyName';
 
 export default {
   name: 'Dashboard',
@@ -185,10 +206,11 @@ export default {
     Sensitive,
     PieChart,
     ProjectList,
-    WarningList,
+    // WarningList,
     RealTime,
     MinGan,
-    NoMessage
+    NoMessage,
+    countTo
   },
   data() {
     return {
@@ -207,7 +229,9 @@ export default {
       projectCount: undefined,
       totalCount: undefined,
       currentMessage: undefined,
-      sensitiveMessage: undefined
+      sensitiveMessage: undefined,
+      startVal: 0,
+      endVal: 2020
     };
   },
   mounted() {
@@ -251,7 +275,7 @@ export default {
             this.showNoMessage = true;
           }
           resolve();
-        }).catch(e => {
+        }).catch(error => {
           this.attributesSpinShow = false;
           this.showNoMessage = true;
           reject(error);
@@ -272,7 +296,7 @@ export default {
           }
           this.projectCount = res.data;
           this.totalCount = _.reduce(res.data, (result, value) => {
-            return result = result + value['total'];
+            return result + value['total'];
           }, 0);
 
           resolve();

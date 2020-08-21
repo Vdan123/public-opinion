@@ -1,74 +1,83 @@
 <template>
   <div class="login-container">
-    <Form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">舆情系统</h3>
-      </div>
+    <div class="flex">
+      <Card :dis-hover="true" :padding="0">
+        <Form
+          ref="loginForm"
+          class="login-form"
+          label-position="left"
+          :model="loginForm"
+          :rules="loginRules"
+        >
+          <div class="title-container">
+            <h3 class="title">舆情系统</h3>
+          </div>
 
-      <FormItem prop="username">
-        <Input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="用户名"
-        />
-        <Icon slot="prefix" type="md-contact" />
-        </Input>
-      </FormItem>
+          <FormItem prop="username">
+            <Input
+              ref="username"
+              v-model="loginForm.username"
+              placeholder="用户名"
+            />
+            <Icon slot="prefix" type="md-contact" />
+            </Input>
+          </FormItem>
 
-      <FormItem prop="password">
-        <Input
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="密码"
-          @keyup.enter.native="handleLogin"
-        />
-        <Icon slot="prefix" type="md-lock" />
-        </Input>
-      </FormItem>
+          <FormItem prop="password">
+            <Input
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="密码"
+              @keyup.enter.native="handleLogin"
+            />
+            <Icon slot="prefix" type="md-lock" />
+            </Input>
+          </FormItem>
 
-      <FormItem prop="verificationCode">
-        <!-- v-model="loginForm.verificationCode" -->
-        <Input
-          placeholder="验证码"
-          disabled
-        />
-      </FormItem>
-      <div class="flex items-center mb-5">
-        <Checkbox>
-          一周内免密登录
-        </Checkbox>
-        <a href="javascript:void(0)" class="ml-auto">忘记密码</a>
-      </div>
+          <FormItem prop="verificationCode">
+            <!-- v-model="loginForm.verificationCode" -->
+            <Input
+              placeholder="验证码"
+              disabled
+            />
+          </FormItem>
+          <div class="flex items-center mb-5">
+            <Checkbox>
+              一周内免密登录
+            </Checkbox>
+            <a href="javascript:void(0)" class="ml-auto">忘记密码</a>
+          </div>
 
-      <Button
-        :loading="loading"
-        type="primary"
-        style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
-      >
-        登录
-      </Button>
-      <div class="flex justify-center">
-        <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
-        <span>
-          Chrome浏览器下载地址：
-          <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
-            https://www.google.cn/intl/zh-CN/chrome/
-          </a>
-        </span>
-      </div>
-    </Form>
+          <Button
+            :loading="loading"
+            type="primary"
+            style="width:100%;margin-bottom:30px;"
+            @click.native.prevent="handleLogin"
+          >
+            登录
+          </Button>
+          <p>温馨提示：推荐在Chrome,火狐等非IE浏览器下访问系统！</p>
+          <p class="mt-2">
+            Chrome浏览器下载地址：
+            <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
+              https://www.google.cn/intl/zh-CN/chrome/
+            </a>
+          </p>
+        </Form>
+      </Card>
+
+      <Card :dis-hover="true" :padding="0" class="login-image-container">
+        <div class="login-image">
+          <img :src="imageUrl">
+        </div>
+      </Card>
+    </div>
   </div>
 </template>
 
 <script>
+import { url } from '@/assets/login_images/login.js';
 export default {
   name: 'Login',
   data() {
@@ -94,6 +103,11 @@ export default {
       otherQuery: {},
       redirect: undefined
     };
+  },
+  computed: {
+    imageUrl() {
+      return url;
+    }
   },
   watch: {
     $route: {
@@ -143,43 +157,23 @@ $dark_gray:#889aa4;
 $light_gray:#2E4446;
 
 .login-container {
-  min-height: 100%;
-  width: 100%;
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: repeat-x left bottom -20px;
   background-color: $bg;
   overflow: hidden;
-
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 70px;
     margin: 0 auto;
     overflow: hidden;
   }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-
   .title-container {
     position: relative;
-
     .title {
       font-size: 26px;
       color: $light_gray;
@@ -188,15 +182,20 @@ $light_gray:#2E4446;
       font-weight: bold;
     }
   }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
+}
+.login-image {
+  background-image: linear-gradient(180deg,#11ca8d,#237c96);
+  text-align: center;
+  height: 565px;
+  width: 530px;
+  & > img {
+    width: 410px;
+    height: 100%;
+  }
+}
+.login-image-container {
+  & >>> .ivu-card .ivu-card-body {
+    color: red
   }
 }
 </style>

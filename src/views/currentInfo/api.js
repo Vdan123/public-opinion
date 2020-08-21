@@ -41,3 +41,12 @@ export function getGroupPlan(data) {
     data
   });
 }
+
+// 获取信息详情
+export function getDetails(data) {
+  return request({
+    url: '/Article/getDetails',
+    method: 'post',
+    data
+  });
+}

@@ -2,38 +2,37 @@
   <div>
     <div class="mb-5">
       <Breadcrumb>
-        <BreadcrumbItem to="/">舆情监测</BreadcrumbItem>
-        <BreadcrumbItem to="/components/breadcrumb">石家庄</BreadcrumbItem>
+        <BreadcrumbItem>舆情监测</BreadcrumbItem>
+        <BreadcrumbItem>##方案名##</BreadcrumbItem>
       </Breadcrumb>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-div row-span-3">
         <Card>
-          <List>
-            <ListItem>
-              来源: 新浪微博
-            </ListItem>
-            <ListItem>
-              发布时间: 2020-08-20 17:54:41
-            </ListItem>
-            <ListItem>
-              作者: 有时很神奇30774
-            </ListItem>
-            <ListItem>
-              首发网站: 新浪微博
-            </ListItem>
-            <ListItem>
-              属性: 敏感
-            </ListItem>
-            <ListItem>
-              涉及关键词: 政府
-            </ListItem>
-            <ListItem>
-              已读用户: wdataworld
-            </ListItem>
-            <ListItem>
-              原文链接: http://weibo.com/7488666497/JgO3fkIJX
+          <!-- 判断如果有 title 则显示，没有则不显示 -->
+          <!-- <div class="detail-title">
+
+            {{ listObject.title }}
+          </div> -->
+          <List :border="true" size="small">
+            <ListItem
+              v-for="(item, index) in detailList"
+              :key="index"
+            >
+              <span>
+                {{ item.label }} ：
+              </span>
+              <template v-if="item.label === '原文链接'">
+                <a :href="item.value" target="_bank">
+                  {{ item.value }}
+                </a>
+              </template>
+              <template v-else>
+                <span>
+                  {{ item.value }}
+                </span>
+              </template>
             </ListItem>
           </List>
 
@@ -51,6 +50,8 @@
 
           <div class="detail-news">
             正文
+
+            <p v-html="listObject.content " />
           </div>
         </Card>
       </div>
@@ -72,8 +73,48 @@
 </template>
 
 <script>
-export default {
+import { getDetails } from '../api';
 
+const detailKeys = {
+  sourceName: '来源',
+  ins_time: '发布时间',
+  auther: '作者',
+  attribute: '属性',
+  keywords: '涉及关键字',
+  url: '原文链接'
+};
+export default {
+  data() {
+    return {
+      detailKeys,
+      listObject: {}
+    };
+  },
+  computed: {
+    detailList() {
+      return _.transform(this.listObject, (result, value, key) => {
+        if (_.includes(Object.keys(this.detailKeys), key)) {
+          result.push({
+            label: this.detailKeys[key],
+            value
+          });
+        }
+      }, []);
+    }
+  },
+  mounted() {
+    const { id } = this.$route.params;
+    this.getDetails({ articleId: id });
+  },
+  methods: {
+    async getDetails(params) {
+      await getDetails(params).then(res => {
+        if (res.state === 1) {
+          this.listObject = res.data;
+        }
+      });
+    }
+  }
 };
 </script>
 
@@ -83,5 +124,11 @@ export default {
   margin-top: 30px;
   border: 1px solid #ebecf0;
   padding: 15px 10px 15px;
+}
+.detail-title {
+  font-size: 24px;
+  color: #333;
+  letter-spacing: .03em;
+  text-align: center;
 }
 </style>

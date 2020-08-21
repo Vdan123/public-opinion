@@ -42,6 +42,7 @@
 
         <FormItem
           v-for="item in keyWords"
+          :key="item.label"
           :label="item.label"
         >
           <Input

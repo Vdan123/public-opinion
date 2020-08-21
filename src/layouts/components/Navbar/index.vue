@@ -5,6 +5,7 @@
       <template v-for="route in routes">
         <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
           <router-link
+            :key="route.path"
             :to="resolvePath(route.path, onlyOneChild.path)"
             active-class="textColor"
           >
@@ -24,14 +25,18 @@
         <span class="iconfont icon-icon-test11" />
       </a>
 
-      <Dropdown trigger="click">
+      <Poptip title="通知助手" content="content">
         <a href="javascript:void(0)" class="nav-icons">
           <span class="iconfont icon-icon-test6" />
         </a>
-        <DropdownMenu slot="list">
-          通知助手
-        </DropdownMenu>
-      </Dropdown>
+        <div slot="content">
+          <div class="flex">
+            <Button size="small">全部</Button>
+            <Button size="small">概览</Button>
+            <Button size="small">系统更新通知</Button>
+          </div>
+        </div>
+      </Poptip>
 
       <div class="nav-line" />
 
@@ -59,7 +64,6 @@
 <script>
 import path from 'path';
 import PasswordModal from '@/layouts/components/Navbar/Password';
-import { log } from 'util';
 export default {
   components: {
     PasswordModal

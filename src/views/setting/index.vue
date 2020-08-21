@@ -1,66 +1,74 @@
 <template>
-  <div class="setting-container">
-    <header>监测方案</header>
-    <Card class="box-card">
-      <div slot="header">
-        <span>创建用户分组</span>
-      </div>
-      <div class="step-container">
-        <Steps
-          :active="active"
-          :align-center="true"
-        >
-          <Step title="设置分组" description="创建或选择分组" />
-          <Steps title="设置方案规则" />
-        </Steps>
-      </div>
-      <component
-        :is="currentComponents"
-        @nextStep="nextStep"
-        @lastStep="lastStep"
-      />
-    </Card>
-  </div>
+  <Card>
+    <div slot="title">
+      账号信息
+    </div>
+
+    <ul>
+      <li>
+        账号信息
+      </li>
+      <li>
+        账号: wdataworld
+      </li>
+      <li>
+        密码: ********** 修改
+      </li>
+      <li>
+        昵称: 刘先生 修改
+      </li>
+      <li>
+        手机号码: 15200088248 修改
+      </li>
+      <li>
+        邮箱: zhangjiameng@miduchina.com 修改
+      </li>
+      <li>
+        有效期: 2020年08月24日
+      </li>
+    </ul>
+
+    <ul class="mt-10">
+      <li>
+        账号权限
+      </li>
+      <li>
+        用户角色: A类合作单位管理员
+      </li>
+      <li>
+        账号状态: 正常
+      </li>
+      <li>
+        所属公司: 北京万数科技有限公司
+      </li>
+      <li>
+        权限明细:
+      </li>
+      <li>
+        监测关键词总字数500个
+      </li>
+      <li>
+        竞品分析次数0/1次
+      </li>
+
+      <li>
+        微博事件分析次数0/1次
+      </li>
+      <li>
+        全网事件分析次数1/1次
+      </li>
+    </ul>
+
+    <Button type="primary">
+      返回
+    </Button>
+  </Card>
 </template>
 
 <script>
-import { getKeywords } from './api';
-import AddGroup from './components/addGroup';
-import AddKeywords from './components/addKeywords';
 
-export default {
-  components: {
-    AddGroup,
-    AddKeywords
-  },
-  data() {
-    return {
-      tableData: [],
-      currentComponents: 'AddGroup',
-      active: 1
-    };
-  },
-  methods: {
-    async getKeywords() {
-      await getKeywords().then(res => {
-        console.log(res, 'getKeywords');
-      });
-    },
-    nextStep() {
-      this.currentComponents = 'AddKeywords';
-    },
-    lastStep() {
-      this.currentComponents = 'AddGroup';
-    }
-  }
-};
 </script>
 
 <style lang="scss" scoped>
-.setting-container {
-  padding: 16px
-}
-.step-container {
-  padding: 0 100px
-}
+
 </style>
