@@ -8,9 +8,7 @@
         <div style="width: 30px; float: left">
           <span class="min">敏</span>
         </div>
-        <span>
-          {{ item.content }}
-        </span>
+        <span v-html="item.content" />
         <template slot="action">
           <li>
             {{ item.ins_time }}
