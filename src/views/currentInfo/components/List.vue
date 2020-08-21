@@ -53,13 +53,16 @@
         >
           <template slot="title" slot-scope="{ row }">
             <div class="news-content">
-              <!-- target= '_blank' -->
-              <router-link :to="'/current/detail/'+row.id">
-                <div class="news-content-title" v-html="row.title" />
-              </router-link>
+              <div class="news-content-title" v-html="row.title" />
+              <!-- <div class="new-content-title">
+                {{ row.auther}}
+              </div> -->
+             
               <Button size="small">敏感</Button>
               <Button size="small">纠错</Button>
+              <router-link :to="'/current/detail/'+row.id" target= '_blank'>
               <div class="item-title" v-html="row.content" />
+               </router-link>
               <div class="news-item-tools font-size-0">
                 <a href="javascript:void(0)">涉及词</a>
                 政府
