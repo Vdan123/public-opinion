@@ -110,7 +110,7 @@ export default {
         // 默认进入第一个方案
         if (!_.isEmpty(data)) {
           const first = _.filter(data, el => !_.isEmpty(el.keywords));
-          const { id, plan_name: title } = _.head(first[0]['keywords']);
+          const { plan_name: title } = _.head(first[0]['keywords']);
 
           // // 在当前页面刷新时
           // if (this.$route.path !== path) {

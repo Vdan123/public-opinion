@@ -26,9 +26,8 @@ const actions = {
       login({ username: username.trim(), password: password, verificationCode }).then(response => {
         if (response.state === 1) {
           dispatch('getUserDetails');
-          saveToStorage('loginState', response.state);
         }
-        resolve();
+        resolve(saveToStorage('loginState', response.state));
       }).catch(error => {
         console.log(error, 'error');
         reject(error);

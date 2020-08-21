@@ -5,16 +5,10 @@
         v-for="(item, index) in currentMessage"
         :key="index"
       >
-        <span>
-          {{ item.content }}
-        </span>
+        <span v-html="item.content" />
         <template slot="action">
-          <li>
-            {{ item.ins_time }}
-          </li>
-          <li>
-            {{ item.sourceName }}
-          </li>
+          <li v-html="item.ins_time" />
+          <li v-html="item.sourceName" />
         </template>
       </ListItem>
     </List>

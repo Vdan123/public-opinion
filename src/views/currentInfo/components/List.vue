@@ -51,9 +51,12 @@
           :data="sourceData"
           :loading="tableLoading"
         >
-          <template slot="title" slot-scope="{ row, index }">
+          <template slot="title" slot-scope="{ row }">
             <div class="news-content">
-              <div class="news-content-title" v-html="row.title" />
+              <!-- target= '_blank' -->
+              <router-link :to="'/current/detail/'+row.id">
+                <div class="news-content-title" v-html="row.title" />
+              </router-link>
               <Button size="small">敏感</Button>
               <Button size="small">纠错</Button>
               <div class="item-title" v-html="row.content" />
@@ -140,9 +143,10 @@ const tableColumns = [
     align: 'center'
   },
   { title: '标题', slot: 'title' },
-  { title: '相似文章', key: '', maxWidth: 100 },
-  { title: '来源', key: 'sourceName', maxWidth: 100 },
-  { title: '时间', key: 'ins_time', maxWidth: 120 }
+  // 相似文章，暂定
+  { title: '相似文章', maxWidth: 100, render: (h) => h('div', 1), align: 'center' },
+  { title: '来源', key: 'sourceName', maxWidth: 100, align: 'center' },
+  { title: '时间', key: 'ins_time', maxWidth: 120, align: 'center' }
 ];
 
 export default {

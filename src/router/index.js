@@ -46,7 +46,7 @@ const constantRoutes = [
             props: (route) => ({ query: route.query.q })
           },
           {
-            path: 'detail',
+            path: 'detail/:id(\\d+)',
             meta: { requiresAuth: true },
             component: () => import('@/views/currentInfo/components/Detail')
           }

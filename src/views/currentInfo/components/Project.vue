@@ -80,14 +80,14 @@ export default {
   },
   methods: {
     async getArticleList(params) {
-      this.tableLoading = true
+      this.tableLoading = true;
       await getArticleList(params).then(res => {
         if (res.state === 1) {
           this.tableData = res.data;
         }
         this.$nextTick(() => {
-            this.tableLoading = false
-          })
+          this.tableLoading = false;
+        });
       });
     },
     handleArticle(keywordId) {

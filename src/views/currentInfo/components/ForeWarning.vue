@@ -31,7 +31,8 @@
             <span class="warning-title">预警条件设置</span>
 
             <FormItem
-              v-for="item in conditions"
+              v-for="(item,index) in conditions"
+              :key="index"
               :label="item.label"
             >
               <RadioGroup v-for="sub in item.value">
