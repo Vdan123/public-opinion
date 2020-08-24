@@ -10,7 +10,7 @@
         <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
       </div>
     </div>
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-5 gap-2">
       <div class="grid-div">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
@@ -19,49 +19,8 @@
           <UserInfo />
         </Card>
       </div>
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            敏感信息占比
-            <Poptip
-              trigger="hover"
-              content="已选方案所有汇总信息中，敏感信息跟全部信息的所占比例。"
-              placement="right-end"
-            >
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <pie-chart :pie-data="expectedAttributes" />
-          </template>
-        </Card>
-      </div>
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            信息来源占比
-            <Poptip
-              trigger="hover"
-              content="已选方案所有汇总信息中，信息11个来源占比情况。"
-              placement="right-end"
-            >
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <pie-chart :pie-data="sourceWeb" />
-          </template>
-        </Card>
-      </div>
-      <div class="grid-div row-span-2">
+
+      <div class="grid-div col-span-3">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             预警详情
@@ -79,42 +38,6 @@
         </Card>
       </div>
 
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            实时统计
-            <!-- <Poptip trigger="hover" content="已选方案中，24小时内信息量。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip> -->
-          </p>
-          <template v-if="showNoMessageProject">
-            <no-message />
-          </template>
-          <!-- 今日 | 累计新增用户
-2020-08-21~2020-08-21 | 今日
-
-今日
-163人环比 8.92% 同比 79.54% -->
-          <countTo :start-val="startVal" :end-val="endVal" :duration="3000" />
-        </Card>
-      </div>
-      <div class="grid-div col-span-2">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            信息趋势走势图
-            <Poptip trigger="hover" content="已选方案，敏感信息和非敏感信息分时间段的信息参与变化走势。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <sensitive :chart-data="lineChartData" />
-          </template>
-        </Card>
-      </div>
       <div class="grid-div">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
@@ -137,7 +60,84 @@
           </template>
         </Card>
       </div>
+
+      <div class="grid-div">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            敏感信息占比
+            <Poptip
+              trigger="hover"
+              content="已选方案所有汇总信息中，敏感信息跟全部信息的所占比例。"
+              placement="right-end"
+            >
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <pie-chart :pie-data="expectedAttributes" />
+          </template>
+        </Card>
+      </div>
+
+      <div class="grid-div">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            信息来源占比
+            <Poptip
+              trigger="hover"
+              content="已选方案所有汇总信息中，信息11个来源占比情况。"
+              placement="right-end"
+            >
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <pie-chart :pie-data="sourceWeb" />
+          </template>
+        </Card>
+      </div>
+
+      <div class="grid-div col-span-3">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            信息趋势走势图
+            <Poptip trigger="hover" content="已选方案，敏感信息和非敏感信息分时间段的信息参与变化走势。" placement="right-end">
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <template v-if="showNoMessage">
+            <no-message />
+          </template>
+          <template v-else>
+            <Spin v-if="attributesSpinShow" size="large" fix />
+            <sensitive :chart-data="lineChartData" />
+          </template>
+        </Card>
+      </div>
+
+
       <div class="grid-div col-span-2">
+        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+          <p slot="title">
+            敏感信息
+            <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
+              <span class="iconfont icon-icon-test11" />
+            </Poptip>
+          </p>
+          <Spin v-if="sensitiveSpinShow" size="large" fix />
+          <min-gan :sensitive-message="sensitiveMessage" />
+        </Card>
+      </div>
+
+      <div class="grid-div col-span-3">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             实时数据
@@ -156,26 +156,12 @@
           </template>
         </Card>
       </div>
-
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            敏感信息
-            <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <Spin v-if="sensitiveSpinShow" size="large" fix />
-          <min-gan :sensitive-message="sensitiveMessage" />
-        </Card>
-      </div>
     </div>
 
     <Modal v-model="projectSelected" title="方案选择">
       <div>
         <span>选择显示监测方案，当前有5个监测方案，您最多选择10个监测方案显示</span>
       </div>
-      这里是个穿梭框
     </Modal>
   </div>
 </template>
