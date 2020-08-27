@@ -2,24 +2,23 @@
   <div>
     <current-sidebar class="sidebar-container" />
     <div class="main-container">
-      <!-- <Card>
-
-      <no-message />
-      </Card> -->
-      <router-view />
+      <router-view :key="key" />
     </div>
   </div>
 </template>
 
 <script>
 import CurrentSidebar from './components/Sidebar';
-import NoMessage from '@/components/NoMessage';
 
 export default {
   name: 'CurrentInfo',
   components: {
-    CurrentSidebar,
-    NoMessage
+    CurrentSidebar
+  },
+  computed: {
+    key() {
+      return this.$route.path;
+    }
   },
   mounted() {
     this.$store.dispatch('group/getAllGroups');

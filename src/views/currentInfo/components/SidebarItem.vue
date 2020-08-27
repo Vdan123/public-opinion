@@ -4,8 +4,43 @@
       <MenuItem
         :name="onlyOneChild.name"
         :to="resolvePath(onlyOneChild)"
+        class="menu-item"
       >
-        {{ onlyOneChild.title }}
+        <template v-if="onlyOneChild.group_id">
+          {{ onlyOneChild.title }}
+          <span class="hover-options">
+            <Dropdown>
+              <a href="javascript:void(0)">
+                ...
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem @click.native="handleDelPlan">删除方案</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </span>
+        </template>
+        <template v-else>
+          <!-- 这里是冗余的代码，可以抽离成一个独立的组件进行复用的 -->
+          <span class="iconfont icon-folder" />
+          {{ onlyOneChild.title }}
+          <Dropdown>
+            <a
+              href="javascript:void(0)"
+              onclick="event.stopPropagation();"
+              class="pl-1"
+            >
+              <span class="iconfont icon-icon-test3" />
+            </a>
+            <DropdownMenu slot="list">
+              <DropdownItem @click.native="handleChangeName(sourceData.group_name)">
+                修改名称
+              </DropdownItem>
+              <DropdownItem @click.native="handleDelGroup">
+                删除分组
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </template>
       </MenuItem>
     </template>
 
@@ -13,6 +48,23 @@
       <template slot="title">
         <span class="iconfont icon-folder" />
         {{ sourceData.group_name }}
+        <Dropdown>
+          <a
+            href="javascript:void(0)"
+            onclick="event.stopPropagation();"
+            class="pl-1"
+          >
+            <span class="iconfont icon-icon-test3" />
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem @click.native="handleChangeName(sourceData.group_name)">
+              修改名称
+            </DropdownItem>
+            <DropdownItem @click.native="handleDelGroup">
+              删除分组
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </template>
       <sidebar-item
         v-for="(item, index) in sourceData.keywords"
@@ -20,11 +72,17 @@
         :source-data="item"
       />
     </Submenu>
+    <Modal
+      v-model="visible"
+      title="修改分组名称"
+      @on-ok="handleSubmit"
+    >
+      <Input v-model="groupName" />
+    </Modal>
   </div>
 </template>
 
 <script>
-import path from 'path';
 export default {
   name: 'SidebarItem',
   props: {
@@ -40,7 +98,8 @@ export default {
   data() {
     this.onlyOneChild = {};
     return {
-
+      visible: false,
+      groupName: ''
     };
   },
   methods: {
@@ -52,7 +111,8 @@ export default {
             name: `${group_id}-${id}`,
             title: plan_name,
             path: id,
-            main_keyword
+            main_keyword,
+            group_id
           };
         } else {
           this.onlyOneChild = {
@@ -66,13 +126,56 @@ export default {
     },
     resolvePath(routePath) {
       if (!_.isUndefined(routePath.path)) {
-        const { title } = routePath;
-        return { path: '/current/search', query: { id: routePath.path, title }};
+        const { title, group_id } = routePath;
+        return { path: '/current/search', query: { group_id, id: routePath.path, title }};
       }
+    },
+    handleChangeName(name) {
+      this.visible = true;
+      this.groupName = name;
+    },
+    handleSubmit() {
+      const { id } = this.sourceData;
+      this.$emit('editGroup', {
+        id,
+        groupName: this.groupName
+      });
+    },
+    handleDelGroup() {
+      const { id } = this.sourceData;
+      this.$Modal.confirm({
+        title: '确定删除该分组么？',
+        onOk: () => {
+          this.$emit('deleteGroup', { id });
+        }
+      });
+    },
+    handleDelPlan() {
+      console.log('fucks');
+      const { id, group_id } = this.sourceData;
+      // this.$Modal.confirm({
+      //   title: '确定删除该方案么？',
+      //   onOk: () => {
+          
+      //   }
+      // });
+      console.log(this.$parent, 'ooo');
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.menu-item:hover {
+  .hover-options {
+    display: block;
+    float: right;
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.hover-options {
+  display: none;
+}
 </style>

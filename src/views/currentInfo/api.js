@@ -16,9 +16,36 @@ export function addGroup(data) {
   });
 }
 
+// 修改分组名称
+export function editGroup(data) {
+  return request({
+    url: '/Keyword/editGroup',
+    method: 'post',
+    data
+  });
+}
+
+// 删除分组名称
+export function delGroup(data) {
+  return request({
+    url: '/Keyword/delGroup',
+    method: 'post',
+    data
+  });
+}
+
 export function getKeywords(data) {
   return request({
     url: '/Keyword/getKeywords',
+    method: 'post',
+    data
+  });
+}
+
+// 删除方案
+export function delKeywords(data) {
+  return request({
+    url: '/Keyword/delKeywords',
     method: 'post',
     data
   });
@@ -46,6 +73,24 @@ export function getGroupPlan(data) {
 export function getDetails(data) {
   return request({
     url: '/Article/getDetails',
+    method: 'post',
+    data
+  });
+}
+
+// 预警设置
+export function setWarning(data) {
+  return request({
+    url: '/Keyword/setWarning',
+    method: 'post',
+    data
+  });
+}
+
+// 获取预警设置
+export function getWarning(data) {
+  return request({
+    url: '/Keyword/getWarning',
     method: 'post',
     data
   });

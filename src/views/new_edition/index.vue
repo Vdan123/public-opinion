@@ -48,7 +48,7 @@
           <Input
             v-model="formItem.words[item.key]"
             :autosize="{ minRows: 2, maxRows: 6 }"
-            placeholder="关键词之间请用空格隔开"
+            placeholder="关键词之间请用 '+' 隔开"
             maxlength="500"
             show-word-limit
             type="textarea"
@@ -120,13 +120,42 @@ export default {
   },
   mounted() {
     this.$store.dispatch('group/getAllGroups');
+    if (this.editState) {
+      const { group_id, id } = this.$route.query;
+      this.getKeywords({ groupId: group_id }, id);
+    }
   },
   methods: {
+    async getKeywords(params, id) {
+      await getKeywords(params).then(res => {
+        const result = _.find(res.data, { id: _.toNumber(id) });
+
+        if (!_.isUndefined(result)) {
+          const { plan_name: planName,
+            exclude_keyword: excludeKeyword,
+            main_keyword: mainKeyword,
+            sub_keyword: subKeyword,
+            group_id: groupId } = result;
+
+          this.formItem = {
+            planName,
+            groupId,
+            words: {
+              mainKeyword,
+              subKeyword,
+              excludeKeyword
+            }
+          };
+        }
+      });
+    },
     async addKeywords(params) {
       await addKeywords(params).then(res => {
         if (res.state === 1) {
           this.$Message.success(res.message);
-          this.$router.push({ name: 'Project', params: { id: res.data }});
+          this.$nextTick(() => {
+            this.$store.dispatch('group/getGroupPlan');
+          });
         }
       });
     },
@@ -134,29 +163,26 @@ export default {
       await editKeywords(params).then(res => {
         if (res.state === 1) {
           this.$Message.success(res.message);
-          this.$router.replace({ name: 'Project', params: { id: 123 }});
+          this.$nextTick(() => {
+            this.$store.dispatch('group/getGroupPlan');
+          });
         }
       });
     },
     handleSubmit() {
       this.$refs['newEditionForm'].validate(valid => {
         if (valid) {
-          const { planName, groupId, words } = this.formItem;
+          const mergedItems = _.merge(this.formItem, this.formItem['words']);
+          delete mergedItems['words'];
+
           if (this.editState) {
-            this.editKeywords({
-              id: 1,
-              groupId: 1,
-              planName,
-              groupId,
-              ...words
-            });
+            const { id } = this.$route.query;
+            this.editKeywords(Object.assign({}, mergedItems, { id }));
           } else {
-            this.addKeywords({
-              planName,
-              groupId,
-              ...words
-            });
+            this.addKeywords(mergedItems);
           }
+
+          this.$router.push({ path: '/current' });
         }
       });
     },
