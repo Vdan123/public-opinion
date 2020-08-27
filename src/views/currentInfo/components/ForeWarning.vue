@@ -285,7 +285,7 @@ export default {
 
         if (!_.isEmpty(result)) {
           const { state } = result;
-          this.switchState = state;
+          this.switchState = !!state;
 
           // 如果预警方式有值，则改变状态
           ['WeChat', 'email', 'mobile', 'system'].map(el => {

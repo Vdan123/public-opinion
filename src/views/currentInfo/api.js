@@ -42,6 +42,15 @@ export function getKeywords(data) {
   });
 }
 
+// 删除方案
+export function delKeywords(data) {
+  return request({
+    url: '/Keyword/delKeywords',
+    method: 'post',
+    data
+  });
+}
+
 // 实时舆情列表
 export function getArticleList(data) {
   return request({

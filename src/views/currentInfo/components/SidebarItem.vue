@@ -6,17 +6,41 @@
         :to="resolvePath(onlyOneChild)"
         class="menu-item"
       >
-        {{ onlyOneChild.title }}
-        <span class="hover-options">
+        <template v-if="onlyOneChild.group_id">
+          {{ onlyOneChild.title }}
+          <span class="hover-options">
+            <Dropdown>
+              <a href="javascript:void(0)">
+                ...
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem @click.native="handleDelPlan">删除方案</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </span>
+        </template>
+        <template v-else>
+          <!-- 这里是冗余的代码，可以抽离成一个独立的组件进行复用的 -->
+          <span class="iconfont icon-folder" />
+          {{ onlyOneChild.title }}
           <Dropdown>
-            <a href="javascript:void(0)">
-              ...
+            <a
+              href="javascript:void(0)"
+              onclick="event.stopPropagation();"
+              class="pl-1"
+            >
+              <span class="iconfont icon-icon-test3" />
             </a>
             <DropdownMenu slot="list">
-              <DropdownItem>删除方案</DropdownItem>
+              <DropdownItem @click.native="handleChangeName(sourceData.group_name)">
+                修改名称
+              </DropdownItem>
+              <DropdownItem @click.native="handleDelGroup">
+                删除分组
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </span>
+        </template>
       </MenuItem>
     </template>
 
@@ -125,6 +149,17 @@ export default {
           this.$emit('deleteGroup', { id });
         }
       });
+    },
+    handleDelPlan() {
+      console.log('fucks');
+      const { id, group_id } = this.sourceData;
+      // this.$Modal.confirm({
+      //   title: '确定删除该方案么？',
+      //   onOk: () => {
+          
+      //   }
+      // });
+      console.log(this.$parent, 'ooo');
     }
   }
 };
