@@ -36,7 +36,7 @@
             </ListItem>
           </List>
 
-          <div class="detail-toolbar">
+          <!-- <div class="detail-toolbar">
             <ul class="flex">
               <li>收藏</li>
               <li>加入简报</li>
@@ -46,7 +46,7 @@
               <li>反馈</li>
               <li>复制链接</li>
             </ul>
-          </div>
+          </div> -->
 
           <div class="detail-news">
             正文

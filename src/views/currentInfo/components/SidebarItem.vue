@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { delKeywords } from '../api';
+
 export default {
   name: 'SidebarItem',
   props: {
@@ -151,15 +153,26 @@ export default {
       });
     },
     handleDelPlan() {
-      console.log('fucks');
       const { id, group_id } = this.sourceData;
-      // this.$Modal.confirm({
-      //   title: '确定删除该方案么？',
-      //   onOk: () => {
-          
-      //   }
-      // });
-      console.log(this.$parent, 'ooo');
+      this.$Modal.confirm({
+        title: '确定删除该方案么？',
+        onOk: () => {
+          this.delKeywords({ id, groupId: group_id });
+        }
+      });
+    },
+
+    async delKeywords(params) {
+      await delKeywords(params).then(res => {
+        if (res.state === 1) {
+          this.$Message.success(res.message);
+          this.$nextTick(() => {
+            this.$store.dispatch('group/getGroupPlan');
+          });
+        } else {
+          this.$Message.error(res.message);
+        }
+      });
     }
   }
 };

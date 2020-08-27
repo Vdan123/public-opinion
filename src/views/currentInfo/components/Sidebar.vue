@@ -73,8 +73,7 @@
 import {
   addGroup,
   editGroup,
-  delGroup,
-  delKeywords
+  delGroup
 } from '../api';
 import SidebarItem from '@/views/currentInfo/components/SidebarItem';
 export default {
@@ -136,20 +135,6 @@ export default {
       });
     },
 
-    async delKeywords(params) {
-      console.log(params, 'ooo');
-      await delKeywords(params).then(res => {
-        if (res.state === 1) {
-          this.$Message.success(res.message);
-          this.$nextTick(() => {
-            this.getGroupPlan();
-          });
-        } else {
-          this.$Message.error(res.message);
-        }
-      })
-    },
-
     async getGroupPlan() {
       await this.$store.dispatch('group/getGroupPlan');
     },
@@ -173,10 +158,6 @@ export default {
     },
     handleDel(value) {
       this.delGroup(value);
-    },
-    handleDelPlan(value) {
-      console.log(value, ';value');
-      this.delKeywords(value);
     }
   }
 };
