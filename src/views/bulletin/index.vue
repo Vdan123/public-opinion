@@ -1,6 +1,8 @@
 <template>
-  <div>
-    简报
+  <div class="flex justify-center">
+    <div>
+      该模块正在开发中...
+    </div>
   </div>
 </template>
 

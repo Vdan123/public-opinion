@@ -3,16 +3,37 @@
     <div slot="title">
       账号信息
     </div>
+    <span class="title">账号信息</span>
+    <ul class="mb-10">
+      <li
+        v-for="(item, index) in user"
+        :key="index"
+        class="p-5"
+      >
+        <span>
+          {{ item.label }}
+        </span>
+        <span>
+          {{ userInfo[item.key] }}
+        </span>
+      </li>
+    </ul>
 
+    <span class="title">账号权限</span>
+    <ul>
+      <li class="p-5">
+        <span>监测关键词总字数:</span>
+        <span> {{ userInfo['capacity'] }} </span>
+      </li>
+      <li class="p-5">
+        <span>账号状态:</span>
+        <span> {{ userInfo['state'] | statusFilter }} </span>
+      </li>
+    </ul>
+    <!--
     <ul>
       <li>
-        账号信息
-      </li>
-      <li>
         账号: wdataworld
-      </li>
-      <li>
-        密码: ********** 修改
       </li>
       <li>
         昵称: 刘先生 修改
@@ -47,28 +68,46 @@
       <li>
         监测关键词总字数500个
       </li>
-      <li>
-        竞品分析次数0/1次
-      </li>
-
-      <li>
-        微博事件分析次数0/1次
-      </li>
-      <li>
-        全网事件分析次数1/1次
-      </li>
-    </ul>
-
-    <Button type="primary">
-      返回
-    </Button>
+    </ul> -->
   </Card>
 </template>
 
 <script>
 
+const user = [
+  { label: '账号:', key: 'username' },
+  { label: '姓名:', key: 'realname' },
+  { label: '手机号码:', key: 'mobile' },
+  { label: '邮箱:', key: 'email' }
+];
+
+export default {
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        1: '正常',
+        2: '禁用'
+      };
+      return statusMap[status];
+    }
+  },
+  data() {
+    return {
+      user
+    };
+  },
+  computed: {
+    userInfo() {
+      return this.$store.getters.userInfo;
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
 </style>

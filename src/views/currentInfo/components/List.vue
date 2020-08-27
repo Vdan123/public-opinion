@@ -30,12 +30,11 @@
     <div>
       <Card>
         <div class="flex">
-          <Checkbox>全选</Checkbox>
-          <a href="javascript:void(0)">默认收藏夹</a>
+          <!-- <a href="javascript:void(0)">默认收藏夹</a>
           <a href="javascript:void(0)">标记已读</a>
-          <a href="javascript:void(0)">删除</a>
+          <a href="javascript:void(0)">删除</a> -->
           <Page :total="100" :current="2" simple />
-          <Input
+          <!-- <Input
             style="width: 504px"
             placeholder="在结果中搜索，支持单个词组"
           />
@@ -45,7 +44,7 @@
             <Option value="month">按作者</Option>
           </Select>
           <Button slot="append" icon="ios-search" />
-          </Input>
+          </Input> -->
         </div>
 
         <Table
@@ -56,24 +55,29 @@
         >
           <template slot="title" slot-scope="{ row }">
             <div class="news-content">
-              <div class="news-content-title" v-html="row.title" />
-              <!-- <div class="new-content-title">
-                {{ row.auther}}
-              </div> -->
+              <template v-if="row.title !== ''">
+                <span class="news-content-title" v-html="row.title" />
+              </template>
+              <template v-else>
+                <span class="new-content-title">
+                  {{ row.auther }}
+                </span>
+              </template>
 
               <Button size="small">敏感</Button>
               <Button size="small">纠错</Button>
+
               <router-link :to="'/current/detail/'+row.id" target="_blank">
                 <div class="item-title" v-html="row.content" />
               </router-link>
-              <div class="news-item-tools font-size-0">
+              <!-- <div class="news-item-tools font-size-0">
                 <a href="javascript:void(0)">涉及词</a>
                 政府
                 <a href="javascript:void(0)">默认收藏夹</a>
                 <a href="javascript:void(0)">查看原文</a>
                 <a href="javascript:void(0)">标记已读</a>
                 <a href="javascript:void(0)">删除</a>
-              </div>
+              </div> -->
             </div>
           </template>
         </Table>
@@ -192,7 +196,7 @@ export default {
     padding: 0 5px;
     margin: 0 5px 0 0;
     font-size: 12px;
-    line-height: 1.57142857;
+    line-height: 1.5;
     -o-transition: all .2s linear;
     transition: all .2s linear;
   }
