@@ -2,7 +2,7 @@
   <div>
     <current-sidebar class="sidebar-container" />
     <div class="main-container">
-      <router-view />
+      <router-view :key="key" />
     </div>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'CurrentInfo',
   components: {
     CurrentSidebar
+  },
+  computed: {
+    key() {
+      return this.$route.path;
+    }
   },
   mounted() {
     this.$store.dispatch('group/getAllGroups');

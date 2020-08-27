@@ -25,6 +25,7 @@
     <div style="padding: 10px 0">
       <component
         :is="menuContent"
+        :key="menuContent"
         :edit-state="editStatus"
       />
     </div>

@@ -68,3 +68,21 @@ export function getDetails(data) {
     data
   });
 }
+
+// 预警设置
+export function setWarning(data) {
+  return request({
+    url: '/Keyword/setWarning',
+    method: 'post',
+    data
+  });
+}
+
+// 获取预警设置
+export function getWarning(data) {
+  return request({
+    url: '/Keyword/getWarning',
+    method: 'post',
+    data
+  });
+}
