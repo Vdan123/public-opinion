@@ -123,7 +123,6 @@
         </Card>
       </div>
 
-
       <div class="grid-div col-span-2">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
@@ -177,8 +176,6 @@ import ProjectList from './components/ProjectList';
 import RealTime from './components/RealTime';
 import MinGan from './components/MinGan';
 
-import countTo from 'vue-count-to';
-
 import { getLoginInfo,
   getPlanTotal,
   getZXMinGanInfoList,
@@ -195,8 +192,7 @@ export default {
     // WarningList,
     RealTime,
     MinGan,
-    NoMessage,
-    countTo
+    NoMessage
   },
   data() {
     return {

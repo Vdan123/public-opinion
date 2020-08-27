@@ -16,6 +16,24 @@ export function addGroup(data) {
   });
 }
 
+// 修改分组名称
+export function editGroup(data) {
+  return request({
+    url: '/Keyword/editGroup',
+    method: 'post',
+    data
+  });
+}
+
+// 删除分组名称
+export function delGroup(data) {
+  return request({
+    url: '/Keyword/delGroup',
+    method: 'post',
+    data
+  });
+}
+
 export function getKeywords(data) {
   return request({
     url: '/Keyword/getKeywords',

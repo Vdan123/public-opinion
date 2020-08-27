@@ -34,22 +34,17 @@
           <a href="javascript:void(0)">默认收藏夹</a>
           <a href="javascript:void(0)">标记已读</a>
           <a href="javascript:void(0)">删除</a>
-
-
           <Page :total="100" :current="2" simple  />
-
-
-          <Input 
-            v-model="value13" 
-            style="width: 504px" 
+          <Input
+            style="width: 504px"
             placeholder="在结果中搜索，支持单个词组"
           >
-            <Select slot="prepend" v-model="select3" style="width: 80px">
-              <Option value="day">按全文</Option>
-              <Option value="month">按标题</Option>
-              <Option value="month">按作者</Option>
-            </Select>
-            <Button slot="append" icon="ios-search" />
+          <Select slot="prepend" style="width: 80px">
+            <Option value="day">按全文</Option>
+            <Option value="month">按标题</Option>
+            <Option value="month">按作者</Option>
+          </Select>
+          <Button slot="append" icon="ios-search" />
           </Input>
         </div>
 

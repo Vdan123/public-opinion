@@ -10,7 +10,7 @@
       <Menu
         class="ml-auto"
         mode="horizontal"
-        active-name="TableList"
+        :active-name="activeName"
         @on-select="handleMenu"
       >
         <MenuItem
@@ -23,7 +23,10 @@
       </Menu>
     </div>
     <div style="padding: 10px 0">
-      <component :is="menuContent" :edit-state="editStatus" />
+      <component
+        :is="menuContent"
+        :edit-state="editStatus"
+      />
     </div>
   </div>
 </template>
@@ -55,6 +58,7 @@ export default {
     return {
       menu,
       menuContent: 'TableList',
+      activeName: 'TableList',
       editStatus: false,
       tableData: [],
       tableLoading: false,
@@ -68,6 +72,7 @@ export default {
         this.title = title;
         if (!_.isUndefined(title)) {
           this.handleArticle(id);
+          this.menuContent = this.activeName = 'TableList';
         }
       },
       deep: true
@@ -105,7 +110,7 @@ export default {
       this.getArticleList(params);
     },
     handleMenu(name) {
-      this.menuContent = name;
+      this.menuContent = this.activeName = name;
       if (name === 'Edit') {
         this.editStatus = true;
       }

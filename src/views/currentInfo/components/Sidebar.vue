@@ -26,6 +26,8 @@
         v-for="(item, index) in tableData"
         :key="index"
         :source-data="item"
+        @editGroup="handleEdit"
+        @deleteGroup="handleDel"
       />
     </Menu>
 
@@ -68,7 +70,11 @@
 </template>
 
 <script>
-import { addGroup, getGroupPlan } from '../api';
+import {
+  addGroup,
+  editGroup,
+  delGroup
+} from '../api';
 import SidebarItem from '@/views/currentInfo/components/SidebarItem';
 export default {
   name: 'CurrentSidebar',
@@ -83,9 +89,13 @@ export default {
       },
       validForm: {
         content: [{ required: true, message: '请填写分组名称', trigger: 'blur' }]
-      },
-      tableData: []
+      }
     };
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.group.navbarList;
+    }
   },
   mounted() {
     this.getGroupPlan();
@@ -97,27 +107,36 @@ export default {
           this.$Message.success(res.message);
           this.addGroupModal = false;
           this.$nextTick(() => {
-            this.getGroup();
+            this.getGroupPlan();
           });
         }
       });
     },
-    async getGroupPlan() {
-      await getGroupPlan({}).then(res => {
-        const { data } = res;
-        this.tableData = data;
 
-        // 默认进入第一个方案
-        if (!_.isEmpty(data)) {
-          const first = _.filter(data, el => !_.isEmpty(el.keywords));
-          const { plan_name: title } = _.head(first[0]['keywords']);
+    async editGroup(params) {
+      await editGroup(params).then(res => {
+        this.$Message.success(res.message);
+        this.$nextTick(() => {
+          this.getGroupPlan();
+        });
+      });
+    },
 
-          // // 在当前页面刷新时
-          // if (this.$route.path !== path) {
-          //   this.$router.push({path: '/current/search', query: { id, title }})
-          // }
+    async delGroup(params) {
+      await delGroup(params).then(res => {
+        if (res.state === 1) {
+          this.$Message.success(res.message);
+          this.$nextTick(() => {
+            this.getGroupPlan();
+          });
+        } else {
+          this.$Message.error(res.message);
         }
       });
+    },
+
+    async getGroupPlan() {
+      await this.$store.dispatch('group/getGroupPlan');
     },
     handleAddGroup() {
       this.addGroupModal = true;
@@ -133,6 +152,12 @@ export default {
     },
     handleCreate() {
       this.$router.push({ name: 'newEdition' });
+    },
+    handleEdit(value) {
+      this.editGroup(value);
+    },
+    handleDel(value) {
+      this.delGroup(value);
     }
   }
 };

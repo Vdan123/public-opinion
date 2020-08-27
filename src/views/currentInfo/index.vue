@@ -2,10 +2,6 @@
   <div>
     <current-sidebar class="sidebar-container" />
     <div class="main-container">
-      <!-- <Card>
-
-      <no-message />
-      </Card> -->
       <router-view />
     </div>
   </div>
@@ -13,13 +9,11 @@
 
 <script>
 import CurrentSidebar from './components/Sidebar';
-import NoMessage from '@/components/NoMessage';
 
 export default {
   name: 'CurrentInfo',
   components: {
-    CurrentSidebar,
-    NoMessage
+    CurrentSidebar
   },
   mounted() {
     this.$store.dispatch('group/getAllGroups');
