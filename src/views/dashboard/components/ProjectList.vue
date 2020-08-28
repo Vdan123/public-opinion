@@ -1,7 +1,11 @@
 <template>
   <div class="dashboard-project-list">
     <ul>
-      <li class="mb-10">
+      <li
+        v-for="(projectCount, index) in projectList"
+        :key="index"
+        class="mb-10"
+      >
         <div class="flex">
           <a href="javascript:void(0)">
             <span style="color: #666;">
@@ -15,8 +19,15 @@
         <div class="relative pt-1">
           <div class="overflow-hidden h-3 mb-4 text-xs flex rounded bg-blue-100">
             <div
-              :style="totalPercent"
-              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-400"
+              :style="totalPercent(projectCount.total)"
+              class="shadow-none
+              flex
+              flex-col
+              text-center
+              whitespace-nowrap
+              text-white
+              justify-center
+              bg-blue-400"
             />
           </div>
         </div>
@@ -28,27 +39,26 @@
 <script>
 export default {
   props: {
-    projectCount: {
-      type: Object,
-      default: () => {}
+    projectList: {
+      type: Array,
+      default: () => []
     },
     totalCount: {
       type: Number,
       default: 0
     }
   },
-  data() {
-    return {
-
-    };
-  },
-  computed: {
-    totalPercent() {
-      return { width: _.ceil(_.divide(this.projectCount.total, this.totalCount), 2) * 100 + '%' };
+  methods: {
+    totalPercent(params) {
+      return { width: _.ceil(_.divide(params, this.totalCount), 2) * 100 + '%' };
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.dashboard-project-list {
+  max-height: 400px;
+  overflow: scroll;
+}
 </style>

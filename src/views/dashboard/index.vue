@@ -52,9 +52,7 @@
           <template v-else>
             <Spin v-if="projectSpinShow" size="large" fix />
             <project-list
-              v-for="(item, index) in projectCount"
-              :key="index"
-              :project-count="item"
+              :project-list="projectCount"
               :total-count="totalCount"
             />
           </template>

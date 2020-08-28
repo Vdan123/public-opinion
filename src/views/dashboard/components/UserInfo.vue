@@ -49,16 +49,10 @@ export default {
       return statusMap[status];
     }
   },
-  data() {
-    return {
-    };
-  },
   computed: {
     userInfo() {
       return this.$store.getters.userInfo;
     }
-  },
-  methods: {
   }
 };
 </script>
