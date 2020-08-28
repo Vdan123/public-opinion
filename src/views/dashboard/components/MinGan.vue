@@ -35,6 +35,7 @@ export default {
 .swiper-container {
   height: 470px;
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 .min {
   width: 20px;

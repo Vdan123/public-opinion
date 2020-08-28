@@ -28,13 +28,12 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <!-- <template v-if="showNoMessage">
+          <template v-if="showNoMessage">
             <no-message />
           </template>
           <template v-else>
-            <warning-list />
-          </template> -->
-          <no-message />
+            <warning-list :warning-message="warningMessage" />
+          </template>
         </Card>
       </div>
 
@@ -170,14 +169,15 @@ import NoMessage from '@/components/NoMessage';
 import PieChart from '@/components/PieChart.vue';
 
 import ProjectList from './components/ProjectList';
-// import WarningList from './components/WarningList';
+import WarningList from './components/WarningList';
 import RealTime from './components/RealTime';
 import MinGan from './components/MinGan';
 
 import { getLoginInfo,
   getPlanTotal,
   getZXMinGanInfoList,
-  getRealTimeDataList } from './api';
+  getRealTimeDataList,
+  getWarningInfo } from './api';
 import { getPieData } from '@/api/getChartData';
 
 export default {
@@ -187,7 +187,7 @@ export default {
     Sensitive,
     PieChart,
     ProjectList,
-    // WarningList,
+    WarningList,
     RealTime,
     MinGan,
     NoMessage
@@ -210,6 +210,7 @@ export default {
       totalCount: undefined,
       currentMessage: undefined,
       sensitiveMessage: undefined,
+      warningMessage: undefined,
       startVal: 0,
       endVal: 2020
     };
@@ -221,7 +222,8 @@ export default {
       this.getPieData(),
       this.getPlanTotal(),
       this.getZXMinGanInfoList(),
-      this.getRealTimeDataList()
+      this.getRealTimeDataList(),
+      this.getWarningInfo()
     ]);
   },
   methods: {
@@ -307,6 +309,20 @@ export default {
         getRealTimeDataList({}).then(res => {
           this.realTimeState = res.data.length === 0;
           this.currentMessage = res.data;
+          this.currentSpinShow = false;
+          resolve();
+        }).catch(error => {
+          this.currentSpinShow = false;
+          reject(error);
+        });
+      });
+    },
+
+    getWarningInfo() {
+      this.currentSpinShow = true;
+      return new Promise((resolve, reject) => {
+        getWarningInfo({}).then(res => {
+          this.warningMessage = res.data;
           this.currentSpinShow = false;
           resolve();
         }).catch(error => {

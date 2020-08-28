@@ -58,7 +58,8 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-project-list {
-  max-height: 400px;
+  max-height: 470px;
   overflow: scroll;
+  overflow-x: hidden;
 }
 </style>
