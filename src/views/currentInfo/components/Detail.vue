@@ -3,7 +3,7 @@
     <div class="mb-5">
       <Breadcrumb>
         <BreadcrumbItem>舆情监测</BreadcrumbItem>
-        <BreadcrumbItem>##方案名##</BreadcrumbItem>
+        <BreadcrumbItem>详情</BreadcrumbItem>
       </Breadcrumb>
     </div>
 

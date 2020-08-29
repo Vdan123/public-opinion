@@ -1,16 +1,21 @@
 <template>
-  <div class="flex justify-center">
+  <div>
+    <h3>新预警信息</h3>
     <div>
-      该模块正在开发中...
-      <div />
+      {{ message }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    message: {
+      type: String,
+      default: ''
+    }
+  }
 };
-
 </script>
 
 <style lang="scss" scoped>
