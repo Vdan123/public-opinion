@@ -5,6 +5,7 @@
         尊敬的用户，您本次登录时间为 <span style="color: #F57676"> {{ loginData.time }} </span>，
         本次已登陆 <span style="color: #F57676">{{ loginData.duration }}</span> 小时，
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
+        {{ totalTime }}s 后此列表将自动刷新。
       </span>
       <div class="ml-auto mr-5 setting-icon">
         <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
@@ -28,11 +29,11 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="showNoMessage">
+          <template v-if="warningNoMessage">
             <no-message />
           </template>
           <template v-else>
-            <warning-list :warning-message="warningMessage" />
+            <swiper :swiper-list="warningMessage" :warning="true" />
           </template>
         </Card>
       </div>
@@ -129,7 +130,7 @@
             </Poptip>
           </p>
           <Spin v-if="sensitiveSpinShow" size="large" fix />
-          <min-gan :sensitive-message="sensitiveMessage" />
+          <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
         </Card>
       </div>
 
@@ -146,9 +147,7 @@
           </template>
           <template v-else>
             <Spin v-if="currentSpinShow" size="large" fix />
-            <real-time
-              :current-message="currentMessage"
-            />
+            <swiper :swiper-list="currentMessage" />
           </template>
         </Card>
       </div>
@@ -167,11 +166,9 @@ import UserInfo from '@/views/dashboard/components/UserInfo';
 import Sensitive from '@/components/Sensitive';
 import NoMessage from '@/components/NoMessage';
 import PieChart from '@/components/PieChart.vue';
+import Swiper from '@/components/Swiper';
 
 import ProjectList from './components/ProjectList';
-import WarningList from './components/WarningList';
-import RealTime from './components/RealTime';
-import MinGan from './components/MinGan';
 
 import { getLoginInfo,
   getPlanTotal,
@@ -187,10 +184,8 @@ export default {
     Sensitive,
     PieChart,
     ProjectList,
-    WarningList,
-    RealTime,
-    MinGan,
-    NoMessage
+    NoMessage,
+    Swiper
   },
   data() {
     return {
@@ -202,6 +197,7 @@ export default {
       currentSpinShow: false,
       sensitiveSpinShow: false,
       realTimeState: false,
+      warningNoMessage: false,
       loginData: {},
       expectedAttributes: undefined,
       sourceWeb: undefined,
@@ -212,7 +208,8 @@ export default {
       sensitiveMessage: undefined,
       warningMessage: undefined,
       startVal: 0,
-      endVal: 2020
+      endVal: 2020,
+      totalTime: 60
     };
   },
   mounted() {
@@ -225,6 +222,15 @@ export default {
       this.getRealTimeDataList(),
       this.getWarningInfo()
     ]);
+    this.timer = window.setInterval(() => {
+      this.totalTime--;
+      if (this.totalTime < 0) {
+        this.totalTime = 60;
+      }
+    }, 1000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   },
   methods: {
     async getLoginInfo() {
@@ -322,8 +328,14 @@ export default {
       this.currentSpinShow = true;
       return new Promise((resolve, reject) => {
         getWarningInfo({}).then(res => {
+          if (_.isEmpty(res.data)) {
+            this.warningNoMessage = true;
+            return;
+          }
+
           this.warningMessage = res.data;
           this.currentSpinShow = false;
+
           resolve();
         }).catch(error => {
           this.currentSpinShow = false;

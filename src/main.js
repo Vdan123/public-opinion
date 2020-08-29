@@ -15,6 +15,7 @@ Vue.use(new VueSocketIO({
   connection: SocketInstance
 }));
 
+// Toast
 import Toast from 'vue-toastification';
 // Import the CSS or use your own!
 import 'vue-toastification/dist/index.css';
@@ -22,13 +23,13 @@ import 'vue-toastification/dist/index.css';
 Vue.use(Toast, {
   position: 'bottom-right',
   timeout: false,
-  closeOnClick: true,
+  closeOnClick: false,
   pauseOnHover: true,
   draggable: false,
   showCloseButtonOnHover: false,
   hideProgressBar: true,
   closeButton: 'button',
-  icon: true,
+  icon: false,
   maxToasts: 20,
   newestOnTop: true
 });
