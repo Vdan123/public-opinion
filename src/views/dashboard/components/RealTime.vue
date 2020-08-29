@@ -5,7 +5,9 @@
         v-for="(item, index) in currentMessage"
         :key="index"
       >
-        <span v-html="item.content" />
+        <router-link :to="'/current/detail/'+item.id" target="_blank">
+          <span v-html="item.content" />
+        </router-link>
         <template slot="action">
           <li v-html="item.ins_time" />
           <li v-html="item.sourceName" />
@@ -22,13 +24,6 @@ export default {
       type: Array,
       default: () => []
     }
-  },
-  data() {
-    return {
-
-    };
-  },
-  computed: {
   }
 };
 </script>

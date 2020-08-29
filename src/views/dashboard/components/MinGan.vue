@@ -8,7 +8,9 @@
         <div style="width: 30px; float: left">
           <span class="min">敏</span>
         </div>
-        <span v-html="item.content" />
+        <router-link :to="'/current/detail/'+item.id" target="_blank">
+          <span v-html="item.content" />
+        </router-link>
         <template slot="action">
           <li v-html="item.ins_time" />
           <li v-html="item.sourceName" />
@@ -25,13 +27,6 @@ export default {
       type: Array,
       default: () => []
     }
-  },
-  data() {
-    return {
-
-    };
-  },
-  computed: {
   }
 };
 </script>
@@ -40,6 +35,7 @@ export default {
 .swiper-container {
   height: 470px;
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 .min {
   width: 20px;

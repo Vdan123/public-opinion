@@ -27,6 +27,9 @@
         :is="menuContent"
         :key="menuContent"
         :edit-state="editStatus"
+        @changeAttribute="changeAttribute"
+        @changePage="changePage"
+        @handleSearch="handleSearch"
       />
     </div>
   </div>
@@ -41,6 +44,17 @@ const menu = [
   { label: '预警设置', key: 'ForeWarning' },
   { label: '修改方案', key: 'Edit' }
 ];
+
+const initParams = {
+  testingTime: 1,
+  infoType: 0,
+  searchType: 0,
+  isRead: 0,
+  infoSort: 1,
+  source: 1,
+  page: 1,
+  limit: 50
+};
 
 export default {
   name: 'Project',
@@ -58,21 +72,25 @@ export default {
   data() {
     return {
       menu,
+      initParams,
+      copyParams: Object.assign({}, initParams),
       menuContent: 'TableList',
       activeName: 'TableList',
       editStatus: false,
       tableData: [],
       tableLoading: false,
-      title: ''
+      title: '',
+      currentPage: 1
     };
   },
   watch: {
     $route: {
       handler(route) {
-        const { id, title } = route.query;
+        const { title } = route.query;
         this.title = title;
         if (!_.isUndefined(title)) {
-          this.handleArticle(id);
+          this.handleArticle(this.initParams);
+          this.currentPage = 1;
           this.menuContent = this.activeName = 'TableList';
         }
       },
@@ -80,9 +98,7 @@ export default {
     }
   },
   mounted() {
-    const { id, title } = this.$route.query;
-    this.title = title;
-    this.handleArticle(id);
+    this.handleArticle(this.initParams);
   },
   methods: {
     async getArticleList(params) {
@@ -96,25 +112,43 @@ export default {
         });
       });
     },
-    handleArticle(keywordId) {
-      const params = {
-        keywordId,
-        testingTime: 1,
-        infoType: 0,
-        searchType: 0,
-        isRead: 0,
-        infoSort: 1,
-        source: 1,
-        page: 1,
-        limit: 50
-      };
-      this.getArticleList(params);
+
+    handleArticle(params) {
+      const { id, title } = this.$route.query;
+      this.title = title;
+
+      const query = Object.assign({}, params, { keywordId: id });
+      this.getArticleList(query);
     },
+
     handleMenu(name) {
       this.menuContent = this.activeName = name;
       if (name === 'Edit') {
         this.editStatus = true;
       }
+    },
+
+    changeAttribute(value) {
+      _.find(this.tableData.data, el => {
+        if (el['id'] === value['articleId']) {
+          return el;
+        }
+      })['attribute'] = _.toNumber(value.infoType);
+    },
+
+    changePage(page) {
+      this.currentPage = page;
+      this.copyParams.page = page;
+      this.$nextTick(() => {
+        this.handleArticle(this.copyParams);
+      });
+    },
+    handleSearch(state) {
+      const query = Object.assign({}, this.copyParams, state);
+
+      this.$nextTick(() => {
+        this.handleArticle(query);
+      });
     }
   }
 };

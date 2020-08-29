@@ -34,3 +34,12 @@ export function getRealTimeDataList(data) {
     data
   });
 }
+
+// 预警列表获取
+export function getWarningInfo(data) {
+  return request({
+    url: '/Api/getWarningInfo',
+    method: 'post',
+    data
+  });
+}

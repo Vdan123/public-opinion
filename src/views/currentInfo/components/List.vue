@@ -14,9 +14,9 @@
               v-for="button in item.value"
               :key="button.label"
               class="search-container"
-              type="text"
+              :type="collections[item.key] === button.text ? 'primary' : 'default'"
               size="small"
-              @click="collectionKeys(item, button)"
+              @click="collectionKeys(item.key, button.text)"
             >
               {{ button.label }}
             </Button>
@@ -29,11 +29,17 @@
     </div>
     <div>
       <Card>
-        <div class="flex">
+        <div class="flex justify-center mb-2">
+          <Page
+            simple
+            :total="tableTotal"
+            :current="currentPage"
+            :page-size="50"
+            @on-change="changePage"
+          />
           <!-- <a href="javascript:void(0)">默认收藏夹</a>
           <a href="javascript:void(0)">标记已读</a>
           <a href="javascript:void(0)">删除</a> -->
-          <Page :total="100" :current="2" simple />
           <!-- <Input
             style="width: 504px"
             placeholder="在结果中搜索，支持单个词组"
@@ -46,7 +52,6 @@
           <Button slot="append" icon="ios-search" />
           </Input> -->
         </div>
-
         <Table
           border
           :columns="tableColumns"
@@ -59,25 +64,53 @@
                 <span class="news-content-title" v-html="row.title" />
               </template>
               <template v-else>
-                <span class="new-content-title">
+                <span class="news-content-title">
                   {{ row.auther }}
                 </span>
               </template>
 
-              <Button size="small">敏感</Button>
+              <Dropdown trigger="click">
+                <Button
+                  size="small"
+                  class="mx-2"
+                  :type="row.attribute === 1 ||
+                    row.attribute === 2 ?
+                      'primary' : 'error'"
+                >
+                  {{ row.attribute | filterText }}
+                  <Icon type="ios-arrow-down" />
+                </Button>
+                <DropdownMenu slot="list">
+                  <DropdownItem
+                    v-for="(item, key) in textState"
+                    :key="key"
+                    :name="key"
+                    @click.native="handleChangeState(key, row)"
+                  >
+                    {{ item }}
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+
               <Button size="small">纠错</Button>
 
               <router-link :to="'/current/detail/'+row.id" target="_blank">
                 <div class="item-title" v-html="row.content" />
               </router-link>
-              <!-- <div class="news-item-tools font-size-0">
-                <a href="javascript:void(0)">涉及词</a>
-                政府
-                <a href="javascript:void(0)">默认收藏夹</a>
-                <a href="javascript:void(0)">查看原文</a>
-                <a href="javascript:void(0)">标记已读</a>
-                <a href="javascript:void(0)">删除</a>
-              </div> -->
+              <div class="news-item-tools font-size-0">
+                <ul class="flex my-2">
+                  <li
+                    v-for="(item, index) in tools"
+                    :key="index"
+                    class="pr-1"
+                  >
+                    <a href="javascript:void(0)">
+                      {{ item.label }}
+                    </a>
+                    <Divider type="vertical" />
+                  </li>
+                </ul>
+              </div>
             </div>
           </template>
         </Table>
@@ -87,61 +120,64 @@
 </template>
 
 <script>
+import { setArticleAttribute } from '../api';
+
 const SearchButtons = [
   {
     label: '监测时间：',
     key: 'testingTime',
     value: [
-      { label: '今天', text: 1, isActive: true },
-      { label: '24小时', text: 2, isActive: false },
-      { label: '2天', text: 3, isActive: false },
-      { label: '3天', text: 4, isActive: false },
-      { label: '7天', text: 5, isActive: false },
-      { label: '自定义', text: 6, isActive: false }
+      { label: '今天', text: 1 },
+      { label: '24小时', text: 2 },
+      { label: '2天', text: 3 },
+      { label: '3天', text: 4 },
+      { label: '7天', text: 5 },
+      { label: '自定义', text: 6 }
     ]
   },
   {
     label: '信息属性：',
     key: 'infoType',
     value: [
-      { label: '全部', text: 0, isActive: true },
-      { label: '非敏感', text: 1, isActive: false },
-      { label: '敏感', text: 2, isActive: false }
+      { label: '全部', text: 0 },
+      { label: '非敏感', text: 1 },
+      { label: '中性', text: 2 },
+      { label: '敏感', text: 3 }
     ]
   },
   {
     label: '信息排序：',
     key: 'infoSort',
     value: [
-      { label: '时间降序', text: 1, isActive: true },
-      { label: '时间升序', text: 2, isActive: false },
-      { label: '相似文章数', text: 3, isActive: false },
-      { label: '采集降序', text: 4, isActive: false }
+      { label: '时间降序', text: 1 },
+      { label: '时间升序', text: 2 },
+      { label: '相似文章数', text: 3 },
+      { label: '采集降序', text: 4 }
     ]
   },
   {
     label: '匹配方式：',
     key: 'searchType',
     value: [
-      { label: '按全文', text: 0, isActive: true },
-      { label: '按标题', text: 1, isActive: false },
-      { label: '按正文', text: 2, isActive: false }
+      { label: '按全文', text: 0 },
+      { label: '按标题', text: 1 },
+      { label: '按正文', text: 2 }
     ]
   },
   {
     label: '信息浏览：',
     key: 'isRead',
     value: [
-      { label: '全部', text: 0, isActive: true },
-      { label: '未读', text: 1, isActive: false },
-      { label: '已读', text: 2, isActive: false }
+      { label: '全部', text: 0 },
+      { label: '未读', text: 1 },
+      { label: '已读', text: 2 }
     ]
   },
   {
     label: '信息来源：',
     key: 'source',
     value: [
-      { label: '新浪微博', text: 1, isActive: true }
+      { label: '新浪微博', text: 1 }
     ]
   }
 ];
@@ -159,14 +195,47 @@ const tableColumns = [
   { title: '时间', key: 'ins_time', maxWidth: 120, align: 'center' }
 ];
 
+const textState = {
+  1: '非敏感',
+  2: '中性',
+  3: '敏感'
+};
+
+const tools = [
+  // { label: '涉及词' },
+  { label: '默认收藏夹' },
+  // { label: '查看原文' },
+  { label: '标记已读' },
+  { label: '删除' }
+];
+
 export default {
   name: 'TableList',
   inject: ['project'],
+  filters: {
+    filterText(state) {
+      const textState = {
+        1: '非敏感',
+        2: '中性',
+        3: '敏感'
+      };
+      return textState[state];
+    }
+  },
   data() {
-    this.collections = {};
     return {
       SearchButtons,
-      tableColumns
+      tableColumns,
+      textState,
+      tools,
+      collections: {
+        testingTime: 1,
+        infoType: 0,
+        searchType: 0,
+        isRead: 0,
+        infoSort: 1,
+        source: 1
+      }
     };
   },
   computed: {
@@ -175,14 +244,42 @@ export default {
     },
     tableLoading() {
       return this.project.tableLoading;
+    },
+    tableTotal() {
+      return this.project.tableData.total;
+    },
+    currentPage() {
+      return this.project.currentPage;
     }
   },
   methods: {
-    collectionKeys({ key }, { text }) {
-
+    async setArticleAttribute(params) {
+      await setArticleAttribute(params).then(res => {
+        if (res.state === 1) {
+          this.$emit('changeAttribute', params);
+        }
+      });
     },
+
+    handleChangeState(state, { id, attribute }) {
+      if (_.toNumber(state) !== attribute) {
+        this.setArticleAttribute({
+          articleId: id,
+          infoType: state
+        });
+      }
+    },
+
+    changePage(page) {
+      this.$emit('changePage', page);
+    },
+
+    collectionKeys(key, value) {
+      this.collections[key] = value;
+    },
+
     handleSearch() {
-      this.$Message.warning('暂无权限操作，请联系管理员');
+      this.$emit('handleSearch', this.collections);
     }
   }
 };

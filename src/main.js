@@ -5,6 +5,34 @@ import store from './store';
 
 import _ from 'lodash';
 
+// webSocket
+import socketio from 'socket.io-client';
+import VueSocketIO from 'vue-socket.io';
+
+const SocketInstance = socketio.connect('http://192.168.15.155:2120');
+
+Vue.use(new VueSocketIO({
+  connection: SocketInstance
+}));
+
+import Toast from 'vue-toastification';
+// Import the CSS or use your own!
+import 'vue-toastification/dist/index.css';
+
+Vue.use(Toast, {
+  position: 'bottom-right',
+  timeout: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: false,
+  showCloseButtonOnHover: false,
+  hideProgressBar: true,
+  closeButton: 'button',
+  icon: true,
+  maxToasts: 20,
+  newestOnTop: true
+});
+
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import '../src/assets/my-theme/index.less';

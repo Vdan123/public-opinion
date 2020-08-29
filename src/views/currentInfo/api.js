@@ -95,3 +95,12 @@ export function getWarning(data) {
     data
   });
 }
+
+// 更改属性状态
+export function setArticleAttribute(data) {
+  return request({
+    url: '/Article/setArticleAttribute',
+    method: 'post',
+    data
+  });
+}
