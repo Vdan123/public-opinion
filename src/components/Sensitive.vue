@@ -94,9 +94,9 @@ export default {
         series: [{
           name: '敏感', itemStyle: {
             normal: {
-              color: '#3592f0',
+              color: '#f57676',
               lineStyle: {
-                color: '#3592f0',
+                color: '#f57676',
                 width: 2
               }
             }

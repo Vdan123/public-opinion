@@ -64,10 +64,10 @@ export default {
     };
   },
   components: {
-    TableList: () => import('@/views/currentInfo/components/List'),
-    Analysis: () => import('@/views/currentInfo/components/Analysis'),
-    ForeWarning: () => import('@/views/currentInfo/components/ForeWarning'),
-    Edit: () => import('@/views/new_edition/index')
+    TableList: () => import(/* webpackChunkName: 'currentInfo' */ '@/views/currentInfo/components/List'),
+    Analysis: () => import(/* webpackChunkName: 'currentInfo' */ '@/views/currentInfo/components/Analysis'),
+    ForeWarning: () => import(/* webpackChunkName: 'currentInfo' */ '@/views/currentInfo/components/ForeWarning'),
+    Edit: () => import(/* webpackChunkName: 'currentInfo' */ '@/views/new_edition/index')
   },
   data() {
     return {
@@ -144,7 +144,7 @@ export default {
       });
     },
     handleSearch(state) {
-      const query = Object.assign({}, this.copyParams, state);
+      const query = Object.assign(this.copyParams, state);
 
       this.$nextTick(() => {
         this.handleArticle(query);

@@ -1,8 +1,9 @@
 import router from './router';
+import store from './store';
 import { checkStorage } from '@/utils/localStorage';
 import getPageTitle from '@/utils/get-page-title';
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title);
 
@@ -15,6 +16,7 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath }
       });
     } else {
+      await store.dispatch('user/getUserDetails');
       next();
     }
   } else {

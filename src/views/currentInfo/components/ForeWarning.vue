@@ -309,6 +309,13 @@ export default {
     async setWarning(params) {
       const status = { true: 1, false: 0 };
 
+      // 如果 i-switch 状态为关闭，则清空里面的数据
+      this.notification.map(el => {
+        if (!el['isActive']) {
+          params[el['key']] = '';
+        }
+      });
+
       await setWarning(Object.assign({}, params, {
         keywordId: this.$route.query.id,
         system: status[_.last(this.notification)['isActive']]

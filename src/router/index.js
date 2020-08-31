@@ -12,14 +12,17 @@ const constantRoutes = [
     hidden: true
   },
   {
+    path: '/',
+    redirect: '/current'
+  },
+  {
     path: '/404',
     component: () => import('@/views/error_page/404'),
     hidden: true
   },
   {
-    path: '/',
+    path: '/dashboard',
     component: Layouts,
-    redirect: '/dashboard',
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),

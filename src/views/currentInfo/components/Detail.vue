@@ -119,6 +119,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a:link {
+  color: #007db5;
+  text-decoration: underline;
+  text-decoration-color: #a2dffb;
+}
 .detail-news {
   position: relative;
   margin-top: 30px;
