@@ -73,16 +73,16 @@ export default {
         },
         breakpoints: {
           1280: {
-            slidesPerView: 5,
+            slidesPerView: 5
           },
           1024: {
-            slidesPerView: 4,
+            slidesPerView: 4
           },
           768: {
-            slidesPerView: 3,
+            slidesPerView: 3
           }
         }
-      },
+      }
     };
   }
 };
