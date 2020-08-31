@@ -1,11 +1,9 @@
 import { login, logout, getUserDetails } from '@/api/user';
 import { checkStorage, saveToStorage, removeStorage } from '@/utils/localStorage';
 
-const userInfo = 'userInfo';
-
 const getDefaultState = () => {
   return {
-    userInfo: checkStorage(userInfo),
+    userInfo: {},
     loginState: checkStorage('loginState')
   };
 };
@@ -24,9 +22,6 @@ const actions = {
     const { username, password, verificationCode } = userInfo;
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password, verificationCode }).then(response => {
-        if (response.state === 1) {
-          dispatch('getUserDetails');
-        }
         resolve(saveToStorage('loginState', response.state));
       }).catch(error => {
         console.log(error, 'error');
@@ -38,7 +33,6 @@ const actions = {
   logout({ commit }) {
     return new Promise((resolve, reject) => {
       logout().then(() => {
-        removeStorage(userInfo);
         removeStorage('loginState');
         resolve();
       }).catch(error => {
@@ -51,7 +45,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getUserDetails().then(res => {
         commit('SET_NAME', res.data);
-        saveToStorage(userInfo, res.data);
         resolve();
       }).catch(error => {
         console.log(error, 'error');

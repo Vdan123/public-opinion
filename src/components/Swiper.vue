@@ -66,7 +66,7 @@ export default {
         autoHeight: true,
         hide: true,
         loop: true,
-        mousewheel: true,
+        // mousewheel: true,
         autoplay: {
           delay: 2500,
           disableOnInteraction: false
