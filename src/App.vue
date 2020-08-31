@@ -10,14 +10,17 @@ import Notice from '@/components/Notice';
 export default {
   data() {
     return {
-      isConnected: false
+      isConnected: false,
+      toastArray: []
     };
   },
   sockets: {
     connect() {
       // Fired when the socket connects.
+
+      const { id } = this.$store.getters.userInfo;
       this.isConnected = true;
-      this.$socket.emit('login', '123');
+      this.$socket.emit('login', id);
     },
 
     disconnect() {
@@ -34,13 +37,26 @@ export default {
       this.sockets.subscribe('messageChannel', (data) => {
         this.$refs.audio.currentTime = 0; // 从头开始播放提示音
         this.$refs.audio.play(); // 播放
+
+        if (_.isEmpty(this.toastArray)) {
+          this.toastArray = data;
+        } else {
+          data.map(el => {
+            this.toastArray.push(el);
+          });
+        }
+
         this.$toast({
           component: Notice,
           props: {
-            message: '#河北大学北街#说是两个学校用一个生活区 食堂人流量那么大 饭点食堂本就是很拥挤如果没有北街来缓解食堂压力 '
+            message: this.toastArray
+          }
+        },
+        {
+          onClose: () => {
+            this.toastArray = [];
           }
         });
-        this.$toast(data);
       });
     }
   }

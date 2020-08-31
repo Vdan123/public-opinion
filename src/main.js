@@ -9,7 +9,7 @@ import _ from 'lodash';
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 
-const SocketInstance = socketio.connect('http://192.168.15.155:2120');
+const SocketInstance = socketio.connect('http://59.110.223.44:9920');
 
 Vue.use(new VueSocketIO({
   connection: SocketInstance
@@ -26,12 +26,20 @@ Vue.use(Toast, {
   closeOnClick: false,
   pauseOnHover: true,
   draggable: false,
-  showCloseButtonOnHover: false,
   hideProgressBar: true,
   closeButton: 'button',
   icon: false,
-  maxToasts: 20,
-  newestOnTop: true
+  newestOnTop: false,
+  filterBeforeCreate: (toast, toasts) => {
+    if (toasts.filter(
+      t => t.type === toast.type
+    ).length !== 0) {
+      // Returning false discards the toast
+      return false;
+    }
+    // You can modify the toast if you want
+    return toast;
+  }
 });
 
 import ViewUI from 'view-design';

@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div class="notice-container">
     <h3>新预警信息</h3>
     <div>
-      {{ message }}
+      <ul>
+        <li v-for="(item, index) in message" :key="index">
+          {{ item }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -11,8 +15,8 @@
 export default {
   props: {
     message: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     }
   }
 };
