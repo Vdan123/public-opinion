@@ -144,7 +144,7 @@ export default {
       });
     },
     handleSearch(state) {
-      const query = Object.assign({}, this.copyParams, state);
+      const query = Object.assign(this.copyParams, state);
 
       this.$nextTick(() => {
         this.handleArticle(query);

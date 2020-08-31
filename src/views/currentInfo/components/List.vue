@@ -21,8 +21,9 @@
               {{ button.label }}
             </Button>
           </ListItem>
-          <ListItem>
+          <ListItem class="flex justify-center mt-5">
             <Button type="primary" @click="handleSearch">查询</Button>
+            <Button class="ml-2">清空查询条件</Button>
           </ListItem>
         </List>
       </Card>

@@ -43,8 +43,7 @@ service.interceptors.response.use(
       }
       Message.error({
         content: res.message,
-        closable: true,
-        duration: 0
+        duration: 5
       });
       return Promise.reject(new Error(res.message));
     } else {
