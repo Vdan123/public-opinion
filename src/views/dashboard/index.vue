@@ -29,7 +29,7 @@
               <span class="iconfont icon-icon-test11" />
             </Poptip>
           </p>
-          <template v-if="warningNoMessage">
+          <template v-if="warningMessage.length === 0">
             <no-message />
           </template>
           <template v-else>
@@ -130,7 +130,12 @@
             </Poptip>
           </p>
           <Spin v-if="sensitiveSpinShow" size="large" fix />
-          <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
+          <template v-if="sensitiveState">
+            <no-message />
+          </template>
+          <template>
+            <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
+          </template>
         </Card>
       </div>
 
@@ -196,8 +201,10 @@ export default {
       projectSpinShow: false,
       currentSpinShow: false,
       sensitiveSpinShow: false,
+
       realTimeState: false,
-      warningNoMessage: false,
+      sensitiveState: false,
+
       loginData: {},
       expectedAttributes: undefined,
       sourceWeb: undefined,
@@ -206,11 +213,15 @@ export default {
       totalCount: undefined,
       currentMessage: undefined,
       sensitiveMessage: undefined,
-      warningMessage: undefined,
       startVal: 0,
       endVal: 2020,
       totalTime: 60
     };
+  },
+  computed: {
+    warningMessage() {
+      return this.$store.state.notice.warningList;
+    }
   },
   mounted() {
     this.getLoginInfo();
@@ -299,8 +310,13 @@ export default {
       this.sensitiveSpinShow = true;
       return new Promise((resolve, reject) => {
         getZXMinGanInfoList({}).then(res => {
-          this.sensitiveMessage = res.data;
           this.sensitiveSpinShow = false;
+
+          if (_.isEmpty(res.data)) {
+            this.sensitiveState = true;
+            return;
+          }
+          this.sensitiveMessage = res.data;
           resolve();
         }).catch(error => {
           this.sensitiveSpinShow = false;
@@ -324,34 +340,20 @@ export default {
       });
     },
 
-    getWarningInfo() {
-      this.currentSpinShow = true;
-      return new Promise((resolve, reject) => {
-        getWarningInfo({}).then(res => {
-          if (_.isEmpty(res.data)) {
-            this.warningNoMessage = true;
-            return;
-          }
-
-          this.warningMessage = res.data;
-          this.currentSpinShow = false;
-
-          resolve();
-        }).catch(error => {
-          this.currentSpinShow = false;
-          reject(error);
-        });
-      });
+    async getWarningInfo() {
+      await this.$store.dispatch('notice/getWarningInfo');
     },
 
     handleSetting() {
       this.projectSelected = true;
     },
+
     getSourceData({ attributes, sources, attributeCharts } = {}) {
       this.getAttributes(attributes);
       this.getSources(sources);
       this.getAttributeCharts(attributeCharts);
     },
+
     getAttributes(attributes) {
       const attr = { 1: '非敏感', 2: '中性', 3: '敏感' };
       this.expectedAttributes = {
@@ -365,6 +367,7 @@ export default {
         })
       };
     },
+
     getSources(source) {
       const web = { 1: '新浪微博', 2: '今日头条' };
       this.sourceWeb = {

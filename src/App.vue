@@ -10,21 +10,20 @@ import Notice from '@/components/Notice';
 export default {
   data() {
     return {
-      isConnected: false
+      toastArray: []
     };
   },
   sockets: {
     connect() {
-      // Fired when the socket connects.
-      this.isConnected = true;
-      this.$socket.emit('login', '123');
+      const { id } = this.$store.getters.userInfo;
+      this.$socket.emit('login', id);
+      console.log('建立连接');
     },
 
     disconnect() {
-      this.isConnected = false;
+      this.unSubscribeChannel();
     },
 
-    // Fired when the server sends something on the "messageChannel" channel.
     messageChannel() {
       this.subscribeChannel();
     }
@@ -34,18 +33,49 @@ export default {
       this.sockets.subscribe('messageChannel', (data) => {
         this.$refs.audio.currentTime = 0; // 从头开始播放提示音
         this.$refs.audio.play(); // 播放
+
+        if (_.isEmpty(this.toastArray)) {
+          this.toastArray = JSON.parse(data);
+        } else {
+          JSON.parse(data).map(el => {
+            this.toastArray.push(el);
+          });
+        }
+
         this.$toast({
           component: Notice,
           props: {
-            message: '#河北大学北街#说是两个学校用一个生活区 食堂人流量那么大 饭点食堂本就是很拥挤如果没有北街来缓解食堂压力 '
+            message: this.toastArray
+          },
+          listeners: {
+            closeToast: this.closeToast
           }
         });
-        this.$toast(data);
+
+        this.$nextTick(() => {
+          this.dispatch('notice/getWarningInfo');
+        });
       });
+    },
+    unSubscribeChannel() {
+      console.log('解除连接');
+      this.sockets.unsubscribe('messageChannel');
+    },
+    closeToast() {
+      this.toastArray = [];
+      this.$toast.clear();
     }
   }
 };
 </script>
 
 <style lang="scss">
+/* Applied to the toast body when using regular strings as content */
+.Vue-Toastification__toast--default.my-custom-toast {
+  height: 210px;
+  overflow: scroll;
+  // background-color: #f7f7f7;
+  border-radius: 10px;
+  // color: #333
+}
 </style>
