@@ -22,12 +22,13 @@ import 'vue-toastification/dist/index.css';
 
 Vue.use(Toast, {
   position: 'bottom-right',
+  toastClassName: 'my-custom-toast',
   timeout: false,
   closeOnClick: false,
   pauseOnHover: true,
   draggable: false,
   hideProgressBar: true,
-  closeButton: 'button',
+  closeButton: false,
   icon: false,
   newestOnTop: false,
   filterBeforeCreate: (toast, toasts) => {

@@ -10,24 +10,20 @@ import Notice from '@/components/Notice';
 export default {
   data() {
     return {
-      isConnected: false,
       toastArray: []
     };
   },
   sockets: {
     connect() {
-      // Fired when the socket connects.
-
       const { id } = this.$store.getters.userInfo;
-      this.isConnected = true;
       this.$socket.emit('login', id);
+      console.log('建立连接');
     },
 
     disconnect() {
-      this.isConnected = false;
+      this.unSubscribeChannel();
     },
 
-    // Fired when the server sends something on the "messageChannel" channel.
     messageChannel() {
       this.subscribeChannel();
     }
@@ -39,9 +35,9 @@ export default {
         this.$refs.audio.play(); // 播放
 
         if (_.isEmpty(this.toastArray)) {
-          this.toastArray = data;
+          this.toastArray = JSON.parse(data);
         } else {
-          data.map(el => {
+          JSON.parse(data).map(el => {
             this.toastArray.push(el);
           });
         }
@@ -50,18 +46,36 @@ export default {
           component: Notice,
           props: {
             message: this.toastArray
-          }
-        },
-        {
-          onClose: () => {
-            this.toastArray = [];
+          },
+          listeners: {
+            closeToast: this.closeToast
           }
         });
+
+        this.$nextTick(() => {
+          this.dispatch('notice/getWarningInfo');
+        });
       });
+    },
+    unSubscribeChannel() {
+      console.log('解除连接');
+      this.sockets.unsubscribe('messageChannel');
+    },
+    closeToast() {
+      this.toastArray = [];
+      this.$toast.clear();
     }
   }
 };
 </script>
 
 <style lang="scss">
+/* Applied to the toast body when using regular strings as content */
+.Vue-Toastification__toast--default.my-custom-toast {
+  height: 210px;
+  overflow: scroll;
+  // background-color: #f7f7f7;
+  border-radius: 10px;
+  // color: #333
+}
 </style>
