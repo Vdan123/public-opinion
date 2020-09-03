@@ -5,7 +5,7 @@
         尊敬的用户，您本次登录时间为 <span style="color: #F57676"> {{ loginData.time }} </span>，
         本次已登陆 <span style="color: #F57676">{{ loginData.duration }}</span> 小时，
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
-        {{ totalTime }}s 后此列表将自动刷新。
+        <span style="color: #F57676"> {{ totalTime }}s </span>后此列表将自动刷新。
       </span>
       <div class="ml-auto mr-5 setting-icon">
         <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
@@ -178,8 +178,8 @@ import ProjectList from './components/ProjectList';
 import { getLoginInfo,
   getPlanTotal,
   getZXMinGanInfoList,
-  getRealTimeDataList,
-  getWarningInfo } from './api';
+  getRealTimeDataList
+} from './api';
 import { getPieData } from '@/api/getChartData';
 
 export default {

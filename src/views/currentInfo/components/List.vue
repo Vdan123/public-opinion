@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { setArticleAttribute } from '../api';
+import { setArticleAttribute, getSource } from '../api';
 
 const SearchButtons = [
   {
@@ -178,7 +178,9 @@ const SearchButtons = [
     label: '信息来源：',
     key: 'source',
     value: [
-      { label: '新浪微博', text: 1 }
+      { label: '全部', text: 0 },
+      { label: '新浪微博', text: 1 },
+      { label: '今日头条', text: 2 }
     ]
   }
 ];
@@ -235,7 +237,7 @@ export default {
         searchType: 0,
         isRead: 0,
         infoSort: 1,
-        source: 1
+        source: 0
       }
     };
   },
@@ -253,6 +255,9 @@ export default {
       return this.project.currentPage;
     }
   },
+  // mounted() {
+  //   this.getSource()
+  // },
   methods: {
     async setArticleAttribute(params) {
       await setArticleAttribute(params).then(res => {
@@ -261,6 +266,12 @@ export default {
         }
       });
     },
+
+    // async getSource() {
+    //   await getSource({}).then(res => {
+    //     console.log(res);
+    //   })
+    // },
 
     handleChangeState(state, { id, attribute }) {
       if (_.toNumber(state) !== attribute) {

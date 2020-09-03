@@ -64,6 +64,15 @@ Vue.use(ViewUI, {
   capture: false
 });
 
+router.beforeEach((to, from, next) => {
+  ViewUI.LoadingBar.start();
+  next();
+});
+
+router.afterEach(route => {
+  ViewUI.LoadingBar.finish();
+});
+
 // Global variable
 Object.defineProperty(Vue.prototype, '_', { value: _ });
 
