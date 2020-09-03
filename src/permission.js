@@ -12,12 +12,11 @@ router.beforeEach(async(to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (hasUser !== 1) {
       next({
-        path: '/login',
-        query: { redirect: to.fullPath }
+        path: '/login'
       });
     } else {
-      await store.dispatch('user/getUserDetails');
       next();
+      await store.dispatch('user/getUserDetails');
     }
   } else {
     next();

@@ -90,8 +90,8 @@ export default {
     };
     return {
       loginForm: {
-        username: 'fengxiaoyu',
-        password: '123456',
+        username: '',
+        password: '',
         verificationCode: 'a'
       },
       loginRules: {

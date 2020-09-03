@@ -49,9 +49,9 @@
           </div> -->
 
           <div class="detail-news">
-            正文
+            <span class="detail-news-title">正文</span>
 
-            <p v-html="listObject.content " />
+            <p class="detail-news-body" v-html="listObject.content " />
           </div>
         </Card>
       </div>
@@ -129,6 +129,19 @@ a:link {
   margin-top: 30px;
   border: 1px solid #ebecf0;
   padding: 15px 10px 15px;
+  .detail-news-title {
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #333;
+    letter-spacing: 0;
+    line-height: 30px;
+  }
+  .detail-news-body {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 26px;
+  }
 }
 .detail-title {
   font-size: 24px;

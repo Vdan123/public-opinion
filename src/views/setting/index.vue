@@ -76,7 +76,7 @@
 
 const user = [
   { label: '账号:', key: 'username' },
-  { label: '姓名:', key: 'realname' },
+  { label: '单位名称:', key: 'realname' },
   { label: '手机号码:', key: 'mobile' },
   { label: '邮箱:', key: 'email' }
 ];

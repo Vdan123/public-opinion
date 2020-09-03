@@ -53,7 +53,7 @@ export default {
         });
 
         this.$nextTick(() => {
-          this.dispatch('notice/getWarningInfo');
+          this.$store.dispatch('notice/getWarningInfo');
         });
       });
     },

@@ -1,6 +1,8 @@
 <template>
-  <header class="yuqing-header flex-none px-2 md:px-6 lg:px-8 xl:px-10">
-    <div class="layout-logo" />
+  <header class="yuqing-header flex px-2 md:px-6 lg:px-8 xl:px-10">
+    <div class="layout-logo">
+      <img src="@/assets/login_images/网信藁城.jpeg" class="layout-image">
+    </div>
     <nav>
       <template v-for="route in routes">
         <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
@@ -20,7 +22,7 @@
         </template>
       </template>
     </nav>
-    <div class="nav-dropdown">
+    <div class="nav-dropdown ml-auto">
       <a href="javascript:void(0)" class="nav-icons">
         <span class="iconfont icon-icon-test11" />
       </a>
@@ -50,19 +52,23 @@
           <Icon type="ios-arrow-down" />
         </a>
         <DropdownMenu slot="list">
-          <DropdownItem>个人中心</DropdownItem>
+          <!-- <DropdownItem>个人中心</DropdownItem> -->
           <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
           <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>
 
-    <password-modal v-model="passwordStatus" />
+    <password-modal
+      v-model="passwordStatus"
+      @changePassword="changePassword"
+    />
   </header>
 </template>
 
 <script>
 import path from 'path';
+import { editPassword } from '@/api/user.js';
 import PasswordModal from '@/layouts/components/Navbar/Password';
 export default {
   components: {
@@ -87,6 +93,18 @@ export default {
       await this.$store.dispatch('user/logout');
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
+
+    async editPassword(params) {
+      await editPassword(params).then(res => {
+        if (res.state === 1) {
+          this.$Message.success(res.message);
+          this.$nextTick(() => {
+            this.$router.push({ path: '/login' });
+          });
+        }
+      });
+    },
+
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
@@ -111,14 +129,21 @@ export default {
 
       return false;
     },
+
     resolvePath(basePath, routePath) {
       return path.resolve(basePath, routePath);
     },
+
     handleLogout() {
       this.logout();
     },
+
     handlePassword() {
       this.passwordStatus = true;
+    },
+
+    changePassword(params) {
+      this.editPassword(params);
     }
   }
 };
@@ -182,11 +207,15 @@ export default {
 }
 
 .layout-logo{
-  float: left;
+  display: flex;
   height: 54px;
-  width: 100px;
-  background: #5b6270;
-  border-radius: 3px;
+  border-style: none;
   align-items: center;
+  .layout-image {
+    max-height: 25px;
+    max-width: 165px;
+    padding: 0 10px;
+    width: auto;
+  }
 }
 </style>

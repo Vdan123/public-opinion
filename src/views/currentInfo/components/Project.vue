@@ -51,7 +51,7 @@ const initParams = {
   searchType: 0,
   isRead: 0,
   infoSort: 1,
-  source: 1,
+  source: 0,
   page: 1,
   limit: 50
 };
