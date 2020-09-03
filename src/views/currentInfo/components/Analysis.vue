@@ -164,7 +164,7 @@ export default {
       };
     },
     getSources(source) {
-      const web = { 1: '新浪微博' };
+      const web = { 1: '新浪微博', 2: '今日头条'};
       this.sourceWeb = {
         title: '信息来源占比',
         label: source.reduce((result, value) => {
