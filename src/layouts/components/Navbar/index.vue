@@ -59,12 +59,16 @@
       </Dropdown>
     </div>
 
-    <password-modal v-model="passwordStatus" />
+    <password-modal
+      v-model="passwordStatus"
+      @changePassword="changePassword"
+    />
   </header>
 </template>
 
 <script>
 import path from 'path';
+import { editPassword } from '@/api/user.js';
 import PasswordModal from '@/layouts/components/Navbar/Password';
 export default {
   components: {
@@ -89,6 +93,18 @@ export default {
       await this.$store.dispatch('user/logout');
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
+
+    async editPassword(params) {
+      await editPassword(params).then(res => {
+        if (res.state === 1) {
+          this.$Message.success(res.message);
+          this.$nextTick(() => {
+            this.$router.push({ path: '/login' });
+          });
+        }
+      });
+    },
+
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
@@ -113,14 +129,21 @@ export default {
 
       return false;
     },
+
     resolvePath(basePath, routePath) {
       return path.resolve(basePath, routePath);
     },
+
     handleLogout() {
       this.logout();
     },
+
     handlePassword() {
       this.passwordStatus = true;
+    },
+
+    changePassword(params) {
+      this.editPassword(params);
     }
   }
 };

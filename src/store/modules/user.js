@@ -1,5 +1,6 @@
 import { login, logout, getUserDetails } from '@/api/user';
 import { checkStorage, saveToStorage, removeStorage } from '@/utils/localStorage';
+import md5 from 'blueimp-md5';
 
 const getDefaultState = () => {
   return {
@@ -21,7 +22,7 @@ const actions = {
   login({ dispatch }, userInfo) {
     const { username, password, verificationCode } = userInfo;
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password, verificationCode }).then(response => {
+      login({ username: username.trim(), password: md5(password), verificationCode }).then(response => {
         resolve(saveToStorage('loginState', response.state));
       }).catch(error => {
         console.log(error, 'error');

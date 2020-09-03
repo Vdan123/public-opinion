@@ -4,16 +4,17 @@
       v-model="visible"
       title="修改密码"
       @on-visible-change="changeModalStatus"
+      @on-ok="changePassword"
     >
       <Form>
         <FormItem label="旧密码">
-          <Input />
+          <Input v-model="params.oldPassword" />
         </FormItem>
         <FormItem label="新密码">
-          <Input />
+          <Input v-model="params.newPassword" />
         </FormItem>
-        <FormItem label="旧密码">
-          <Input />
+        <FormItem label="确认密码">
+          <Input v-model="params.confirmPassword" />
         </FormItem>
       </Form>
     </Modal>
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import md5 from 'blueimp-md5';
 export default {
   name: 'PasswordModal',
   props: {
@@ -31,7 +33,12 @@ export default {
   },
   data() {
     return {
-      visible: this.value
+      visible: this.value,
+      params: {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      }
     };
   },
   computed: {},
@@ -45,6 +52,15 @@ export default {
       if (!status) {
         this.$emit('input', false);
       }
+    },
+    changePassword() {
+      const query = {
+        oldPassword: md5(this.params.oldPassword),
+        newPassword: md5(this.params.newPassword),
+        confirmPassword: md5(this.params.confirmPassword)
+      };
+
+      this.$emit('changePassword', query);
     }
   }
 };

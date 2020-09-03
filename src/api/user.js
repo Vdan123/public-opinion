@@ -22,3 +22,12 @@ export function getUserDetails(data) {
     data
   });
 }
+
+export function editPassword(data) {
+  return request({
+    url: '/User/editPassword',
+    method: 'post',
+    data
+  });
+}
+
