@@ -8,11 +8,7 @@
         <div v-if="sensitive">
           <span class="min mr-2">敏</span>
         </div>
-        <div v-if="warning">
-          <span class="warning mr-2">
-            <Icon type="md-notifications-outline" />
-          </span>
-        </div>
+
         <div>
           <router-link :to="'/current/detail/'+item.id">
             <span v-html="item.content" />
@@ -50,10 +46,6 @@ export default {
       default: () => []
     },
     sensitive: {
-      type: Boolean,
-      default: false
-    },
-    warning: {
       type: Boolean,
       default: false
     }
@@ -113,15 +105,7 @@ export default {
   text-align: center;
   display: inline-block;
 }
-.warning {
-  width: 20px;
-  height: 20px;
-  line-height: 1.7;
-  background-color: #f90;
-  color: #fff;
-  text-align: center;
-  display: inline-block;
-}
+
 .swiper-li {
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.45);

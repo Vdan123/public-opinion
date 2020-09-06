@@ -34,7 +34,6 @@ export default {
     bottom: 0;
     width: 100%;
     overflow: auto;
-    min-width: 1280px;
     flex: auto;
     background: #f7f9fa;
     min-height: 280px;

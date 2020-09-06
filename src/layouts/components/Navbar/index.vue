@@ -158,7 +158,6 @@ export default {
   background-color: #fff;
   height: 54px;
   line-height: 54px;
-  min-width: 1280px;
   box-shadow: 0 2px 4px 0 rgba(175,186,200,.17);
   & > nav {
     display: flex;

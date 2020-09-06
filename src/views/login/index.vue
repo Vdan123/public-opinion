@@ -1,84 +1,82 @@
 <template>
   <Row class="h-screen flex w-full bg-img no-gutter items-center justify-center login-container" type="flex">
-    <Col class="sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
+    <i-col class="sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <Card :dis-hover="true" :padding="0">
         <div class="full-page-bg-color">
-        <Row class="no-gutter justify-center items-center" type="flex">
+          <Row class="no-gutter justify-center items-center" type="flex">
+            <i-col class="hidden lg:block lg:w-1/2">
+              <img :src="imageUrl" class="mx-auto login-image">
+            </i-col>
 
-          <Col class="hidden lg:block lg:w-1/2">
-            <img :src="imageUrl" class="mx-auto login-image">
-          </Col>
-
-          <Col class="sm:w-full md:w-full lg:w-1/2 d-theme-dark-bg">
-            <Form
-              ref="loginForm"
-              class="px-8 pt-8 login-form"
-              label-position="left"
-              :model="loginForm"
-              :rules="loginRules"
-            >
-              <div class="mb-4 title-container">
-                <h3 class="mb-4">舆情系统</h3>
-              </div>
-
-              <FormItem prop="username">
-                <Input
-                  ref="username"
-                  class="w-full"
-                  v-model="loginForm.username"
-                  placeholder="用户名"
-                />
-                <Icon slot="prefix" type="md-contact" />
-                </Input>
-              </FormItem>
-
-              <FormItem prop="password">
-                <Input
-                  ref="password"
-                  class="w-full"
-                  v-model="loginForm.password"
-                  :type="passwordType"
-                  placeholder="密码"
-                  @keyup.enter.native="handleLogin"
-                />
-                <Icon slot="prefix" type="md-lock" />
-                </Input>
-              </FormItem>
-
-              <div class="flex items-center mb-5">
-                <Checkbox>
-                  一周内免密登录
-                </Checkbox>
-                <a href="javascript:void(0)" class="ml-auto">忘记密码</a>
-              </div>
-
-              <Button
-                :loading="loading"
-                type="primary"
-                style="width:100%;margin-bottom:30px;"
-                @click.native.prevent="handleLogin"
+            <i-col class="sm:w-full md:w-full lg:w-1/2 d-theme-dark-bg">
+              <Form
+                ref="loginForm"
+                class="px-8 pt-8 login-form"
+                label-position="left"
+                :model="loginForm"
+                :rules="loginRules"
               >
-                登录
-              </Button>
-              <p>
-                <span style="color: rgb(255, 159, 67);">
+                <div class="mb-4 title-container">
+                  <h3 class="mb-4">舆情系统</h3>
+                </div>
 
-                温馨提示：
-                </span>
-                推荐在Chrome,火狐等非IE浏览器下访问系统！
-              </p>
-              <p class="mt-2">
-                Chrome浏览器下载地址：
-                <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
-                  https://www.google.cn/intl/zh-CN/chrome/
-                </a>
-              </p>
-            </Form>
-          </Col>
-        </Row>
+                <FormItem prop="username">
+                  <Input
+                    ref="username"
+                    v-model="loginForm.username"
+                    class="w-full"
+                    placeholder="用户名"
+                  />
+                  <Icon slot="prefix" type="md-contact" />
+                  </Input>
+                </FormItem>
+
+                <FormItem prop="password">
+                  <Input
+                    ref="password"
+                    v-model="loginForm.password"
+                    class="w-full"
+                    :type="passwordType"
+                    placeholder="密码"
+                    @keyup.enter.native="handleLogin"
+                  />
+                  <Icon slot="prefix" type="md-lock" />
+                  </Input>
+                </FormItem>
+
+                <div class="flex items-center mb-5">
+                  <Checkbox>
+                    一周内免密登录
+                  </Checkbox>
+                  <a href="javascript:void(0)" class="ml-auto">忘记密码</a>
+                </div>
+
+                <Button
+                  :loading="loading"
+                  type="primary"
+                  style="width:100%;margin-bottom:30px;"
+                  @click.native.prevent="handleLogin"
+                >
+                  登录
+                </Button>
+                <p>
+                  <span style="color: rgb(255, 159, 67);">
+                    温馨提示：
+                  </span>
+                  推荐在Chrome,火狐等非IE浏览器下访问系统！
+                </p>
+                <p class="mt-2">
+                  Chrome浏览器下载地址：
+                  <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_bank">
+                    https://www.google.cn/intl/zh-CN/chrome/
+                  </a>
+                </p>
+              </Form>
+            </i-col>
+          </Row>
         </div>
       </Card>
-    </Col>
+    </i-col>
   </Row>
 </template>
 
