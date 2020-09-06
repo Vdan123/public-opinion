@@ -14,7 +14,7 @@
           </span>
         </div>
         <div>
-          <router-link :to="'/current/detail/'+item.id" target="_blank">
+          <router-link :to="'/current/detail/'+item.id">
             <span v-html="item.content" />
           </router-link>
           <ul class="flex justify-start items-center" style="padding-top: 16px">
@@ -66,7 +66,7 @@ export default {
         autoHeight: true,
         hide: true,
         loop: true,
-        // mousewheel: true,
+        mousewheel: true,
         autoplay: {
           delay: 2500,
           disableOnInteraction: false

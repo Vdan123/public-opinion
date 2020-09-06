@@ -24,6 +24,10 @@
     </nav>
     <div class="nav-dropdown ml-auto">
       <a href="javascript:void(0)" class="nav-icons">
+        <span class="iconfont icon-icon-test5 cursor-pointer" />
+      </a>
+
+      <a href="javascript:void(0)" class="nav-icons">
         <span class="iconfont icon-icon-test11" />
       </a>
 
@@ -154,7 +158,7 @@ export default {
   background-color: #fff;
   height: 54px;
   line-height: 54px;
-  min-width: 1316px;
+  min-width: 1280px;
   box-shadow: 0 2px 4px 0 rgba(175,186,200,.17);
   & > nav {
     display: flex;
@@ -169,7 +173,6 @@ export default {
       position: relative;
       height: 100%;
       text-align: center;
-      min-width: max-content;
       padding: 0 20px;
       font-size: 15px;
       font-weight: 400;

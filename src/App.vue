@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import Notice from '@/components/Notice';
 export default {
   data() {
     return {
@@ -39,31 +38,14 @@ export default {
         } else {
           JSON.parse(data).map(el => {
             this.toastArray.push(el);
+            console.log(this.toastArray, 'pppp');
           });
         }
-
-        this.$toast({
-          component: Notice,
-          props: {
-            message: this.toastArray
-          },
-          listeners: {
-            closeToast: this.closeToast
-          }
-        });
-
-        this.$nextTick(() => {
-          this.$store.dispatch('notice/getWarningInfo');
-        });
       });
     },
     unSubscribeChannel() {
       console.log('解除连接');
       this.sockets.unsubscribe('messageChannel');
-    },
-    closeToast() {
-      this.toastArray = [];
-      this.$toast.clear();
     }
   }
 };

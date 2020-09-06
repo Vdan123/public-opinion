@@ -7,21 +7,11 @@
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
         <span style="color: #F57676"> {{ totalTime }}s </span>后此列表将自动刷新。
       </span>
-      <div class="ml-auto mr-5 setting-icon">
-        <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
-      </div>
+      <Button size="small" class="ml-auto px-2">手动刷新</Button>
     </div>
-    <div class="grid grid-cols-5 gap-2">
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            账号详情
-          </p>
-          <UserInfo />
-        </Card>
-      </div>
 
-      <div class="grid-div col-span-3">
+    <div class="">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             预警详情
@@ -38,7 +28,7 @@
         </Card>
       </div>
 
-      <div class="grid-div">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             方案
@@ -59,7 +49,7 @@
         </Card>
       </div>
 
-      <div class="grid-div">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             敏感信息占比
@@ -81,7 +71,7 @@
         </Card>
       </div>
 
-      <div class="grid-div">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             信息来源占比
@@ -103,7 +93,7 @@
         </Card>
       </div>
 
-      <div class="grid-div col-span-3">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             信息趋势走势图
@@ -121,7 +111,7 @@
         </Card>
       </div>
 
-      <div class="grid-div col-span-2">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             敏感信息
@@ -139,7 +129,7 @@
         </Card>
       </div>
 
-      <div class="grid-div col-span-3">
+      <div class="">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             实时数据
@@ -157,17 +147,10 @@
         </Card>
       </div>
     </div>
-
-    <Modal v-model="projectSelected" title="方案选择">
-      <div>
-        <span>选择显示监测方案，当前有5个监测方案，您最多选择10个监测方案显示</span>
-      </div>
-    </Modal>
   </div>
 </template>
 
 <script>
-import UserInfo from '@/views/dashboard/components/UserInfo';
 import Sensitive from '@/components/Sensitive';
 import NoMessage from '@/components/NoMessage';
 import PieChart from '@/components/PieChart.vue';
@@ -185,7 +168,6 @@ import { getPieData } from '@/api/getChartData';
 export default {
   name: 'Dashboard',
   components: {
-    UserInfo,
     Sensitive,
     PieChart,
     ProjectList,
@@ -194,7 +176,6 @@ export default {
   },
   data() {
     return {
-      projectSelected: false,
       showNoMessage: false,
       showNoMessageProject: false,
       attributesSpinShow: false,
@@ -344,10 +325,6 @@ export default {
       await this.$store.dispatch('notice/getWarningInfo');
     },
 
-    handleSetting() {
-      this.projectSelected = true;
-    },
-
     getSourceData({ attributes, sources, attributeCharts } = {}) {
       this.getAttributes(attributes);
       this.getSources(sources);
@@ -410,12 +387,5 @@ export default {
   .ivu-card {
     height: 100%;
   }
-}
-.setting-icon {
-  background-color: #3fc3e3;
-  color: #fff;
-  padding: 2px;
-  border-radius: 2px;
-  transition: all .2s;
 }
 </style>

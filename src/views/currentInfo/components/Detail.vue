@@ -1,11 +1,6 @@
 <template>
   <div>
-    <div class="mb-5">
-      <Breadcrumb>
-        <BreadcrumbItem>舆情监测</BreadcrumbItem>
-        <BreadcrumbItem>详情</BreadcrumbItem>
-      </Breadcrumb>
-    </div>
+    <div class="sub-nav-wrap" />
 
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-div row-span-3">
@@ -24,7 +19,7 @@
                 {{ item.label }} ：
               </span>
               <template v-if="item.label === '原文链接'">
-                <a :href="item.value" target="_bank">
+                <a :href="item.value">
                   {{ item.value }}
                 </a>
               </template>
@@ -138,9 +133,12 @@ a:link {
     line-height: 30px;
   }
   .detail-news-body {
+    margin-top: 30px;
     margin-bottom: 20px;
     font-size: 16px;
-    line-height: 26px;
+    line-height: 2.1;
+    text-align: justify;
+    color: #4a4a4a;
   }
 }
 .detail-title {

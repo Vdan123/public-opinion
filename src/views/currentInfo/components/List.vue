@@ -95,7 +95,7 @@
 
               <Button size="small">纠错</Button>
 
-              <router-link :to="'/current/detail/'+row.id" target="_blank">
+              <router-link :to="'/current/detail/'+row.id">
                 <div class="item-title" v-html="row.content" />
               </router-link>
               <div class="news-item-tools font-size-0">
