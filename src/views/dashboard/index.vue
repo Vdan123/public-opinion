@@ -7,7 +7,12 @@
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
         <span style="color: #F57676"> {{ totalTime }}s </span>后此列表将自动刷新。
       </span>
-      <Button size="small" class="ml-auto m-1">手动刷新</Button>
+      <Button
+        size="small"
+        class="ml-auto m-1"
+      >
+        手动刷新
+      </Button>
     </div>
 
     <Row type="flex" :gutter="10">
@@ -51,6 +56,45 @@
     </Row>
 
     <Row type="flex" :gutter="10">
+      <i-col class="xxl:w-1/2 w-full">
+        <Row type="flex" :gutter="10">
+          <i-col class="lg:w-1/2 w-full mb-base">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                实时数据
+                <Poptip trigger="hover" content="已选方案，按相似文章合并，降序显示最热门的信息。" placement="right-end">
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <template v-if="realTimeState">
+                <no-message />
+              </template>
+              <template v-else>
+                <Spin v-if="currentSpinShow" size="large" fix />
+                <swiper :swiper-list="currentMessage" />
+              </template>
+            </Card>
+          </i-col>
+
+          <i-col class="lg:w-1/2 w-full mb-base">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                敏感信息
+                <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <Spin v-if="sensitiveSpinShow" size="large" fix />
+              <template v-if="sensitiveState">
+                <no-message />
+              </template>
+              <template>
+                <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
+              </template>
+            </Card>
+          </i-col>
+        </Row>
+      </i-col>
       <i-col class="xxl:w-1/2 w-full mb-base">
         <Row type="flex" :gutter="10">
           <i-col class="md:w-1/2 w-full mb-base">
@@ -113,46 +157,6 @@
               <template v-else>
                 <Spin v-if="attributesSpinShow" size="large" fix />
                 <sensitive :chart-data="lineChartData" />
-              </template>
-            </Card>
-          </i-col>
-        </Row>
-      </i-col>
-
-      <i-col class="xxl:w-1/2 w-full">
-        <Row type="flex" :gutter="10">
-          <i-col class="lg:w-1/2 w-full mb-base">
-            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-              <p slot="title">
-                实时数据
-                <Poptip trigger="hover" content="已选方案，按相似文章合并，降序显示最热门的信息。" placement="right-end">
-                  <span class="iconfont icon-icon-test11" />
-                </Poptip>
-              </p>
-              <template v-if="realTimeState">
-                <no-message />
-              </template>
-              <template v-else>
-                <Spin v-if="currentSpinShow" size="large" fix />
-                <swiper :swiper-list="currentMessage" />
-              </template>
-            </Card>
-          </i-col>
-
-          <i-col class="lg:w-1/2 w-full">
-            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-              <p slot="title">
-                敏感信息
-                <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
-                  <span class="iconfont icon-icon-test11" />
-                </Poptip>
-              </p>
-              <Spin v-if="sensitiveSpinShow" size="large" fix />
-              <template v-if="sensitiveState">
-                <no-message />
-              </template>
-              <template>
-                <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
               </template>
             </Card>
           </i-col>

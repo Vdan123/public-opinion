@@ -74,7 +74,8 @@ module.exports = {
         600: '#38a169',
         700: '#2f855a',
         800: '#276749',
-        900: '#22543d'
+        900: '#22543d',
+        customer: '#04cb94'
       },
       teal: {
         100: '#e6fffa',
@@ -264,7 +265,8 @@ module.exports = {
       '3xl': '1.875rem',
       '4xl': '2.25rem',
       '5xl': '3rem',
-      '6xl': '4rem'
+      '6xl': '4rem',
+      '15': '15px'
     },
     fontWeight: {
       hairline: '100',
