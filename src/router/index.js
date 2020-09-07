@@ -24,7 +24,7 @@ const constantRoutes = [
     path: '/dashboard',
     component: Layouts,
     children: [{
-      path: 'dashboard',
+      path: 'index',
       component: () => import('@/views/dashboard/index'),
       name: 'Dashboard',
       meta: { title: '总览', requiresAuth: true }

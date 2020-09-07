@@ -58,30 +58,38 @@
               <span class="iconfont icon-icon-test11" />
             </a>
           </div>
-          <Poptip title="通知助手" content="content">
-            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
-              <Badge :count="2">
+          <Poptip>
+            <div class="mr-3 relative p-1 border-2 border-transparent text-15 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+              <Badge :count="messageCount">
                 <a href="javascript:void(0)">
-                <span class="iconfont icon-icon-test6" />
-              </a>
+                  <span class="iconfont icon-icon-test6" />
+                </a>
               </Badge>
             </div>
 
+            <div slot="title" class="text-center p-5 bg-primary text-white">
+              <h3 class="text-white">通知助手</h3>
+            </div>
+
             <div slot="content">
-              <div class="flex">
-                <Button size="small">全部</Button>
-                <Button size="small">概览</Button>
-                <Button size="small">系统更新通知</Button>
-              </div>
+              <ul class="bordered-items">
+                <li class="flex justify-between px-4 py-4 notification cursor-pointer">
+                  信息学
+                </li>
+                <li class="flex justify-between px-4 py-4 notification cursor-pointer">
+                  信息学
+                </li>
+              </ul>
             </div>
           </Poptip>
-          <span>石家庄市藁城区委</span>
+
+          <span>{{ userInfo.company }}</span>
 
           <!-- Profile dropdown -->
           <div class="ml-3 relative">
             <Dropdown trigger="click">
               <a href="javascript:void(0)">
-                <span>{{ userInfo.username }}</span>
+                <span>{{ userInfo.realname }}</span>
                 <Icon type="ios-arrow-down" />
               </a>
               <DropdownMenu slot="list">
@@ -135,6 +143,9 @@ export default {
     },
     userInfo() {
       return this.$store.getters.userInfo;
+    },
+    messageCount() {
+      return this.$store.state.notice.count;
     }
   },
   methods: {

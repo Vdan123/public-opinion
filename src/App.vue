@@ -7,11 +7,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      toastArray: []
-    };
-  },
   sockets: {
     connect() {
       const { id } = this.$store.getters.userInfo;
@@ -30,17 +25,19 @@ export default {
   methods: {
     subscribeChannel() {
       this.sockets.subscribe('messageChannel', (data) => {
-        this.$refs.audio.currentTime = 0; // 从头开始播放提示音
-        this.$refs.audio.play(); // 播放
+        // this.$refs.audio.currentTime = 0; // 从头开始播放提示音
+        // this.$refs.audio.play(); // 播放
 
-        if (_.isEmpty(this.toastArray)) {
-          this.toastArray = JSON.parse(data);
-        } else {
-          JSON.parse(data).map(el => {
-            this.toastArray.push(el);
-            console.log(this.toastArray, 'pppp');
-          });
-        }
+        console.log(JSON.parse(data), 'data');
+
+        const { content, total } = JSON.parse(data)[0];
+
+        this.$store.dispatch('notice/addCount', total);
+
+        this.$Notice.open({
+          title: '新消息提醒',
+          desc: content
+        });
       });
     },
     unSubscribeChannel() {
