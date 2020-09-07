@@ -7,21 +7,11 @@
         24小时内共为您监测信息 <span style="color: #F57676"> {{ loginData.total }} </span>条。
         <span style="color: #F57676"> {{ totalTime }}s </span>后此列表将自动刷新。
       </span>
-      <div class="ml-auto mr-5 setting-icon">
-        <span class="iconfont icon-icon-test5 cursor-pointer" @click="handleSetting" />
-      </div>
+      <Button size="small" class="ml-auto m-1">手动刷新</Button>
     </div>
-    <div class="grid grid-cols-5 gap-2">
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            账号详情
-          </p>
-          <UserInfo />
-        </Card>
-      </div>
 
-      <div class="grid-div col-span-3">
+    <Row type="flex" :gutter="10">
+      <i-col class="w-full lg:w-2/3 mb-base">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             预警详情
@@ -33,12 +23,12 @@
             <no-message />
           </template>
           <template v-else>
-            <swiper :swiper-list="warningMessage" :warning="true" />
+            <warning-list :warning-list="warningMessage" />
           </template>
         </Card>
-      </div>
+      </i-col>
 
-      <div class="grid-div">
+      <i-col class="w-full lg:w-1/3 xl:w-1/3 mb-base">
         <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
           <p slot="title">
             方案
@@ -57,121 +47,127 @@
             />
           </template>
         </Card>
-      </div>
+      </i-col>
+    </Row>
 
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            敏感信息占比
-            <Poptip
-              trigger="hover"
-              content="已选方案所有汇总信息中，敏感信息跟全部信息的所占比例。"
-              placement="right-end"
-            >
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <pie-chart :pie-data="expectedAttributes" />
-          </template>
-        </Card>
-      </div>
+    <Row type="flex" :gutter="10">
+      <i-col class="xxl:w-1/2 w-full mb-base">
+        <Row type="flex" :gutter="10">
+          <i-col class="md:w-1/2 w-full mb-base">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                敏感信息占比
+                <Poptip
+                  trigger="hover"
+                  content="已选方案所有汇总信息中，敏感信息跟全部信息的所占比例。"
+                  placement="right-end"
+                >
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <template v-if="showNoMessage">
+                <no-message />
+              </template>
+              <template v-else>
+                <Spin v-if="attributesSpinShow" size="large" fix />
+                <pie-chart :pie-data="expectedAttributes" />
+              </template>
+            </Card>
+          </i-col>
 
-      <div class="grid-div">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            信息来源占比
-            <Poptip
-              trigger="hover"
-              content="已选方案所有汇总信息中，信息11个来源占比情况。"
-              placement="right-end"
-            >
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <pie-chart :pie-data="sourceWeb" />
-          </template>
-        </Card>
-      </div>
+          <i-col class="md:w-1/2 w-full mb-base">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                信息来源占比
+                <Poptip
+                  trigger="hover"
+                  content="已选方案所有汇总信息中，信息11个来源占比情况。"
+                  placement="right-end"
+                >
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <template v-if="showNoMessage">
+                <no-message />
+              </template>
+              <template v-else>
+                <Spin v-if="attributesSpinShow" size="large" fix />
+                <pie-chart :pie-data="sourceWeb" />
+              </template>
+            </Card>
+          </i-col>
+        </Row>
 
-      <div class="grid-div col-span-3">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            信息趋势走势图
-            <Poptip trigger="hover" content="已选方案，敏感信息和非敏感信息分时间段的信息参与变化走势。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="showNoMessage">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="attributesSpinShow" size="large" fix />
-            <sensitive :chart-data="lineChartData" />
-          </template>
-        </Card>
-      </div>
+        <Row>
+          <i-col class="w-full">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                信息趋势走势图
+                <Poptip trigger="hover" content="已选方案，敏感信息和非敏感信息分时间段的信息参与变化走势。" placement="right-end">
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <template v-if="showNoMessage">
+                <no-message />
+              </template>
+              <template v-else>
+                <Spin v-if="attributesSpinShow" size="large" fix />
+                <sensitive :chart-data="lineChartData" />
+              </template>
+            </Card>
+          </i-col>
+        </Row>
+      </i-col>
 
-      <div class="grid-div col-span-2">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            敏感信息
-            <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <Spin v-if="sensitiveSpinShow" size="large" fix />
-          <template v-if="sensitiveState">
-            <no-message />
-          </template>
-          <template>
-            <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
-          </template>
-        </Card>
-      </div>
+      <i-col class="xxl:w-1/2 w-full">
+        <Row type="flex" :gutter="10">
+          <i-col class="lg:w-1/2 w-full mb-base">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                实时数据
+                <Poptip trigger="hover" content="已选方案，按相似文章合并，降序显示最热门的信息。" placement="right-end">
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <template v-if="realTimeState">
+                <no-message />
+              </template>
+              <template v-else>
+                <Spin v-if="currentSpinShow" size="large" fix />
+                <swiper :swiper-list="currentMessage" />
+              </template>
+            </Card>
+          </i-col>
 
-      <div class="grid-div col-span-3">
-        <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
-          <p slot="title">
-            实时数据
-            <Poptip trigger="hover" content="已选方案，按相似文章合并，降序显示最热门的信息。" placement="right-end">
-              <span class="iconfont icon-icon-test11" />
-            </Poptip>
-          </p>
-          <template v-if="realTimeState">
-            <no-message />
-          </template>
-          <template v-else>
-            <Spin v-if="currentSpinShow" size="large" fix />
-            <swiper :swiper-list="currentMessage" />
-          </template>
-        </Card>
-      </div>
-    </div>
-
-    <Modal v-model="projectSelected" title="方案选择">
-      <div>
-        <span>选择显示监测方案，当前有5个监测方案，您最多选择10个监测方案显示</span>
-      </div>
-    </Modal>
+          <i-col class="lg:w-1/2 w-full">
+            <Card class="hover:border-teal-400 border-2 shadow-widget border-opacity-100">
+              <p slot="title">
+                敏感信息
+                <Poptip trigger="hover" content="汇总已选方案下的24小时敏感信息列表。" placement="right-end">
+                  <span class="iconfont icon-icon-test11" />
+                </Poptip>
+              </p>
+              <Spin v-if="sensitiveSpinShow" size="large" fix />
+              <template v-if="sensitiveState">
+                <no-message />
+              </template>
+              <template>
+                <swiper :swiper-list="sensitiveMessage" :sensitive="true" />
+              </template>
+            </Card>
+          </i-col>
+        </Row>
+      </i-col>
+    </Row>
   </div>
 </template>
 
 <script>
-import UserInfo from '@/views/dashboard/components/UserInfo';
 import Sensitive from '@/components/Sensitive';
 import NoMessage from '@/components/NoMessage';
 import PieChart from '@/components/PieChart.vue';
 import Swiper from '@/components/Swiper';
+import WarningList from '@/views/dashboard/components/WarningList';
 
 import ProjectList from './components/ProjectList';
 
@@ -185,16 +181,15 @@ import { getPieData } from '@/api/getChartData';
 export default {
   name: 'Dashboard',
   components: {
-    UserInfo,
     Sensitive,
     PieChart,
     ProjectList,
     NoMessage,
-    Swiper
+    Swiper,
+    WarningList
   },
   data() {
     return {
-      projectSelected: false,
       showNoMessage: false,
       showNoMessageProject: false,
       attributesSpinShow: false,
@@ -344,10 +339,6 @@ export default {
       await this.$store.dispatch('notice/getWarningInfo');
     },
 
-    handleSetting() {
-      this.projectSelected = true;
-    },
-
     getSourceData({ attributes, sources, attributeCharts } = {}) {
       this.getAttributes(attributes);
       this.getSources(sources);
@@ -410,12 +401,5 @@ export default {
   .ivu-card {
     height: 100%;
   }
-}
-.setting-icon {
-  background-color: #3fc3e3;
-  color: #fff;
-  padding: 2px;
-  border-radius: 2px;
-  transition: all .2s;
 }
 </style>
