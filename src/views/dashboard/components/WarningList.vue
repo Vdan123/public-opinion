@@ -13,19 +13,27 @@
           </router-link>
           <ul class="flex justify-start items-center" style="padding-top: 16px">
             <li class="swiper-li">
-              {{ item.ins_time }}
+              <div class="todo-tags sm:ml-2 sm:my-0 my-2 flex">
+                <Tag :color="todoLabelColor(item.attribute)">
+                  {{ item.attribute | attribute }}
+                </Tag>
+              </div>
             </li>
+            <Divider type="vertical" />
+            <li class="swiper-li">
+              <Icon type="ios-folder-open" />
+              <router-link :to="{path: '/current/search', query: { group_id: item.group_id, id: item.keywordId, title: item.plan_name}}">
+                {{ item.plan_name }}
+              </router-link>
+            </li>
+
             <Divider type="vertical" />
             <li class="swiper-li">
               {{ item.sourceName }}
             </li>
             <Divider type="vertical" />
             <li class="swiper-li">
-              <div class="todo-tags sm:ml-2 sm:my-0 my-2 flex">
-                <Tag :color="todoLabelColor(item.attribute)">
-                  {{ item.attribute | attribute }}
-                </Tag>
-              </div>
+              {{ item.ins_time }}
             </li>
           </ul>
         </div>

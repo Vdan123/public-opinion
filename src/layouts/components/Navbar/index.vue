@@ -60,9 +60,11 @@
           </div>
           <Poptip title="通知助手" content="content">
             <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
-              <a href="javascript:void(0)">
+              <Badge :count="2">
+                <a href="javascript:void(0)">
                 <span class="iconfont icon-icon-test6" />
               </a>
+              </Badge>
             </div>
 
             <div slot="content">
