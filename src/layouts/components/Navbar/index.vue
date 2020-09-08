@@ -1,79 +1,144 @@
 <template>
-  <header class="yuqing-header flex px-2 md:px-6 lg:px-8 xl:px-10">
-    <div class="layout-logo">
-      <img src="@/assets/login_images/网信藁城.jpeg" class="layout-image">
-    </div>
-    <nav>
-      <template v-for="route in routes">
-        <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
-          <router-link
-            :key="route.path"
-            :to="resolvePath(route.path, onlyOneChild.path)"
-            active-class="textColor"
-          >
-            <div
-              v-if="onlyOneChild.meta"
-              :key="resolvePath(route.path, onlyOneChild.path)"
-              class="nav-item hover:bg-shallow text-white focus:outline-none focus:shadow-outline active"
-            >
-              {{ onlyOneChild.meta.title }}
+  <nav class="white">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+          <!-- Mobile menu button-->
+          <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white transition duration-150 ease-in-out" aria-label="Main menu" aria-expanded="false">
+            <!-- Icon when menu is closed. -->
+            <!-- Menu open: "hidden", Menu closed: "block" -->
+            <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Icon when menu is open. -->
+            <!-- Menu open: "block", Menu closed: "hidden" -->
+            <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+          <div class="flex-shrink-0">
+            <img src="@/assets/login_images/网信藁城.jpeg" class="hidden lg:block h-8 w-auto" alt="YuQing logo">
+            <img src="@/assets/login_images/网信藁城.jpeg" class="block lg:hidden h-8 w-auto" alt="YuQing logo">
+          </div>
+          <div class="hidden sm:block sm:ml-6">
+            <div class="flex">
+              <template v-for="route in routes">
+                <template v-if="hasOneShowingChild(route.children, route) && (!onlyOneChild.children || onlyOneChild.noShowingChildren)">
+                  <router-link
+                    :key="route.path"
+                    :to="resolvePath(route.path, onlyOneChild.path)"
+                    active-class="textColor"
+                  >
+                    <div
+                      v-if="onlyOneChild.meta"
+                      :key="resolvePath(route.path, onlyOneChild.path)"
+                      class="ml-4 px-3 py-2 rounded-md text-15 font-medium leading-5 hover:bg-shallow hover:text-green-customer hover:bg-gray-200 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out active"
+                    >
+                      {{ onlyOneChild.meta.title }}
+                    </div>
+                  </router-link>
+                </template>
+              </template>
             </div>
-          </router-link>
-        </template>
-      </template>
-    </nav>
-    <div class="nav-dropdown ml-auto">
-      <a href="javascript:void(0)" class="nav-icons">
-        <span class="iconfont icon-icon-test5 cursor-pointer" />
-      </a>
-
-      <a href="javascript:void(0)" class="nav-icons">
-        <span class="iconfont icon-icon-test11" />
-      </a>
-
-      <Poptip title="通知助手" content="content">
-        <a href="javascript:void(0)" class="nav-icons">
-          <span class="iconfont icon-icon-test6" />
-        </a>
-        <div slot="content">
-          <div class="flex">
-            <Button size="small">全部</Button>
-            <Button size="small">概览</Button>
-            <Button size="small">系统更新通知</Button>
           </div>
         </div>
-      </Poptip>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <Poptip>
+            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+              <a href="javascript:void(0)">
+                <span class="iconfont icon-icon-test5 cursor-pointer" />
+              </a>
+            </div>
 
-      <div class="nav-line" />
+            <div slot="content">
+              <ul>
+                <li>
+                  预警设置
+                </li>
+                <li>
+                  通讯录管理
+                </li>
+                <li>
+                  新增抓取
+                </li>
+                <li>
+                  用户登录日志
+                </li>
+                <li>
+                  精确问题反馈
+                </li>
+              </ul>
+            </div>
+          </Poptip>
 
-      <span style="margin-right: 10px">
-        石家庄市藁城区委
-      </span>
+          <Poptip trigger="hover">
+            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+              <a href="javascript:void(0)">
+                <span class="iconfont icon-icon-test11" />
+              </a>
+            </div>
 
-      <Dropdown trigger="click">
-        <a href="javascript:void(0)">
-          <span>{{ userInfo.username }}</span>
-          <Icon type="ios-arrow-down" />
-        </a>
-        <DropdownMenu slot="list">
-          <!-- <DropdownItem>个人中心</DropdownItem> -->
-          <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
-          <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+            <div slot="content">
+              帮助中心
+            </div>
+          </Poptip>
+
+          <div class="mr-3 relative p-1 border-2 border-transparent text-15 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+            <Badge :count="messageCount">
+              <router-link :to="{path: '/notice/index'}">
+                <span class="iconfont icon-icon-test6" />
+              </router-link>
+            </Badge>
+          </div>
+
+          <span>{{ userInfo.company }}</span>
+
+          <!-- Profile dropdown -->
+          <div class="ml-3 relative">
+            <Dropdown trigger="click">
+              <a href="javascript:void(0)">
+                <span>{{ userInfo.realname }}</span>
+                <Icon type="ios-arrow-down" />
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
+                <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </div>
+      </div>
     </div>
 
     <password-modal
       v-model="passwordStatus"
       @changePassword="changePassword"
     />
-  </header>
+
+    <!--
+    Mobile menu, toggle classes based on menu state.
+
+    Menu open: "block", Menu closed: "hidden"
+  -->
+    <!-- <div class="hidden sm:hidden">
+      <div class="px-2 pt-2 pb-3">
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+        <a href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Team</a>
+        <a href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Projects</a>
+        <a href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Calendar</a>
+      </div>
+    </div> -->
+  </nav>
 </template>
 
 <script>
 import path from 'path';
 import { editPassword } from '@/api/user.js';
 import PasswordModal from '@/layouts/components/Navbar/Password';
+import { log } from 'util';
 export default {
   components: {
     PasswordModal
@@ -90,6 +155,9 @@ export default {
     },
     userInfo() {
       return this.$store.getters.userInfo;
+    },
+    messageCount() {
+      return this.$store.state.notice.count;
     }
   },
   methods: {

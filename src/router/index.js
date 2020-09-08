@@ -8,7 +8,7 @@ Vue.use(Router);
 const constantRoutes = [
   {
     path: '/login',
-    component: () => import('@/views/login/index'),
+    component: () => import('@/views/login'),
     hidden: true
   },
   {
@@ -24,8 +24,8 @@ const constantRoutes = [
     path: '/dashboard',
     component: Layouts,
     children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
+      path: 'index',
+      component: () => import('@/views/dashboard'),
       name: 'Dashboard',
       meta: { title: '总览', requiresAuth: true }
     }]
@@ -66,7 +66,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'newEdition',
-        component: () => import('@/views/new_edition/index')
+        component: () => import('@/views/new_edition')
       }
     ]
   },
@@ -78,7 +78,7 @@ const constantRoutes = [
         path: 'index',
         name: 'Searching',
         meta: { title: '全文检索', requiresAuth: true },
-        component: () => import('@/views/searching/index')
+        component: () => import('@/views/searching')
       }
     ]
   },
@@ -90,7 +90,19 @@ const constantRoutes = [
         path: 'index',
         name: 'Bulletin',
         meta: { title: '舆情简报', requiresAuth: true },
-        component: () => import('@/views/bulletin/index')
+        component: () => import('@/views/bulletin')
+      }
+    ]
+  },
+  {
+    path: '/notice',
+    component: Layouts,
+    children: [
+      {
+        path: 'index',
+        name: 'Notice',
+        meta: { title: '预警记录', requiresAuth: true },
+        component: () => import('@/views/notice_lists')
       }
     ]
   },
@@ -102,7 +114,7 @@ const constantRoutes = [
         path: 'index',
         name: 'Setting',
         meta: { title: '用户管理', requiresAuth: true },
-        component: () => import('@/views/setting/index')
+        component: () => import('@/views/setting')
       }
     ]
   },

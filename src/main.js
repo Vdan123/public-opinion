@@ -12,36 +12,14 @@ import VueSocketIO from 'vue-socket.io';
 const SocketInstance = socketio.connect('http://59.110.223.44:9920');
 
 Vue.use(new VueSocketIO({
-  connection: SocketInstance
-}));
-
-// Toast
-import Toast from 'vue-toastification';
-// Import the CSS or use your own!
-import 'vue-toastification/dist/index.css';
-
-Vue.use(Toast, {
-  position: 'bottom-right',
-  toastClassName: 'my-custom-toast',
-  timeout: false,
-  closeOnClick: false,
-  pauseOnHover: true,
-  draggable: false,
-  hideProgressBar: true,
-  closeButton: false,
-  icon: false,
-  newestOnTop: false,
-  filterBeforeCreate: (toast, toasts) => {
-    if (toasts.filter(
-      t => t.type === toast.type
-    ).length !== 0) {
-      // Returning false discards the toast
-      return false;
-    }
-    // You can modify the toast if you want
-    return toast;
+  connection: SocketInstance,
+  debug: true,
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
   }
-});
+}));
 
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';

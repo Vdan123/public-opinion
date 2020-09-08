@@ -1,12 +1,16 @@
 import { getWarningInfo } from '@/views/dashboard/api';
 
 const state = {
-  warningList: []
+  warningList: [],
+  count: 0
 };
 
 const mutations = {
   'SAVE_LIST': (state, payload) => {
     state.warningList = payload;
+  },
+  'ADD_COUNT': (state, payload) => {
+    state.count += payload;
   }
 };
 const actions = {
@@ -19,6 +23,10 @@ const actions = {
         resolve();
       });
     });
+  },
+
+  addCount({ commit }, total) {
+    commit('ADD_COUNT', total);
   }
 };
 

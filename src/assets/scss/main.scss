@@ -1,4 +1,6 @@
 @import './transitions';
+@import './theNavbar';
+@import './customClass';
 
 body {
   height: 100%;
@@ -50,6 +52,3 @@ ul, ul li {
   padding: 0;
 }
 
-.mb-base {
-  margin-bottom: 1.2rem !important;
-}

@@ -1,0 +1,24 @@
+.notification-dropdown {
+  width: 365px;
+
+  // Full width notification in mobile devices
+  // @media screen and (max-width: 500px) {
+  //   width: 95vw;
+  //   left: 97.5vw !important;
+
+  //   .vs-dropdown--menu--after {
+  //     display: none;
+  //   }
+  // }
+
+  .notification {
+    &:hover {
+      background-color: #f7f7f7;
+    }
+  }
+
+  .checkout-footer,
+  .notification-footer {
+    background-color: #f8f8f8;
+  }
+}

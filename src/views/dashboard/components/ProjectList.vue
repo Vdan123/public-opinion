@@ -7,11 +7,11 @@
         class="mb-10"
       >
         <div class="flex">
-          <a href="javascript:void(0)">
+          <router-link :to="{ path: '/current/search', query: {group_id:projectCount.group_id, id: projectCount.id, title: projectCount.plan_name }}">
             <span style="color: #666;">
               {{ projectCount.plan_name }}：
             </span>
-          </a>
+          </router-link>
           <span style="font-size: 14px; color: #333;" class="ml-auto">
             {{ projectCount.total }}条
           </span>

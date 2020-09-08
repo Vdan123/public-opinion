@@ -4,18 +4,39 @@
       v-for="(item, index) in warningList"
       :key="index"
     >
-      <span class="warning mr-2">
-        <Icon type="md-notifications-outline" />
-      </span>
-      <div>
-        <router-link :to="'/current/detail/'+item.id">
-          <span v-html="item.content" />
-        </router-link>
-        <ul class="flex justify-start items-center" style="padding-top: 16px">
-          <li class="swiper-li" v-html="item.ins_time" />
-          <Divider type="vertical" />
-          <li class="swiper-li" v-html="item.sourceName" />
-        </ul>
+      <div class="flex items-start">
+        <span class="iconfont icon-icon-test6 warning" />
+
+        <div class="ml-3">
+          <router-link :to="'/current/detail/'+item.id">
+            <span v-html="item.content" />
+          </router-link>
+          <ul class="flex justify-start items-center" style="padding-top: 16px">
+            <li class="swiper-li">
+              <div class="todo-tags sm:ml-2 sm:my-0 my-2 flex">
+                <Tag :color="todoLabelColor(item.attribute)">
+                  {{ item.attribute | attribute }}
+                </Tag>
+              </div>
+            </li>
+            <Divider type="vertical" />
+            <li class="swiper-li">
+              <Icon type="ios-folder-open" />
+              <router-link :to="{path: '/current/search', query: { group_id: item.group_id, id: item.keywordId, title: item.plan_name}}">
+                {{ item.plan_name }}
+              </router-link>
+            </li>
+
+            <Divider type="vertical" />
+            <li class="swiper-li">
+              {{ item.sourceName }}
+            </li>
+            <Divider type="vertical" />
+            <li class="swiper-li">
+              {{ item.ins_time }}
+            </li>
+          </ul>
+        </div>
       </div>
     </ListItem>
   </List>
@@ -24,10 +45,34 @@
 <script>
 export default {
   name: 'WarningList',
+  filters: {
+    attribute(val) {
+      const label = {
+        1: '非敏感',
+        2: '中性',
+        3: '敏感'
+      };
+      return label[val];
+    }
+  },
   props: {
     warningList: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    todoLabelColor() {
+      return (label) => {
+        const tags = [
+          { tag: '非敏感', value: 1, describe: 'success' },
+          { tag: '中性', value: 2, describe: 'warning' },
+          { tag: '敏感', value: 3, describe: 'error' }
+        ];
+        return _.find(tags, (tag) => {
+          return tag.value === label;
+        }).describe;
+      };
     }
   }
 };
@@ -41,12 +86,10 @@ export default {
 }
 
 .warning {
+  color: #f90;
   width: 20px;
   height: 20px;
-  line-height: 1.7;
-  background-color: #f90;
-  color: #fff;
-  text-align: center;
-  display: inline-block;
+  margin: 0;
 }
+
 </style>
