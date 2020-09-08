@@ -60,7 +60,7 @@ export default {
         loop: true,
         mousewheel: true,
         autoplay: {
-          delay: 2500,
+          delay: 7000,
           disableOnInteraction: false
         },
         breakpoints: {

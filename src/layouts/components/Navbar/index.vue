@@ -45,43 +45,54 @@
             </div>
           </div>
         </div>
-
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
-            <a href="javascript:void(0)">
-              <span class="iconfont icon-icon-test5 cursor-pointer" />
-            </a>
-          </div>
-
-          <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
-            <a href="javascript:void(0)">
-              <span class="iconfont icon-icon-test11" />
-            </a>
-          </div>
           <Poptip>
-            <div class="mr-3 relative p-1 border-2 border-transparent text-15 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
-              <Badge :count="messageCount">
-                <a href="javascript:void(0)">
-                  <span class="iconfont icon-icon-test6" />
-                </a>
-              </Badge>
-            </div>
-
-            <div slot="title" class="text-center p-5 bg-primary text-white">
-              <h3 class="text-white">通知助手</h3>
+            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+              <a href="javascript:void(0)">
+                <span class="iconfont icon-icon-test5 cursor-pointer" />
+              </a>
             </div>
 
             <div slot="content">
-              <ul class="bordered-items">
-                <li class="flex justify-between px-4 py-4 notification cursor-pointer">
-                  信息学
+              <ul>
+                <li>
+                  预警设置
                 </li>
-                <li class="flex justify-between px-4 py-4 notification cursor-pointer">
-                  信息学
+                <li>
+                  通讯录管理
+                </li>
+                <li>
+                  新增抓取
+                </li>
+                <li>
+                  用户登录日志
+                </li>
+                <li>
+                  精确问题反馈
                 </li>
               </ul>
             </div>
           </Poptip>
+
+          <Poptip trigger="hover">
+            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+              <a href="javascript:void(0)">
+                <span class="iconfont icon-icon-test11" />
+              </a>
+            </div>
+
+            <div slot="content">
+              帮助中心
+            </div>
+          </Poptip>
+
+          <div class="mr-3 relative p-1 border-2 border-transparent text-15 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+            <Badge :count="messageCount">
+              <router-link :to="{path: '/notice/index'}">
+                <span class="iconfont icon-icon-test6" />
+              </router-link>
+            </Badge>
+          </div>
 
           <span>{{ userInfo.company }}</span>
 
@@ -127,6 +138,7 @@
 import path from 'path';
 import { editPassword } from '@/api/user.js';
 import PasswordModal from '@/layouts/components/Navbar/Password';
+import { log } from 'util';
 export default {
   components: {
     PasswordModal
