@@ -19,7 +19,7 @@
                 {{ item.label }} ：
               </span>
               <template v-if="item.label === '原文链接'">
-                <a :href="item.value">
+                <a :href="item.value" target="_bank">
                   {{ item.value }}
                 </a>
               </template>

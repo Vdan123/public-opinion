@@ -50,6 +50,7 @@ const constantRoutes = [
           },
           {
             path: 'detail/:id(\\d+)',
+            name: 'Detail',
             meta: { requiresAuth: true },
             component: () => import('@/views/currentInfo/components/Detail')
           }
@@ -101,6 +102,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Notice',
+        hidden: true,
         meta: { title: '预警记录', requiresAuth: true },
         component: () => import('@/views/notice_lists')
       }

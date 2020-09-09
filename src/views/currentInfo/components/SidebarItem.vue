@@ -126,16 +126,19 @@ export default {
       }
       return false;
     },
+    
     resolvePath(routePath) {
       if (!_.isUndefined(routePath.path)) {
         const { title, group_id } = routePath;
         return { path: '/current/search', query: { group_id, id: routePath.path, title }};
       }
     },
+
     handleChangeName(name) {
       this.visible = true;
       this.groupName = name;
     },
+
     handleSubmit() {
       const { id } = this.sourceData;
       this.$emit('editGroup', {
@@ -143,6 +146,7 @@ export default {
         groupName: this.groupName
       });
     },
+
     handleDelGroup() {
       const { id } = this.sourceData;
       this.$Modal.confirm({
@@ -152,6 +156,7 @@ export default {
         }
       });
     },
+
     handleDelPlan() {
       const { id, group_id } = this.sourceData;
       this.$Modal.confirm({
