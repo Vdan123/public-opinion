@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getPieData(data) {
   return request({
-    url: '/Api/getPieData',
+    url: '/Home/getPieData',
     method: 'post',
     data
   });

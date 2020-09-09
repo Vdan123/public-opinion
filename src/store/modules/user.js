@@ -26,7 +26,6 @@ const mutations = {
 
   SOCKET_DISCONNECT(state) {
     state.isConnected = false;
-    console.log('断开连接');
   }
 };
 
@@ -36,6 +35,7 @@ const actions = {
     const { username, password, verificationCode } = userInfo;
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: md5(password), verificationCode }).then(response => {
+        dispatch('notice/getNoticeTotal', null, { root: true });
         resolve(saveToStorage('loginState', response.state));
       }).catch(error => {
         console.log(error, 'error');
@@ -48,6 +48,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then(() => {
         removeStorage('loginState');
+        removeStorage('notice-count');
         resolve();
       }).catch(error => {
         reject(error);

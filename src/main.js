@@ -13,7 +13,6 @@ const SocketInstance = socketio.connect('http://59.110.223.44:9920');
 
 Vue.use(new VueSocketIO({
   connection: SocketInstance,
-  debug: true,
   vuex: {
     store,
     actionPrefix: 'SOCKET_',

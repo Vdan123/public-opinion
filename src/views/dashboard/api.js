@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getLoginInfo(data) {
   return request({
-    url: '/Api/getPromptInfo',
+    url: '/Home/getPromptInfo',
     method: 'post',
     data
   });
@@ -11,7 +11,7 @@ export function getLoginInfo(data) {
 // 方案数量获取
 export function getPlanTotal(data) {
   return request({
-    url: '/Api/getPlanTotal',
+    url: '/Home/getPlanTotal',
     method: 'post',
     data
   });
@@ -20,7 +20,7 @@ export function getPlanTotal(data) {
 // 敏感信息列表获取
 export function getZXMinGanInfoList(data) {
   return request({
-    url: '/Api/getZXMinGanInfoList',
+    url: '/Home/getZXMinGanInfoList',
     method: 'post',
     data
   });
@@ -29,7 +29,7 @@ export function getZXMinGanInfoList(data) {
 // 实时信息列表获取
 export function getRealTimeDataList(data) {
   return request({
-    url: '/Api/getRealTimeDataList',
+    url: '/Home/getRealTimeDataList',
     method: 'post',
     data
   });
@@ -38,7 +38,7 @@ export function getRealTimeDataList(data) {
 // 预警列表获取
 export function getWarningInfo(data) {
   return request({
-    url: '/Api/getWarningInfo',
+    url: '/Home/getWarningInfo',
     method: 'post',
     data
   });

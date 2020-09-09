@@ -35,7 +35,22 @@
                     <div
                       v-if="onlyOneChild.meta"
                       :key="resolvePath(route.path, onlyOneChild.path)"
-                      class="ml-4 px-3 py-2 rounded-md text-15 font-medium leading-5 hover:bg-shallow hover:text-green-customer hover:bg-gray-200 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out active"
+                      class="
+                        ml-4
+                        px-3
+                        py-2
+                        rounded-md
+                        text-15
+                        font-medium
+                        leading-5
+                        hover:bg-shallow
+                        hover:text-green-customer
+                        hover:bg-gray-200
+                        focus:outline-none
+                        focus:shadow-outline
+                        transition
+                        duration-150
+                        ease-in-out active"
                     >
                       {{ onlyOneChild.meta.title }}
                     </div>
@@ -45,9 +60,35 @@
             </div>
           </div>
         </div>
-        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <div
+          class="
+          absolute
+          inset-y-0
+          right-0
+          flex
+          items-center
+          pr-2
+          sm:static
+          sm:inset-auto
+          sm:ml-6
+          sm:pr-0"
+        >
           <Poptip>
-            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+            <div
+              class="
+              mr-3
+              relative
+              p-1
+              border-2
+              border-transparent
+              text-gray-600
+              rounded-full
+              hover:bg-gray-200
+              focus:outline-none
+              transition
+              duration-150
+              ease-in-out"
+            >
               <a href="javascript:void(0)">
                 <span class="iconfont icon-icon-test5 cursor-pointer" />
               </a>
@@ -75,7 +116,21 @@
           </Poptip>
 
           <Poptip trigger="hover">
-            <div class="mr-3 relative p-1 border-2 border-transparent text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+            <div
+              class="
+              mr-3
+              relative
+              p-1
+              border-2
+              border-transparent
+              text-gray-600
+              rounded-full
+              hover:bg-gray-200
+              focus:outline-none
+              transition
+              duration-150
+              ease-in-out"
+            >
               <a href="javascript:void(0)">
                 <span class="iconfont icon-icon-test11" />
               </a>
@@ -86,9 +141,23 @@
             </div>
           </Poptip>
 
-          <div class="mr-3 relative p-1 border-2 border-transparent text-15 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none transition duration-150 ease-in-out">
+          <div
+            class="
+            mr-3
+            relative
+            p-1
+            border-2
+            border-transparent
+            text-gray-600
+            rounded-full
+            hover:bg-gray-200
+            focus:outline-none
+            transition
+            duration-150
+            ease-in-out"
+          >
             <Badge :count="messageCount">
-              <router-link :to="{path: '/notice/index'}">
+              <router-link :to="{ path: '/notice/index' }">
                 <span class="iconfont icon-icon-test6" />
               </router-link>
             </Badge>
@@ -138,7 +207,6 @@
 import path from 'path';
 import { editPassword } from '@/api/user.js';
 import PasswordModal from '@/layouts/components/Navbar/Password';
-import { log } from 'util';
 export default {
   components: {
     PasswordModal

@@ -20,6 +20,8 @@ module.exports = {
       white: '#fff',
       shallow: '#f5f8fc',
       custom: '04cb94',
+      progressBlue: '#00b8ff',
+      progressWarning: '#fb9800',
 
       gray: {
         100: '#f7fafc',

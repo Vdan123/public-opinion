@@ -108,7 +108,7 @@ export function setArticleAttribute(data) {
 // 获取数据来源，例如：微博、今日头条
 export function getSource(data) {
   return request({
-    url: '/Api/getSource',
+    url: '/Home/getSource',
     method: 'post',
     data
   });
