@@ -126,7 +126,7 @@ export default {
       }
       return false;
     },
-    
+
     resolvePath(routePath) {
       if (!_.isUndefined(routePath.path)) {
         const { title, group_id } = routePath;

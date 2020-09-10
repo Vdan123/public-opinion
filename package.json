@@ -17,6 +17,7 @@
     "view-design": "^4.3.2",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",
+    "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.2.0",
     "vue-socket.io": "^3.0.10",
     "vue-toastification": "^1.7.6",

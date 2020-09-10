@@ -8,19 +8,26 @@
         <span class="iconfont icon-icon-test6 warning" />
 
         <div class="ml-3">
-          <router-link :to="'/current/detail/'+item.id">
-            <span v-html="item.content" />
-          </router-link>
+          <span class="cursor-pointer">
+            <a
+              href="javascript:void(0)"
+              @click="handleContent(item)"
+              v-html="item.content"
+            />
+          </span>
           <ul class="flex justify-start items-center" style="padding-top: 16px">
             <li class="swiper-li">
               <div class="todo-tags sm:ml-2 sm:my-0 my-2 flex">
-                <Tag :color="todoLabelColor(item.attribute)">
-                  {{ item.attribute | attribute }}
-                </Tag>
+                <tags-color :numbers="item.attribute">
+                  <template v-slot:default="slotProps">
+                    {{ transformAttribute(slotProps.tags, item.attribute ) }}
+                  </template>
+                </tags-color>
               </div>
             </li>
             <Divider type="vertical" />
             <li class="swiper-li">
+              <!-- 跳转方案 -->
               <Icon type="ios-folder-open" />
               <router-link :to="{path: '/current/search', query: { group_id: item.group_id, id: item.keywordId, title: item.plan_name}}">
                 {{ item.plan_name }}
@@ -43,6 +50,7 @@
 </template>
 
 <script>
+import TagsColor from '@/components/TagsColor';
 export default {
   name: 'WarningList',
   filters: {
@@ -55,6 +63,9 @@ export default {
       return label[val];
     }
   },
+  components: {
+    TagsColor
+  },
   props: {
     warningList: {
       type: Array,
@@ -62,17 +73,15 @@ export default {
     }
   },
   computed: {
-    todoLabelColor() {
-      return (label) => {
-        const tags = [
-          { tag: '非敏感', value: 1, describe: 'success' },
-          { tag: '中性', value: 2, describe: 'warning' },
-          { tag: '敏感', value: 3, describe: 'error' }
-        ];
-        return _.find(tags, (tag) => {
-          return tag.value === label;
-        }).describe;
+    transformAttribute() {
+      return (tags, attribute) => {
+        return _.find(tags, el => el.value === attribute).tag;
       };
+    }
+  },
+  methods: {
+    handleContent({ id, keywordId } = {}) {
+      this.$router.push({ name: 'Detail', params: { id, keywordId }});
     }
   }
 };

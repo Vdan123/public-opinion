@@ -23,9 +23,14 @@
                   {{ item.value }}
                 </a>
               </template>
+              <template v-else-if="item.label === '属性'">
+                <tags-color :describe="item.value">
+                  {{ item.value }}
+                </tags-color>
+              </template>
               <template v-else>
                 <span>
-                  {{ item.value }}
+                  {{ item.value | disposeArray }}
                 </span>
               </template>
             </ListItem>
@@ -69,6 +74,7 @@
 
 <script>
 import { getDetails } from '../api';
+import TagsColor from '@/components/TagsColor';
 
 const detailKeys = {
   sourceName: '来源',
@@ -79,6 +85,17 @@ const detailKeys = {
   url: '原文链接'
 };
 export default {
+  filters: {
+    disposeArray(value) {
+      if (_.isArray(value)) {
+        return value.join('、');
+      }
+      return value;
+    }
+  },
+  components: {
+    TagsColor
+  },
   data() {
     return {
       detailKeys,
@@ -98,8 +115,8 @@ export default {
     }
   },
   mounted() {
-    const { id } = this.$route.params;
-    this.getDetails({ articleId: id });
+    const { id, keywordId } = this.$route.params;
+    this.getDetails({ articleId: id, keywordId });
   },
   methods: {
     async getDetails(params) {

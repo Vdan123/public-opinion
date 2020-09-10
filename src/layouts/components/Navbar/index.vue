@@ -95,21 +95,19 @@
             </div>
 
             <div slot="content">
-              <ul>
-                <li>
-                  预警设置
-                </li>
-                <li>
-                  通讯录管理
-                </li>
-                <li>
-                  新增抓取
-                </li>
-                <li>
-                  用户登录日志
-                </li>
-                <li>
-                  精确问题反馈
+              <ul class="bordered-items">
+                <li 
+                  v-for="(items, index) in settings" 
+                  :key="index" 
+                  class="
+                    flex 
+                    justify-between
+                    p-2
+                    cursor-pointer
+                    hover:bg-gray-200
+                    focus:outline-none"
+                >
+                  {{ items }}
                 </li>
               </ul>
             </div>
@@ -141,8 +139,9 @@
             </div>
           </Poptip>
 
-          <div
-            class="
+          <router-link :to="{ path: '/notice/index' }">
+            <div
+              class="
             mr-3
             relative
             p-1
@@ -155,13 +154,12 @@
             transition
             duration-150
             ease-in-out"
-          >
-            <Badge :count="messageCount">
-              <router-link :to="{ path: '/notice/index' }">
+            >
+              <Badge :count="messageCount">
                 <span class="iconfont icon-icon-test6" />
-              </router-link>
-            </Badge>
-          </div>
+              </Badge>
+            </div>
+          </router-link>
 
           <span>{{ userInfo.company }}</span>
 
@@ -214,7 +212,8 @@ export default {
   data() {
     this.onlyOneChild = null;
     return {
-      passwordStatus: false
+      passwordStatus: false,
+      settings: ['预警设置', '通讯录管理', '新增抓取', '用户登录日志', '精确问题反馈']
     };
   },
   computed: {
