@@ -1,18 +1,17 @@
 <template>
   <div>
-   <Breadcrumb class="mb-4">
-     <BreadcrumbItem>
-     <a href="javascript:history.go(-1)">
-        返回
-     </a>
-     </BreadcrumbItem>
-     <BreadcrumbItem>
-        预警记录
-     </BreadcrumbItem>
-   </Breadcrumb>
+    <Breadcrumb class="mb-4">
+      <BreadcrumbItem>
+        <a href="javascript:history.go(-1)">
+          返回上一级
+        </a>
+      </BreadcrumbItem>
+      <BreadcrumbItem>
+        通知中心
+      </BreadcrumbItem>
+    </Breadcrumb>
     <Card>
       <div class="flex flex-wrap items-center">
-
         <span class="mb-4 md:mb-0 md:mr-4"> 总共： {{ tableTotal }} 条</span>
 
         <span class="mb-4 md:mb-0 md:mr-4">发送时间：</span>
@@ -37,12 +36,21 @@
           查询
         </Button>
 
-        <Button
-          class="mb-4 md:mb-0 md:ml-auto"
-          @click="handleRead"
-        >
-          标记已读
-        </Button>
+        <div class="md:ml-auto">
+          <Button
+            class="mb-4 md:mb-0 mr-4"
+            @click="handleRead"
+          >
+            标记所有为已读
+          </Button>
+          <Button
+            class="mb-4 md:mb-0"
+            type="primary"
+            @click="handleRead"
+          >
+            标记本页为已读
+          </Button>
+        </div>
       </div>
 
       <Table
@@ -61,7 +69,6 @@
         @on-change="handleChangePage"
         @on-page-size-change="handlePageSize"
       />
-
     </Card>
   </div>
 </template>
@@ -69,19 +76,10 @@
 <script>
 import { getWarningRecords, upRead } from './api';
 import NoticeContent from './components/Content';
-
-const tags = [
-  { tag: '暂无', value: 0, describe: 'default' },
-  { tag: '非敏感', value: 1, describe: 'success' },
-  { tag: '中性', value: 2, describe: 'warning' },
-  { tag: '敏感', value: 3, describe: 'error' }
-];
+import TagsColor from '@/components/TagsColor';
 
 export default {
   name: 'Notice',
-  components: {
-    NoticeContent
-  },
   data() {
     return {
       columns: [
@@ -106,12 +104,19 @@ export default {
         { title: '归属方案', key: 'plan_name', align: 'center', minWidth: 80, maxWidth: 120 },
         { title: '属性', align: 'center', minWidth: 80, maxWidth: 100, render: (h, params) => {
           const attr = params.row.attribute;
-          return h('Tag', {
+          return h(TagsColor, {
             props: {
-              color: this.TagColor(attr)
-            }}, this.TagName(attr));
+              numbers: attr
+            },
+            scopedSlots: {
+              default: props => {
+                const text = _.find(props.tags, ['value', attr]).tag;
+                return h('span', text);
+              }
+            }
+          });
         } },
-        { title: '情感偏正向', align: 'center', minWidth: 90, maxWidth: 200, render: (h, params) => {
+        { title: '负面概率', align: 'center', minWidth: 90, maxWidth: 200, render: (h, params) => {
           return h('Progress', {
             props: {
               percent: this.ProgressBar(params.row.fumian),
@@ -131,24 +136,10 @@ export default {
         endTime: undefined,
         page: 1,
         limit: 40
-      },
+      }
     };
   },
   computed: {
-    TagColor() {
-      return (label) => {
-        return _.find(tags, (tag) => {
-          return tag.value === label;
-        }).describe;
-      };
-    },
-    TagName() {
-      return label => {
-        return _.find(tags, (tag) => {
-          return tag.value === label;
-        }).tag;
-      };
-    },
     ProgressBar() {
       return label => {
         return _.round(label * 100, 2);
@@ -166,10 +157,6 @@ export default {
   created() {
     this.getWarningRecords();
     this.$store.dispatch('notice/getNoticeTotal');
-  },
-
-  beforeDestroy() {
-    this.levelList = null
   },
 
   methods: {
@@ -197,8 +184,8 @@ export default {
       });
     },
 
-    handleContent({ id } = {}) {
-      this.$router.push({ name: 'Detail', params: { id }});
+    handleContent({ id, keywordId } = {}) {
+      this.$router.push({ name: 'Detail', params: { id, keywordId }});
       this.$store.dispatch('notice/minus', 1);
     },
 
@@ -241,8 +228,8 @@ export default {
     },
 
     handleLink(item) {
-      const { path } = item
-      this.$router.push({ path })
+      const { path } = item;
+      this.$router.push({ path });
     }
 
   }

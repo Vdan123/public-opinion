@@ -10,9 +10,12 @@
         </div>
 
         <div>
-          <router-link :to="'/current/detail/'+item.id">
-            <span v-html="item.content" />
-          </router-link>
+          <div class="cursor-pointer">
+            <span
+              @click="handleContent(item)"
+              v-html="item.content"
+            />
+          </div>
           <ul class="flex justify-start items-center" style="padding-top: 16px">
             <li class="swiper-li" v-html="item.ins_time" />
             <Divider type="vertical" />
@@ -76,6 +79,11 @@ export default {
         }
       }
     };
+  },
+  methods: {
+    handleContent({ id, keywordId } = {}) {
+      this.$router.push({ name: 'Detail', params: { id, keywordId }});
+    }
   }
 };
 </script>

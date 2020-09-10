@@ -7,13 +7,13 @@
             v-for="(item, index) in SearchButtons"
             :key="index"
           >
-            <span class="search-container">
+            <span class="mr-4">
               {{ item.label }}
             </span>
             <Button
               v-for="button in item.value"
               :key="button.label"
-              class="search-container"
+              class="mr-4"
               :type="collections[item.key] === button.text ? 'primary' : 'default'"
               size="small"
               @click="collectionKeys(item.key, button.text)"
@@ -21,9 +21,9 @@
               {{ button.label }}
             </Button>
           </ListItem>
-          <ListItem class="flex justify-center mt-5">
-            <Button type="primary" @click="handleSearch">查询</Button>
-            <Button class="ml-2">清空查询条件</Button>
+          <ListItem class="flex justify-center">
+            <Button class="mr-4" type="primary" @click="handleSearch">查询</Button>
+            <Button>清空查询条件</Button>
           </ListItem>
         </List>
       </Card>
@@ -74,32 +74,31 @@
                 <Button
                   size="small"
                   class="mx-2"
-                  :type="row.attribute === 1 ||
-                    row.attribute === 2 ?
-                      'primary' : 'error'"
+                  :type="TagColor(row.attribute)"
                 >
                   {{ row.attribute | filterText }}
                   <Icon type="ios-arrow-down" />
                 </Button>
                 <DropdownMenu slot="list">
                   <DropdownItem
-                    v-for="(item, key) in textState"
-                    :key="key"
-                    :name="key"
-                    @click.native="handleChangeState(key, row)"
+                    v-for="item in textState"
+                    :key="item.value"
+                    :name="item.value"
+                    @click.native="handleChangeState(item.value, row)"
                   >
-                    {{ item }}
+                    {{ item.label }}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
 
               <Button size="small">纠错</Button>
 
-              <router-link :to="'/current/detail/'+row.id">
-                <div class="item-title" v-html="row.content" />
-              </router-link>
+              <div class="item-title">
+                <span class="cursor-pointer" @click="handleContent(row)" v-html="row.content" />
+              </div>
+
               <div class="news-item-tools font-size-0">
-                <ul class="flex my-2">
+                <ul class="flex my-2 items-center">
                   <li
                     v-for="(item, index) in tools"
                     :key="index"
@@ -107,6 +106,11 @@
                   >
                     <a href="javascript:void(0)">
                       {{ item.label }}
+                      <template v-if="item.label === '涉及词'">
+                        <span class="text-red-600 font-semibold">
+                          [{{ mainKeywords(row) }}]
+                        </span>
+                      </template>
                     </a>
                     <Divider type="vertical" />
                   </li>
@@ -121,7 +125,8 @@
 </template>
 
 <script>
-import { setArticleAttribute, getSource } from '../api';
+// getSource
+import { setArticleAttribute } from '../api';
 
 const SearchButtons = [
   {
@@ -198,16 +203,17 @@ const tableColumns = [
   { title: '时间', key: 'ins_time', maxWidth: 120, align: 'center' }
 ];
 
-const textState = {
-  1: '非敏感',
-  2: '中性',
-  3: '敏感'
-};
+const textState = [
+  { label: '默认', color: 'default', value: 0 },
+  { label: '非敏感', color: 'success', value: 1 },
+  { label: '中性', color: 'warning', value: 2 },
+  { label: '敏感', color: 'error', value: 3 }
+];
 
 const tools = [
-  // { label: '涉及词' },
+  { label: '涉及词' },
   { label: '默认收藏夹' },
-  // { label: '查看原文' },
+  { label: '查看原文' },
   { label: '标记已读' },
   { label: '删除' }
 ];
@@ -217,12 +223,7 @@ export default {
   inject: ['project'],
   filters: {
     filterText(state) {
-      const textState = {
-        1: '非敏感',
-        2: '中性',
-        3: '敏感'
-      };
-      return textState[state];
+      return _.find(textState, el => el.value === state).label;
     }
   },
   data() {
@@ -253,6 +254,16 @@ export default {
     },
     currentPage() {
       return this.project.currentPage;
+    },
+    TagColor() {
+      return label => {
+        return _.find(textState, el => el.value === label).color;
+      };
+    },
+    mainKeywords() {
+      return label => {
+        return _.head(label.keywords);
+      };
     }
   },
   // mounted() {
@@ -262,6 +273,7 @@ export default {
     async setArticleAttribute(params) {
       await setArticleAttribute(params).then(res => {
         if (res.state === 1) {
+          this.$Message.success(res.message);
           this.$emit('changeAttribute', params);
         }
       });
@@ -274,6 +286,7 @@ export default {
     // },
 
     handleChangeState(state, { id, attribute }) {
+      if (state === 0) return;
       if (_.toNumber(state) !== attribute) {
         this.setArticleAttribute({
           articleId: id,
@@ -292,6 +305,10 @@ export default {
 
     handleSearch() {
       this.$emit('handleSearch', this.collections);
+    },
+
+    handleContent({ id, keywordId } = {}) {
+      this.$router.push({ name: 'Detail', params: { id, keywordId }});
     }
   }
 };
@@ -303,7 +320,6 @@ export default {
   .search-container {
     display: inline-block;
     padding: 0 5px;
-    margin: 0 5px 0 0;
     font-size: 12px;
     line-height: 1.5;
     -o-transition: all .2s linear;

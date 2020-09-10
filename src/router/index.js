@@ -103,7 +103,7 @@ const constantRoutes = [
         path: 'index',
         name: 'Notice',
         hidden: true,
-        meta: { title: '预警记录', requiresAuth: true },
+        meta: { title: '所有通知', requiresAuth: true },
         component: () => import('@/views/notice_lists')
       }
     ]
