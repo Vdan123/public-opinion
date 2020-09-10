@@ -1,80 +1,102 @@
 <template>
   <div>
-    <div class="sub-nav-wrap" />
-
-    <div class="grid grid-cols-2 gap-4">
-      <div class="grid-div row-span-3">
-        <Card>
-          <!-- 判断如果有 title 则显示，没有则不显示 -->
-          <!-- <div class="detail-title">
+    <Breadcrumb class="mb-6">
+      <BreadcrumbItem to="/dashboard/index">总览</BreadcrumbItem>
+      <BreadcrumbItem>方案名</BreadcrumbItem>
+      <BreadcrumbItem>详情页</BreadcrumbItem></BreadcrumbItem>
+    </Breadcrumb>
+    <Card class="mb-base" :shadow="true" :dis-hover="true">
+      <List :border="true" size="small">
+        <ListItem
+          v-for="(item, index) in detailList"
+          :key="index"
+        >
+          <span>
+            {{ item.label }} ：
+          </span>
+          <template v-if="item.label === '原文链接'">
+            <a :href="item.value" target="_bank">
+              {{ item.value }}
+            </a>
+          </template>
+          <template v-else-if="item.label === '属性'">
+            <tags-color :describe="item.value">
+              {{ item.value }}
+            </tags-color>
+          </template>
+          <template v-else>
+            <span>
+              {{ item.value | disposeArray }}
+            </span>
+          </template>
+        </ListItem>
+        <!-- <ListItem>
+          <ul class="flex">
+            <li>收藏</li>
+            <li>加入简报</li>
+            <li>分享</li>
+            <li>删除</li>
+            <li>敏感</li>
+            <li>反馈</li>
+            <li>复制链接</li>
+          </ul>
+        </ListItem> -->
+      </List>
+    </Card>
+    <Row type="flex" :gutter="10">
+      <div class="lg:w-2/3 w-full">
+        <i-col>
+          <Card title="正文" class="mb-base" :shadow="true" :dis-hover="true">
+            <!-- 判断如果有 title 则显示，没有则不显示 -->
+            <!-- <div class="detail-title">
 
             {{ listObject.title }}
           </div> -->
-          <List :border="true" size="small">
-            <ListItem
-              v-for="(item, index) in detailList"
-              :key="index"
-            >
-              <span>
-                {{ item.label }} ：
-              </span>
-              <template v-if="item.label === '原文链接'">
-                <a :href="item.value" target="_bank">
-                  {{ item.value }}
-                </a>
-              </template>
-              <template v-else-if="item.label === '属性'">
-                <tags-color :describe="item.value">
-                  {{ item.value }}
-                </tags-color>
-              </template>
-              <template v-else>
-                <span>
-                  {{ item.value | disposeArray }}
-                </span>
-              </template>
-            </ListItem>
-          </List>
 
-          <!-- <div class="detail-toolbar">
-            <ul class="flex">
-              <li>收藏</li>
-              <li>加入简报</li>
-              <li>分享</li>
-              <li>删除</li>
-              <li>敏感</li>
-              <li>反馈</li>
-              <li>复制链接</li>
-            </ul>
-          </div> -->
-
-          <div class="detail-news">
-            <span class="detail-news-title">正文</span>
-
-            <p class="detail-news-body" v-html="listObject.content " />
-          </div>
-        </Card>
+            <div class="detail-news">
+              <p class="detail-news-body" v-html="listObject.content " />
+            </div>
+          </Card>
+        </i-col>
       </div>
-      <div class="grid-div">
-        <Card>
-          <p slot="title">关键词云</p>
-        </Card>
-      </div><div class="grid-div">
-        <Card>
-          <p slot="title">情感判断</p>
-        </Card>
-      </div><div class="grid-div">
-        <Card>
-          <p slot="title">实体识别</p>
-        </Card>
+
+      <div class="lg:w-1/3 w-full">
+        <i-col>
+          <Card title="情感判断" class="mb-base" :shadow="true" :dis-hover="true">
+            <div class="mt-10">
+              <vue-apex-charts
+                type="radialBar"
+                height="240"
+                :options="analyticsData.goalOverviewRadialBar.chartOptions"
+                :series="chartData"
+              />
+            </div>
+            <div class="flex justify-between text-center mt-6">
+              <div class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0 border-l-0">
+                <p class="mt-4">正面概率</p>
+                <p class="mb-4 text-3xl font-semibold">
+                  {{ percentData.positive }}%
+                </p>
+              </div>
+              <div class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0">
+                <p class="mt-4">负面概率</p>
+                <p class="mb-4 text-3xl font-semibold">
+                  {{ percentData.negative }}%
+                </p>
+              </div>
+            </div>
+          </Card>
+        </i-col>
       </div>
-    </div>
+    </Row>
   </div>
 </template>
 
 <script>
 import { getDetails } from '../api';
 import TagsColor from '@/components/TagsColor';
+import VueApexCharts from 'vue-apexcharts';
+import analyticsData from '@/views/ui-elements/card/analyticsData.js';
 
 const detailKeys = {
   sourceName: '来源',
@@ -84,6 +106,7 @@ const detailKeys = {
   keywords: '涉及关键字',
   url: '原文链接'
 };
+
 export default {
   filters: {
     disposeArray(value) {
@@ -94,12 +117,16 @@ export default {
     }
   },
   components: {
-    TagsColor
+    TagsColor,
+    VueApexCharts
   },
   data() {
     return {
       detailKeys,
-      listObject: {}
+      analyticsData,
+      listObject: {},
+      chartData: [0],
+      percentData: {}
     };
   },
   computed: {
@@ -123,6 +150,13 @@ export default {
       await getDetails(params).then(res => {
         if (res.state === 1) {
           this.listObject = res.data;
+
+          const { jiji, fumian } = res.data
+          this.chartData = [_.round(fumian * 100)]
+          this.percentData = {
+            positive: _.round(jiji * 100),
+            negative: _.round(fumian * 100)
+          }
         }
       });
     }
@@ -137,18 +171,6 @@ a:link {
   text-decoration-color: #a2dffb;
 }
 .detail-news {
-  position: relative;
-  margin-top: 30px;
-  border: 1px solid #ebecf0;
-  padding: 15px 10px 15px;
-  .detail-news-title {
-    margin-bottom: 6px;
-    font-weight: 700;
-    font-size: 20px;
-    color: #333;
-    letter-spacing: 0;
-    line-height: 30px;
-  }
   .detail-news-body {
     margin-top: 30px;
     margin-bottom: 20px;
@@ -163,5 +185,10 @@ a:link {
   color: #333;
   letter-spacing: .03em;
   text-align: center;
+}
+
+.d-theme-border-grey-light {
+  // @apply border-grey-light;
+  border-color: #dae1e7;
 }
 </style>

@@ -110,8 +110,8 @@ export default {
             },
             scopedSlots: {
               default: props => {
-                const text = _.find(props.tags, ['value', attr]).tag
-                return h('span', text)
+                const text = _.find(props.tags, ['value', attr]).tag;
+                return h('span', text);
               }
             }
           });

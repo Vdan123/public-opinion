@@ -7,13 +7,13 @@
             v-for="(item, index) in SearchButtons"
             :key="index"
           >
-            <span class="search-container">
+            <span class="mr-4">
               {{ item.label }}
             </span>
             <Button
               v-for="button in item.value"
               :key="button.label"
-              class="search-container"
+              class="mr-4"
               :type="collections[item.key] === button.text ? 'primary' : 'default'"
               size="small"
               @click="collectionKeys(item.key, button.text)"
@@ -21,9 +21,9 @@
               {{ button.label }}
             </Button>
           </ListItem>
-          <ListItem class="flex justify-center mt-5">
-            <Button type="primary" @click="handleSearch">查询</Button>
-            <Button class="ml-2">清空查询条件</Button>
+          <ListItem class="flex justify-center">
+            <Button class="mr-4" type="primary" @click="handleSearch">查询</Button>
+            <Button>清空查询条件</Button>
           </ListItem>
         </List>
       </Card>
@@ -320,7 +320,6 @@ export default {
   .search-container {
     display: inline-block;
     padding: 0 5px;
-    margin: 0 5px 0 0;
     font-size: 12px;
     line-height: 1.5;
     -o-transition: all .2s linear;

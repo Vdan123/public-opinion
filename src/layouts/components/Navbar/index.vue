@@ -96,11 +96,11 @@
 
             <div slot="content">
               <ul class="bordered-items">
-                <li 
-                  v-for="(items, index) in settings" 
-                  :key="index" 
+                <li
+                  v-for="(items, index) in settings"
+                  :key="index"
                   class="
-                    flex 
+                    flex
                     justify-between
                     p-2
                     cursor-pointer
