@@ -8,13 +8,18 @@
         <span class="iconfont icon-icon-test6 warning" />
 
         <div class="ml-3">
-          <span class="cursor-pointer">
-            <a
-              href="javascript:void(0)"
-              @click="handleContent(item)"
-              v-html="item.content"
-            />
-          </span>
+          <div
+            class="text-base font-bold mb-2 cursor-pointer title-ellipsis"
+            v-html="item.title"
+            @click="handleContent(item)"
+          >
+          </div>
+
+          <span
+            class="cursor-pointer text-ellipsis"
+            v-html="item.content"
+            @click="handleContent(item)"
+          />
           <ul class="flex justify-start items-center" style="padding-top: 16px">
             <li class="swiper-li">
               <div class="todo-tags sm:ml-2 sm:my-0 my-2 flex">
@@ -38,6 +43,7 @@
             <li class="swiper-li">
               {{ item.sourceName }}
             </li>
+
             <Divider type="vertical" />
             <li class="swiper-li">
               {{ item.ins_time }}

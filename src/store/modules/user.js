@@ -77,7 +77,7 @@ const actions = {
   },
 
   SOCKET_messageChannel({ state, dispatch }, data) {
-    const { content, total } = JSON.parse(data)[0];
+    const { title, total } = JSON.parse(data)[0];
     const login = checkStorage('loginState');
 
     if (!_.isUndefined(login)) {
@@ -85,7 +85,7 @@ const actions = {
 
       Notice.open({
         title: '新消息提醒',
-        desc: content
+        desc: title
       });
     }
   }

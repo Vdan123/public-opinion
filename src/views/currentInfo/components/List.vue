@@ -91,10 +91,10 @@
                 </DropdownMenu>
               </Dropdown>
 
-              <Button size="small">纠错</Button>
+              <Button size="small">已读</Button>
 
               <div class="item-title">
-                <span class="cursor-pointer" @click="handleContent(row)" v-html="row.content" />
+                <span class="cursor-pointer text-ellipsis" @click="handleContent(row)" v-html="row.content" />
               </div>
 
               <div class="news-item-tools font-size-0">
@@ -184,8 +184,13 @@ const SearchButtons = [
     key: 'source',
     value: [
       { label: '全部', text: 0 },
-      { label: '新浪微博', text: 1 },
-      { label: '今日头条', text: 2 }
+      { label: '网媒', text: 1 },
+      { label: '论坛', text: 2 },
+      { label: '微博', text: 2 },
+      { label: '微信', text: 2 },
+      { label: '博客', text: 2 },
+      { label: 'APP', text: 2 },
+      { label: '其他', text: 2 }
     ]
   }
 ];

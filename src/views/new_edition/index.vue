@@ -58,7 +58,8 @@
 
         <FormItem>
           <div class="flex justify-center">
-            <Button type="primary" class="mr-5" :disabled="editState" @click="handleSubmit">保存</Button>
+            <!-- :disabled="editState" -->
+            <Button type="primary" class="mr-5" @click="handleSubmit">保存</Button>
             <Button @click="handleBack">取消，并返回列表</Button>
           </div>
         </FormItem>

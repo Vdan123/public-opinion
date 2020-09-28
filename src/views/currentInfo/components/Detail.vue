@@ -15,7 +15,7 @@
             {{ item.label }} ：
           </span>
           <template v-if="item.label === '原文链接'">
-            <a :href="item.value" target="_bank">
+            <a :href="item.value" target="_bank" class="title-ellipsis">
               {{ item.value }}
             </a>
           </template>
@@ -62,29 +62,7 @@
 
       <div class="lg:w-1/3 w-full">
         <i-col>
-          <Card title="情感判断" class="mb-base" :shadow="true" :dis-hover="true">
-            <div class="mt-10">
-              <vue-apex-charts
-                type="radialBar"
-                height="240"
-                :options="analyticsData.goalOverviewRadialBar.chartOptions"
-                :series="chartData"
-              />
-            </div>
-            <div class="flex justify-between text-center mt-6">
-              <div class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0 border-l-0">
-                <p class="mt-4">正面概率</p>
-                <p class="mb-4 text-3xl font-semibold">
-                  {{ percentData.positive }}%
-                </p>
-              </div>
-              <div class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0">
-                <p class="mt-4">负面概率</p>
-                <p class="mb-4 text-3xl font-semibold">
-                  {{ percentData.negative }}%
-                </p>
-              </div>
-            </div>
+          <Card title="相同文章" class="mb-base" :shadow="true" :dis-hover="true">
           </Card>
         </i-col>
       </div>
@@ -95,8 +73,6 @@
 <script>
 import { getDetails } from '../api';
 import TagsColor from '@/components/TagsColor';
-import VueApexCharts from 'vue-apexcharts';
-import analyticsData from '@/views/ui-elements/card/analyticsData.js';
 
 const detailKeys = {
   sourceName: '来源',
@@ -117,16 +93,12 @@ export default {
     }
   },
   components: {
-    TagsColor,
-    VueApexCharts
+    TagsColor
   },
   data() {
     return {
       detailKeys,
-      analyticsData,
-      listObject: {},
-      chartData: [0],
-      percentData: {}
+      listObject: {}
     };
   },
   computed: {
@@ -150,13 +122,6 @@ export default {
       await getDetails(params).then(res => {
         if (res.state === 1) {
           this.listObject = res.data;
-
-          const { jiji, fumian } = res.data
-          this.chartData = [_.round(fumian * 100)]
-          this.percentData = {
-            positive: _.round(jiji * 100),
-            negative: _.round(fumian * 100)
-          }
         }
       });
     }
