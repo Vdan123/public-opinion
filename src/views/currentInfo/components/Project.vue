@@ -42,7 +42,7 @@ const menu = [
   { label: '信息列表', key: 'TableList' },
   { label: '图表分析', key: 'Analysis' },
   { label: '预警设置', key: 'ForeWarning' },
-  { label: '修改方案', key: 'Edit' }
+  { label: '查看方案', key: 'Edit' }
 ];
 
 const initParams = {

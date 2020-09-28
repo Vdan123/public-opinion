@@ -116,14 +116,6 @@ export default {
             }
           });
         } },
-        { title: '负面概率', align: 'center', minWidth: 90, maxWidth: 200, render: (h, params) => {
-          return h('Progress', {
-            props: {
-              percent: this.ProgressBar(params.row.fumian),
-              strokeColor: ['#ff9966', '#ff6680']
-            }
-          }, this.ProgressName(params.row.fumian));
-        } },
         { title: '下发时间', key: 'push_time', width: 120, align: 'center' }
       ],
       tableList: [],

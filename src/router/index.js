@@ -59,6 +59,18 @@ const constantRoutes = [
     ]
   },
   {
+    path: '/warning',
+    component: Layouts,
+    children: [
+      {
+        path: 'index',
+        name: 'WarningList',
+        meta: { title: '推送预警', requiresAuth: true },
+        component: () => import('@/views/warning_lists')
+      }
+    ]
+  },
+  {
     path: '/newEdition',
     meta: { requiresAuth: true },
     component: Layouts,
@@ -83,18 +95,18 @@ const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/bulletin',
-    component: Layouts,
-    children: [
-      {
-        path: 'index',
-        name: 'Bulletin',
-        meta: { title: '舆情简报', requiresAuth: true },
-        component: () => import('@/views/bulletin')
-      }
-    ]
-  },
+  // {
+  //   path: '/bulletin',
+  //   component: Layouts,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Bulletin',
+  //       meta: { title: '舆情简报', requiresAuth: true },
+  //       component: () => import('@/views/bulletin')
+  //     }
+  //   ]
+  // },
   {
     path: '/notice',
     component: Layouts,
@@ -115,6 +127,7 @@ const constantRoutes = [
       {
         path: 'index',
         name: 'Setting',
+        hidden: true,
         meta: { title: '用户管理', requiresAuth: true },
         component: () => import('@/views/setting')
       }

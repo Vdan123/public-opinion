@@ -171,6 +171,7 @@
                 <Icon type="ios-arrow-down" />
               </a>
               <DropdownMenu slot="list">
+                <DropdownItem @click.native="handleUserInfo">用户管理</DropdownItem>
                 <DropdownItem @click.native="handlePassword">修改密码</DropdownItem>
                 <DropdownItem divided @click.native="handleLogout">退出</DropdownItem>
               </DropdownMenu>
@@ -283,6 +284,10 @@ export default {
 
     changePassword(params) {
       this.editPassword(params);
+    },
+
+    handleUserInfo() {
+      this.$router.push({ name: 'Setting' })
     }
   }
 };
