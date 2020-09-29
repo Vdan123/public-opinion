@@ -100,7 +100,7 @@ export default {
             })
           ]);
         }, align: 'center', ellipsis: true, minWidth: 220 },
-        { title: '来源', key: 'sourceName', align: 'center', minWidth: 80, maxWidth: 120 },
+        { title: '来源', key: 'source', align: 'center', minWidth: 80, maxWidth: 120 },
         { title: '归属方案', key: 'plan_name', align: 'center', minWidth: 80, maxWidth: 120 },
         { title: '属性', align: 'center', minWidth: 80, maxWidth: 100, render: (h, params) => {
           const attr = params.row.attribute;

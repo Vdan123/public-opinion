@@ -204,7 +204,7 @@ const tableColumns = [
   { title: '标题', slot: 'title' },
   // 相似文章，暂定
   { title: '相似文章', maxWidth: 100, render: (h) => h('div', 1), align: 'center' },
-  { title: '来源', key: 'sourceName', maxWidth: 100, align: 'center' },
+  { title: '来源', key: 'source', maxWidth: 100, align: 'center' },
   { title: '时间', key: 'ins_time', maxWidth: 120, align: 'center' }
 ];
 

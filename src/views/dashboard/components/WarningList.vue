@@ -41,7 +41,7 @@
 
             <Divider type="vertical" />
             <li class="swiper-li">
-              {{ item.sourceName }}
+              {{ item.source }}
             </li>
 
             <Divider type="vertical" />

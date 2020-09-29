@@ -19,7 +19,7 @@
           <ul class="flex justify-start items-center" style="padding-top: 16px">
             <li class="swiper-li" v-html="item.ins_time" />
             <Divider type="vertical" />
-            <li class="swiper-li" v-html="item.sourceName" />
+            <li class="swiper-li" v-html="item.source" />
           </ul>
         </div>
       </div>

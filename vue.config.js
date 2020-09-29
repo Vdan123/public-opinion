@@ -29,7 +29,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    proxy: 'http://59.110.223.44:9080',
+    proxy: '', // 这里是代理的API
     port: port,
     open: true,
     overlay: {

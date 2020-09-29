@@ -1,30 +1,23 @@
-# yuqing
+舆情系统
 
-## Project setup
-```
-npm install
-```
+本项目为政企舆情大数据服务平台，主要面向政府（事业单位）和企业，为其提供媒体大数据监测、分析和挖掘。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+其中已经对接的数据源：
 
-### Compiles and minifies for production
-```
-npm run build
-```
+阳光理政
+长城网
+领导留言板
+川报观察
+河东信息港
+问政河北
+新浪微博
+新浪搜狐
+百度贴吧
 
-### Run your tests
-```
-npm run test
-```
+项目暂停原因
 
-### Lints and fixes files
-```
-npm run lint
-```
+对标其他舆情平台：百度舆情、新浪舆情、智慧星光、清博数据后发现，还需进行大量的数据源开发，所以此项目暂时搁浅。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-# public-opinion
+项目进展
+
+前端的设计主要参照新浪舆情，属于初版，只开发了列表页和详情页。由于不断的更换数据源，比如对接百度舆情API，前端样式也进行了相应的变更

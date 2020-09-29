@@ -75,7 +75,7 @@ import { getDetails } from '../api';
 import TagsColor from '@/components/TagsColor';
 
 const detailKeys = {
-  sourceName: '来源',
+  source: '来源',
   ins_time: '发布时间',
   auther: '作者',
   attribute: '属性',
